@@ -222,14 +222,14 @@ svg text { font-family: 'Georgia', serif; }
   <!-- Silence Analysis -->
   <div class="section" id="silence-section">
     <h2>C. SILENCE ANALYSIS</h2>
-    <div class="desc">Strickland's dialogue rate drops as he paints more. The artist speaks through his art, not words.</div>
+    <div class="desc">Strickland's dialogue rate per chapter. Bar height = % of sentences where Strickland speaks. Red dashed line = 5-chapter moving average. Color = location.</div>
     <div id="silence-chart"></div>
   </div>
 
   <!-- Narrative Density -->
   <div class="section" id="density-section">
     <h2>D. NARRATIVE DENSITY</h2>
-    <div class="desc">Sentence count per chapter. Peaks mark key events — the author spends more words where it matters.</div>
+    <div class="desc">Sentence count per chapter. Dark bar = dialogue, light bar = narration. Color = location. Red line = moving average.</div>
     <div id="density-chart"></div>
   </div>
 
@@ -550,6 +550,13 @@ function renderSilenceChart(data) {
       hideTooltip();
     });
 
+  // Legend (top-right)
+  const cLegend = svg.append('g').attr('transform', `translate(${width - 200}, 0)`);
+  cLegend.append('rect').attr('x', 0).attr('y', 0).attr('width', 14).attr('height', 14).attr('fill', '#3498db').attr('opacity', 0.8);
+  cLegend.append('text').attr('x', 20).attr('y', 11).attr('font-size', 11).attr('fill', '#444').text('Dialogue rate');
+  cLegend.append('line').attr('x1', 100).attr('x2', 130).attr('y1', 7).attr('y2', 7).attr('stroke', '#e74c3c').attr('stroke-width', 2).attr('stroke-dasharray', '6,3');
+  cLegend.append('text').attr('x', 136).attr('y', 11).attr('font-size', 11).attr('fill', '#444').text('Moving avg');
+
   // Moving average line
   const windowSize = 5;
   const movAvg = stats.map((d, i) => {
@@ -648,6 +655,15 @@ function renderDensityChart(data) {
       })
       .on('mouseout', hideTooltip);
   });
+
+  // Legend (top-right)
+  const dLegend = svg.append('g').attr('transform', `translate(${width - 220}, 0)`);
+  dLegend.append('rect').attr('x', 0).attr('y', 0).attr('width', 14).attr('height', 14).attr('fill', '#3498db').attr('opacity', 0.85);
+  dLegend.append('text').attr('x', 20).attr('y', 11).attr('font-size', 11).attr('fill', '#444').text('Dialogue');
+  dLegend.append('rect').attr('x', 0).attr('y', 20).attr('width', 14).attr('height', 14).attr('fill', '#3498db').attr('opacity', 0.5);
+  dLegend.append('text').attr('x', 20).attr('y', 31).attr('font-size', 11).attr('fill', '#444').text('Narration');
+  dLegend.append('line').attr('x1', 100).attr('x2', 130).attr('y1', 7).attr('y2', 7).attr('stroke', '#e74c3c').attr('stroke-width', 2);
+  dLegend.append('text').attr('x', 136).attr('y', 11).attr('font-size', 11).attr('fill', '#444').text('Moving avg');
 
   // Moving average line
   const windowSize = 5;
