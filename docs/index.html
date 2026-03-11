@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marginalia — Character Session Analysis</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Georgia', serif;
+  background: #faf8f5;
+  color: #2c2c2c;
+  line-height: 1.6;
+}
+.header {
+  text-align: center;
+  padding: 40px 20px 20px;
+  border-bottom: 1px solid #e0dcd4;
+}
+.header h1 { font-size: 28px; font-weight: normal; letter-spacing: 2px; }
+.header .subtitle { color: #888; font-size: 14px; margin-top: 4px; font-style: italic; }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+/* Section */
+.section {
+  margin: 40px 0;
+  background: white;
+  border: 1px solid #e8e4dc;
+  border-radius: 4px;
+  padding: 30px;
+}
+.section h2 {
+  font-size: 18px;
+  font-weight: normal;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  color: #444;
+}
+.section .desc {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 20px;
+}
+
+/* Character selector */
+.char-selector {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.char-btn {
+  padding: 6px 14px;
+  border: 1px solid #d0ccc4;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.char-btn:hover { border-color: #888; }
+.char-btn.active { background: #2c2c2c; color: white; border-color: #2c2c2c; }
+
+/* Journey flow */
+.journey-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+.session-card {
+  min-width: 160px;
+  border: 1px solid #e0dcd4;
+  border-radius: 4px;
+  padding: 16px;
+  background: white;
+  position: relative;
+  flex-shrink: 0;
+}
+.session-card .loc-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+.session-card .ch-range {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 12px;
+}
+.session-card .metrics {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.8;
+}
+.session-card .metrics span { font-weight: bold; color: #2c2c2c; }
+.session-arrow {
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  color: #bbb;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.session-card .co-chars {
+  font-size: 11px;
+  color: #999;
+  margin-top: 8px;
+  border-top: 1px solid #f0ece4;
+  padding-top: 8px;
+}
+
+/* Location colors */
+.loc-London { border-left: 4px solid #7f8c8d; }
+.loc-Paris { border-left: 4px solid #3498db; }
+.loc-Marseilles { border-left: 4px solid #e67e22; }
+.loc-Tahiti { border-left: 4px solid #27ae60; }
+.loc-Amsterdam { border-left: 4px solid #9b59b6; }
+
+/* Timeline */
+.timeline-container { overflow-x: auto; }
+svg text { font-family: 'Georgia', serif; }
+
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  background: white;
+  border: 1px solid #d0ccc4;
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-size: 12px;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 100;
+  max-width: 280px;
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  text-align: center;
+  padding: 16px;
+  background: #faf8f5;
+  border-radius: 4px;
+}
+.stat-card .number { font-size: 28px; font-weight: bold; }
+.stat-card .label { font-size: 11px; color: #888; margin-top: 4px; }
+
+/* Insight callout */
+.insight {
+  background: #f8f6f0;
+  border-left: 3px solid #d4a574;
+  padding: 12px 16px;
+  margin: 16px 0;
+  font-size: 13px;
+  color: #666;
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>MARGINALIA</h1>
+  <div class="subtitle">The Moon and Sixpence — Character Session Analysis</div>
+</div>
+
+<div class="container">
+
+  <!-- Journey Flow -->
+  <div class="section" id="journey-section">
+    <h2>A. JOURNEY FLOW</h2>
+    <div class="desc">Select a character to see their journey through the novel.</div>
+    <div class="char-selector" id="char-selector"></div>
+    <div class="journey-flow" id="journey-flow"></div>
+  </div>
+
+  <!-- Character Timeline -->
+  <div class="section" id="timeline-section">
+    <h2>B. CHARACTER TIMELINE</h2>
+    <div class="desc">All characters across 58 chapters. Color = location.</div>
+    <div class="timeline-container" id="timeline-container"></div>
+  </div>
+
+  <!-- Silence Analysis -->
+  <div class="section" id="silence-section">
+    <h2>C. SILENCE ANALYSIS</h2>
+    <div class="desc">Strickland's dialogue rate drops as he paints more. The artist speaks through his art, not words.</div>
+    <div id="silence-chart"></div>
+  </div>
+
+  <!-- Narrative Density -->
+  <div class="section" id="density-section">
+    <h2>D. NARRATIVE DENSITY</h2>
+    <div class="desc">Sentence count per chapter. Peaks mark key events — the author spends more words where it matters.</div>
+    <div id="density-chart"></div>
+  </div>
+
+  <!-- Vocabulary Overview -->
+  <div class="section" id="vocab-section">
+    <h2>E. VOCABULARY OVERVIEW</h2>
+    <div class="desc">4,716 unique words across 58 chapters. Difficulty distribution by CEFR level.</div>
+    <div class="stats-grid" id="vocab-stats"></div>
+    <div id="vocab-difficulty-chart"></div>
+  </div>
+
+  <!-- Vocabulary by Chapter -->
+  <div class="section" id="vocab-chapter-section">
+    <h2>F. VOCABULARY BY CHAPTER</h2>
+    <div class="desc">B2+ words and idioms per chapter. Stacked by difficulty level.</div>
+    <div id="vocab-chapter-chart"></div>
+  </div>
+
+  <!-- Top Words -->
+  <div class="section" id="top-words-section">
+    <h2>G. MOST FREQUENT B2+ WORDS</h2>
+    <div class="desc">The 20 hardest words that appear most often — these are the words readers will truly learn through repetition.</div>
+    <div id="top-words-chart"></div>
+  </div>
+
+  <!-- Top Idioms -->
+  <div class="section" id="top-idioms-section">
+    <h2>H. MOST FREQUENT IDIOMS</h2>
+    <div class="desc">407 idioms found. The top 20 by occurrence — phrases that become familiar through the story.</div>
+    <div id="top-idioms-chart"></div>
+  </div>
+
+</div>
+
+<div class="tooltip" id="tooltip" style="display:none;"></div>
+
+<script>
+// ─── Load Data ─────────────────────────────────────────────
+const DATA_URL = 'dashboard_data.json';
+
+const LOCATION_COLORS = {
+  London: '#7f8c8d',
+  Paris: '#3498db',
+  Marseilles: '#e67e22',
+  Tahiti: '#27ae60',
+  Amsterdam: '#9b59b6',
+};
+
+const tooltip = d3.select('#tooltip');
+
+function showTooltip(html, event) {
+  tooltip.html(html).style('display', 'block')
+    .style('left', (event.pageX + 12) + 'px')
+    .style('top', (event.pageY - 10) + 'px');
+}
+function hideTooltip() { tooltip.style('display', 'none'); }
+
+d3.json(DATA_URL).then(data => {
+  try { renderJourneyFlow(data); } catch(e) { console.error('JourneyFlow:', e); }
+  try { renderTimeline(data); } catch(e) { console.error('Timeline:', e); }
+  try { renderSilenceChart(data); } catch(e) { console.error('Silence:', e); }
+  try { renderDensityChart(data); } catch(e) { console.error('Density:', e); }
+  try { renderVocabOverview(data); } catch(e) { console.error('VocabOverview:', e); }
+  try { renderVocabByChapter(data); } catch(e) { console.error('VocabByChapter:', e); }
+  try { renderTopWords(data); } catch(e) { console.error('TopWords:', e); }
+  try { renderTopIdioms(data); } catch(e) { console.error('TopIdioms:', e); }
+}).catch(e => console.error('Data load failed:', e));
+
+// ─── A. Journey Flow ───────────────────────────────────────
+function renderJourneyFlow(data) {
+  const selector = d3.select('#char-selector');
+  const charNames = {};
+  data.characters.forEach(c => charNames[c.id] = c.name);
+
+  // Major characters first (sorted by session count then mention)
+  const charSessionCount = {};
+  data.sessions.forEach(s => {
+    charSessionCount[s.character_id] = (charSessionCount[s.character_id] || 0) + 1;
+  });
+  const sortedChars = data.characters.slice()
+    .sort((a, b) => (charSessionCount[b.id] || 0) - (charSessionCount[a.id] || 0));
+
+  sortedChars.forEach((c, i) => {
+    selector.append('button')
+      .attr('class', 'char-btn' + (i === 0 ? ' active' : ''))
+      .text(c.name)
+      .on('click', function() {
+        selector.selectAll('.char-btn').classed('active', false);
+        d3.select(this).classed('active', true);
+        updateJourney(c.id, data, charNames);
+      });
+  });
+
+  updateJourney(sortedChars[0].id, data, charNames);
+}
+
+function updateJourney(charId, data, charNames) {
+  const flow = d3.select('#journey-flow');
+  flow.html('');
+
+  const sessions = data.sessions.filter(s => s.character_id === charId);
+
+  sessions.forEach((sess, i) => {
+    if (i > 0) {
+      flow.append('div').attr('class', 'session-arrow').html('&#8594;');
+    }
+
+    const card = flow.append('div')
+      .attr('class', 'session-card loc-' + sess.location);
+
+    card.append('div').attr('class', 'loc-name').text(sess.location);
+    card.append('div').attr('class', 'ch-range')
+      .text(`Ch.${sess.chapter_start}${sess.chapter_start !== sess.chapter_end ? ' \u2013 ' + sess.chapter_end : ''}`);
+
+    const metrics = card.append('div').attr('class', 'metrics');
+    metrics.html(`
+      <span>${sess.sentence_count}</span> sentences<br>
+      <span>${sess.dialogue_count}</span> dialogues<br>
+      <span>${sess.present_chapters}</span> / ${sess.chapter_count} chapters
+    `);
+
+    if (sess.co_characters.length > 0) {
+      const names = sess.co_characters.slice(0, 4).map(id => charNames[id] || id);
+      const extra = sess.co_characters.length > 4 ? ` +${sess.co_characters.length - 4}` : '';
+      card.append('div').attr('class', 'co-chars')
+        .text('with: ' + names.join(', ') + extra);
+    }
+  });
+}
+
+// ─── B. Character Timeline ─────────────────────────────────
+function renderTimeline(data) {
+  const charNames = {};
+  data.characters.forEach(c => charNames[c.id] = c.name);
+
+  // Sort characters by first appearance
+  const charFirst = {};
+  data.sessions.forEach(s => {
+    if (!(s.character_id in charFirst) || s.chapter_start < charFirst[s.character_id]) {
+      charFirst[s.character_id] = s.chapter_start;
+    }
+  });
+  const sortedChars = Object.keys(charFirst).sort((a, b) => charFirst[a] - charFirst[b]);
+
+  const margin = { top: 30, right: 30, bottom: 40, left: 150 };
+  const rowH = 28;
+  const width = 900;
+  const height = margin.top + margin.bottom + sortedChars.length * rowH;
+
+  const svg = d3.select('#timeline-container')
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height)
+    .attr('viewBox', `0 0 ${width} ${height}`)
+    .style('max-width', '100%');
+
+  const x = d3.scaleLinear().domain([1, 58]).range([margin.left, width - margin.right]);
+  const y = (i) => margin.top + i * rowH;
+
+  // Chapter axis
+  const xAxis = svg.append('g').attr('transform', `translate(0,${height - margin.bottom})`);
+  for (let ch = 1; ch <= 58; ch += 5) {
+    xAxis.append('text').attr('x', x(ch)).attr('y', 16)
+      .attr('text-anchor', 'middle').attr('font-size', 10).attr('fill', '#999')
+      .text(ch);
+  }
+  xAxis.append('text').attr('x', x(58)).attr('y', 16)
+    .attr('text-anchor', 'middle').attr('font-size', 10).attr('fill', '#999')
+    .text('58');
+
+  // Location background bands
+  let prevLoc = null, bandStart = 1;
+  const bands = [];
+  data.chapters.forEach((ch, i) => {
+    if (ch.location !== prevLoc && prevLoc !== null) {
+      bands.push({ loc: prevLoc, start: bandStart, end: ch.number - 1 });
+      bandStart = ch.number;
+    }
+    prevLoc = ch.location;
+  });
+  bands.push({ loc: prevLoc, start: bandStart, end: 58 });
+
+  bands.forEach(b => {
+    svg.append('rect')
+      .attr('x', x(b.start) - 3)
+      .attr('y', margin.top - 10)
+      .attr('width', x(b.end) - x(b.start) + 6)
+      .attr('height', sortedChars.length * rowH + 4)
+      .attr('fill', LOCATION_COLORS[b.loc] || '#ccc')
+      .attr('opacity', 0.06);
+  });
+
+  // Location labels at top
+  bands.forEach(b => {
+    const cx = (x(b.start) + x(b.end)) / 2;
+    svg.append('text').attr('x', cx).attr('y', margin.top - 16)
+      .attr('text-anchor', 'middle').attr('font-size', 10)
+      .attr('fill', LOCATION_COLORS[b.loc] || '#999')
+      .attr('font-weight', 'bold')
+      .text(b.loc);
+  });
+
+  // Each character row
+  sortedChars.forEach((charId, i) => {
+    const yPos = y(i) + rowH / 2;
+
+    // Name label
+    svg.append('text')
+      .attr('x', margin.left - 10)
+      .attr('y', yPos + 4)
+      .attr('text-anchor', 'end')
+      .attr('font-size', 12)
+      .attr('fill', '#444')
+      .text(charNames[charId] || charId);
+
+    // Session bars
+    const sessions = data.sessions.filter(s => s.character_id === charId);
+    sessions.forEach(sess => {
+      const barX = x(sess.chapter_start);
+      const barW = Math.max(x(sess.chapter_end) - x(sess.chapter_start), 6);
+      const color = LOCATION_COLORS[sess.location] || '#ccc';
+
+      svg.append('rect')
+        .attr('x', barX)
+        .attr('y', yPos - 8)
+        .attr('width', barW)
+        .attr('height', 16)
+        .attr('rx', 3)
+        .attr('fill', color)
+        .attr('opacity', 0.75)
+        .style('cursor', 'pointer')
+        .on('mouseover', function(event) {
+          d3.select(this).attr('opacity', 1);
+          showTooltip(`
+            <strong>${charNames[charId]}</strong> in ${sess.location}<br>
+            Ch.${sess.chapter_start}\u2013${sess.chapter_end}<br>
+            ${sess.sentence_count} sentences, ${sess.dialogue_count} dialogues<br>
+            ${sess.present_chapters}/${sess.chapter_count} chapters active
+          `, event);
+        })
+        .on('mousemove', (event) => {
+          tooltip.style('left', (event.pageX + 12) + 'px').style('top', (event.pageY - 10) + 'px');
+        })
+        .on('mouseout', function() {
+          d3.select(this).attr('opacity', 0.75);
+          hideTooltip();
+        });
+    });
+  });
+}
+
+// ─── C. Silence Analysis ───────────────────────────────────
+function renderSilenceChart(data) {
+  const margin = { top: 20, right: 30, bottom: 60, left: 60 };
+  const width = 860;
+  const height = 280;
+
+  const svg = d3.select('#silence-chart')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .style('max-width', '100%')
+    .append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const stats = data.chapter_stats;
+  const x = d3.scaleBand().domain(stats.map(d => d.chapter)).range([0, width]).padding(0.15);
+  const maxRate = d3.max(stats, d => d.total_sent > 0 ? (d.strickland_dial / d.total_sent) * 100 : 0);
+  const y = d3.scaleLinear().domain([0, Math.max(maxRate, 25)]).range([height, 0]);
+
+  // X axis
+  svg.append('g').attr('transform', `translate(0,${height})`)
+    .call(d3.axisBottom(x).tickValues(stats.filter(d => d.chapter % 5 === 0 || d.chapter === 1 || d.chapter === 58).map(d => d.chapter)))
+    .selectAll('text').attr('font-size', 10);
+
+  svg.append('text').attr('x', width / 2).attr('y', height + 40)
+    .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888').text('Chapter');
+
+  // Y axis
+  svg.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => d + '%'))
+    .selectAll('text').attr('font-size', 10);
+
+  svg.append('text').attr('transform', 'rotate(-90)').attr('y', -45).attr('x', -height / 2)
+    .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888')
+    .text("Strickland's dialogue rate");
+
+  // Bars
+  svg.selectAll('.bar')
+    .data(stats)
+    .join('rect')
+    .attr('x', d => x(d.chapter))
+    .attr('y', d => {
+      const rate = d.total_sent > 0 ? (d.strickland_dial / d.total_sent) * 100 : 0;
+      return y(rate);
+    })
+    .attr('width', x.bandwidth())
+    .attr('height', d => {
+      const rate = d.total_sent > 0 ? (d.strickland_dial / d.total_sent) * 100 : 0;
+      return height - y(rate);
+    })
+    .attr('fill', d => LOCATION_COLORS[d.location] || '#ccc')
+    .attr('opacity', 0.8)
+    .on('mouseover', function(event, d) {
+      d3.select(this).attr('opacity', 1);
+      const rate = d.total_sent > 0 ? ((d.strickland_dial / d.total_sent) * 100).toFixed(1) : '0';
+      showTooltip(`
+        <strong>Ch.${d.chapter}</strong> (${d.location})<br>
+        Strickland speaks: ${d.strickland_dial} / ${d.total_sent} sentences<br>
+        Rate: <strong>${rate}%</strong>
+      `, event);
+    })
+    .on('mousemove', (event) => {
+      tooltip.style('left', (event.pageX + 12) + 'px').style('top', (event.pageY - 10) + 'px');
+    })
+    .on('mouseout', function() {
+      d3.select(this).attr('opacity', 0.8);
+      hideTooltip();
+    });
+
+  // Moving average line
+  const windowSize = 5;
+  const movAvg = stats.map((d, i) => {
+    const start = Math.max(0, i - Math.floor(windowSize / 2));
+    const end = Math.min(stats.length, i + Math.ceil(windowSize / 2));
+    const slice = stats.slice(start, end);
+    const avg = d3.mean(slice, s => s.total_sent > 0 ? (s.strickland_dial / s.total_sent) * 100 : 0);
+    return { chapter: d.chapter, avg };
+  });
+
+  const line = d3.line()
+    .x(d => x(d.chapter) + x.bandwidth() / 2)
+    .y(d => y(d.avg))
+    .curve(d3.curveBasis);
+
+  svg.append('path')
+    .datum(movAvg)
+    .attr('fill', 'none')
+    .attr('stroke', '#e74c3c')
+    .attr('stroke-width', 2)
+    .attr('stroke-dasharray', '6,3')
+    .attr('d', line);
+
+  // Insight
+  d3.select('#silence-section').append('div').attr('class', 'insight')
+    .html('London ~15% &rarr; Paris peak ~22% &rarr; Marseilles ~5% &rarr; Tahiti ~3.5%. As Strickland paints more, he speaks less. The art replaces the words.');
+}
+
+// ─── D. Narrative Density ──────────────────────────────────
+function renderDensityChart(data) {
+  const margin = { top: 20, right: 30, bottom: 60, left: 60 };
+  const width = 860;
+  const height = 280;
+
+  const svg = d3.select('#density-chart')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .style('max-width', '100%')
+    .append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const chapters = data.chapters;
+  const x = d3.scaleBand().domain(chapters.map(d => d.number)).range([0, width]).padding(0.1);
+  const y = d3.scaleLinear().domain([0, d3.max(chapters, d => d.sentence_count) * 1.05]).range([height, 0]);
+
+  // X axis
+  svg.append('g').attr('transform', `translate(0,${height})`)
+    .call(d3.axisBottom(x).tickValues(chapters.filter(d => d.number % 5 === 0 || d.number === 1 || d.number === 58).map(d => d.number)))
+    .selectAll('text').attr('font-size', 10);
+
+  svg.append('text').attr('x', width / 2).attr('y', height + 40)
+    .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888').text('Chapter');
+
+  // Y axis
+  svg.append('g').call(d3.axisLeft(y).ticks(5))
+    .selectAll('text').attr('font-size', 10);
+
+  svg.append('text').attr('transform', 'rotate(-90)').attr('y', -45).attr('x', -height / 2)
+    .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888')
+    .text('Sentences per chapter');
+
+  // Stacked bars: narration + dialogue
+  chapters.forEach(ch => {
+    const narr = ch.sentence_count - ch.dialogue_count;
+    const dial = ch.dialogue_count;
+    const color = LOCATION_COLORS[ch.location] || '#ccc';
+
+    // Narration (bottom)
+    svg.append('rect')
+      .attr('x', x(ch.number))
+      .attr('y', y(narr + dial))
+      .attr('width', x.bandwidth())
+      .attr('height', height - y(narr))
+      .attr('fill', color)
+      .attr('opacity', 0.5);
+
+    // Dialogue (top)
+    svg.append('rect')
+      .attr('x', x(ch.number))
+      .attr('y', y(narr + dial))
+      .attr('width', x.bandwidth())
+      .attr('height', height - y(dial))
+      .attr('fill', color)
+      .attr('opacity', 0.85)
+      .on('mouseover', function(event) {
+        showTooltip(`
+          <strong>Ch.${ch.number}</strong> (${ch.location})<br>
+          ${ch.sentence_count} sentences (${ch.dialogue_count} dialogue)<br>
+          Characters: ${ch.characters.join(', ') || 'none'}
+        `, event);
+      })
+      .on('mousemove', (event) => {
+        tooltip.style('left', (event.pageX + 12) + 'px').style('top', (event.pageY - 10) + 'px');
+      })
+      .on('mouseout', hideTooltip);
+  });
+
+  // Moving average line
+  const windowSize = 5;
+  const movAvg = chapters.map((d, i) => {
+    const start = Math.max(0, i - Math.floor(windowSize / 2));
+    const end = Math.min(chapters.length, i + Math.ceil(windowSize / 2));
+    const avg = d3.mean(chapters.slice(start, end), c => c.sentence_count);
+    return { chapter: d.number, avg };
+  });
+
+  const line = d3.line()
+    .x(d => x(d.chapter) + x.bandwidth() / 2)
+    .y(d => y(d.avg))
+    .curve(d3.curveBasis);
+
+  svg.append('path')
+    .datum(movAvg)
+    .attr('fill', 'none')
+    .attr('stroke', '#e74c3c')
+    .attr('stroke-width', 2)
+    .attr('d', line);
+
+  // Annotate peaks
+  const peaks = [
+    { ch: 12, label: '"I\'ve got to paint"' },
+    { ch: 28, label: 'Stroeve betrayal' },
+    { ch: 55, label: 'The masterpiece' },
+  ];
+  peaks.forEach(p => {
+    const ch = chapters.find(c => c.number === p.ch);
+    if (!ch) return;
+    svg.append('line')
+      .attr('x1', x(p.ch) + x.bandwidth() / 2)
+      .attr('x2', x(p.ch) + x.bandwidth() / 2)
+      .attr('y1', y(ch.sentence_count) - 5)
+      .attr('y2', y(ch.sentence_count) - 25)
+      .attr('stroke', '#e74c3c')
+      .attr('stroke-width', 1);
+    svg.append('text')
+      .attr('x', x(p.ch) + x.bandwidth() / 2)
+      .attr('y', y(ch.sentence_count) - 28)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', 10)
+      .attr('fill', '#e74c3c')
+      .text(p.label);
+  });
+
+  // Insight
+  d3.select('#density-section').append('div').attr('class', 'insight')
+    .html('Ch.12 (205 sent): Strickland declares his calling. Ch.28 (190 sent): Stroeve loses everything. Ch.55 (213 sent): The masterpiece and its destruction. Maugham spends his words where it matters most.');
+}
+
+// ─── E. Vocabulary Overview ──────────────────────────────────
+function renderVocabOverview(data) {
+  const vs = data.vocab_summary;
+  const stats = d3.select('#vocab-stats');
+
+  const cards = [
+    { number: vs.total_words.toLocaleString(), label: 'Total Words' },
+    { number: vs.b2_plus_words.toLocaleString(), label: 'B2+ Words' },
+    { number: vs.total_idioms.toLocaleString(), label: 'Idioms' },
+    { number: Math.round(vs.b2_plus_words / vs.total_words * 100) + '%', label: 'B2+ Ratio' },
+  ];
+  cards.forEach(c => {
+    const card = stats.append('div').attr('class', 'stat-card');
+    card.append('div').attr('class', 'number').text(c.number);
+    card.append('div').attr('class', 'label').text(c.label);
+  });
+
+  // Difficulty distribution bar chart
+  const dist = vs.difficulty_distribution;
+  const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+  const levelColors = { A1: '#27ae60', A2: '#2ecc71', B1: '#3498db', B2: '#e67e22', C1: '#e74c3c', C2: '#8e44ad' };
+  const barData = levels.map(l => ({ level: l, count: dist[l] || 0 }));
+
+  const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+  const width = 500, height = 200;
+
+  const svg = d3.select('#vocab-difficulty-chart')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .style('max-width', '100%')
+    .append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleBand().domain(levels).range([0, width]).padding(0.3);
+  const y = d3.scaleLinear().domain([0, d3.max(barData, d => d.count) * 1.1]).range([height, 0]);
+
+  svg.append('g').attr('transform', `translate(0,${height})`).call(d3.axisBottom(x)).selectAll('text').attr('font-size', 12);
+  svg.append('g').call(d3.axisLeft(y).ticks(5)).selectAll('text').attr('font-size', 10);
+
+  svg.selectAll('.bar').data(barData).join('rect')
+    .attr('x', d => x(d.level)).attr('y', d => y(d.count))
+    .attr('width', x.bandwidth()).attr('height', d => height - y(d.count))
+    .attr('fill', d => levelColors[d.level]).attr('opacity', 0.85)
+    .on('mouseover', function(event, d) {
+      d3.select(this).attr('opacity', 1);
+      showTooltip(`<strong>${d.level}</strong>: ${d.count.toLocaleString()} words (${(d.count / vs.total_words * 100).toFixed(1)}%)`, event);
+    })
+    .on('mousemove', event => tooltip.style('left', (event.pageX+12)+'px').style('top', (event.pageY-10)+'px'))
+    .on('mouseout', function() { d3.select(this).attr('opacity', 0.85); hideTooltip(); });
+
+  // Count labels on bars
+  svg.selectAll('.label').data(barData).join('text')
+    .attr('x', d => x(d.level) + x.bandwidth()/2).attr('y', d => y(d.count) - 5)
+    .attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', '#444')
+    .text(d => d.count.toLocaleString());
+
+  d3.select('#vocab-section').append('div').attr('class', 'insight')
+    .html(`${vs.b2_plus_words} words at B2 or above — these are the words that make literary English challenging. Encountering them repeatedly in context is far more effective than memorizing lists.`);
+}
+
+// ─── F. Vocabulary by Chapter ────────────────────────────────
+function renderVocabByChapter(data) {
+  const chapters = data.chapter_vocab;
+  const margin = { top: 20, right: 30, bottom: 60, left: 60 };
+  const width = 860, height = 280;
+
+  const svg = d3.select('#vocab-chapter-chart')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .style('max-width', '100%')
+    .append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleBand().domain(chapters.map(d => d.chapter)).range([0, width]).padding(0.1);
+  const maxVal = d3.max(chapters, d => (d.B2||0) + (d.C1||0) + (d.C2||0));
+  const y = d3.scaleLinear().domain([0, maxVal * 1.1]).range([height, 0]);
+
+  svg.append('g').attr('transform', `translate(0,${height})`)
+    .call(d3.axisBottom(x).tickValues(chapters.filter(d => d.chapter % 5 === 0 || d.chapter === 1).map(d => d.chapter)))
+    .selectAll('text').attr('font-size', 10);
+  svg.append('text').attr('x', width/2).attr('y', height+40).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888').text('Chapter');
+
+  svg.append('g').call(d3.axisLeft(y).ticks(5)).selectAll('text').attr('font-size', 10);
+  svg.append('text').attr('transform', 'rotate(-90)').attr('y', -45).attr('x', -height/2)
+    .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888').text('B2+ unique words');
+
+  const levelColors = { B2: '#e67e22', C1: '#e74c3c', C2: '#8e44ad' };
+  const stack = ['B2', 'C1', 'C2'];
+
+  chapters.forEach(ch => {
+    let cumY = 0;
+    stack.forEach(level => {
+      const val = ch[level] || 0;
+      svg.append('rect')
+        .attr('x', x(ch.chapter))
+        .attr('y', y(cumY + val))
+        .attr('width', x.bandwidth())
+        .attr('height', height - y(val))
+        .attr('fill', levelColors[level])
+        .attr('opacity', 0.8)
+        .on('mouseover', function(event) {
+          d3.select(this).attr('opacity', 1);
+          showTooltip(`<strong>Ch.${ch.chapter}</strong><br>B2: ${ch.B2||0} / C1: ${ch.C1||0} / C2: ${ch.C2||0}<br>Idioms: ${ch.idiom_count}`, event);
+        })
+        .on('mousemove', event => tooltip.style('left', (event.pageX+12)+'px').style('top', (event.pageY-10)+'px'))
+        .on('mouseout', function() { d3.select(this).attr('opacity', 0.8); hideTooltip(); });
+      cumY += val;
+    });
+  });
+
+  // Idiom line overlay
+  const idiomLine = d3.line()
+    .x(d => x(d.chapter) + x.bandwidth()/2)
+    .y(d => y(d.idiom_count * (maxVal / d3.max(chapters, c => c.idiom_count || 1))))
+    .curve(d3.curveBasis);
+
+  // Legend
+  const legend = svg.append('g').attr('transform', `translate(${width - 180}, 0)`);
+  stack.forEach((level, i) => {
+    legend.append('rect').attr('x', 0).attr('y', i*18).attr('width', 14).attr('height', 14).attr('fill', levelColors[level]).attr('opacity', 0.8);
+    legend.append('text').attr('x', 20).attr('y', i*18+11).attr('font-size', 11).attr('fill', '#444').text(level);
+  });
+
+  d3.select('#vocab-chapter-section').append('div').attr('class', 'insight')
+    .html('Vocabulary difficulty is fairly consistent across chapters, with C1/C2 words concentrated where Maugham explores art, philosophy, and Tahitian culture.');
+}
+
+// ─── G. Top Words ────────────────────────────────────────────
+function renderTopWords(data) {
+  const words = data.vocab_summary.top_vocab.slice(0, 20);
+  const margin = { top: 10, right: 80, bottom: 20, left: 140 };
+  const barH = 22, gap = 4;
+  const width = 700, height = words.length * (barH + gap);
+
+  const levelColors = { B2: '#e67e22', C1: '#e74c3c', C2: '#8e44ad' };
+
+  const svg = d3.select('#top-words-chart')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .style('max-width', '100%')
+    .append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleLinear().domain([0, d3.max(words, d => d.total_occurrences)]).range([0, width]);
+
+  words.forEach((w, i) => {
+    const yPos = i * (barH + gap);
+
+    // Word label
+    svg.append('text').attr('x', -6).attr('y', yPos + barH/2 + 4)
+      .attr('text-anchor', 'end').attr('font-size', 12).attr('fill', '#444')
+      .text(w.word);
+
+    // Bar
+    svg.append('rect')
+      .attr('x', 0).attr('y', yPos)
+      .attr('width', x(w.total_occurrences)).attr('height', barH)
+      .attr('rx', 2)
+      .attr('fill', levelColors[w.difficulty] || '#999')
+      .attr('opacity', 0.8)
+      .on('mouseover', function(event) {
+        d3.select(this).attr('opacity', 1);
+        showTooltip(`<strong>${w.word}</strong> (${w.difficulty})<br>${w.total_occurrences} occurrences in ${w.chapter_count} chapters<br>${w.definition}`, event);
+      })
+      .on('mousemove', event => tooltip.style('left', (event.pageX+12)+'px').style('top', (event.pageY-10)+'px'))
+      .on('mouseout', function() { d3.select(this).attr('opacity', 0.8); hideTooltip(); });
+
+    // Count + difficulty badge
+    svg.append('text').attr('x', x(w.total_occurrences) + 6).attr('y', yPos + barH/2 + 4)
+      .attr('font-size', 11).attr('fill', '#888')
+      .text(`${w.total_occurrences} (${w.difficulty})`);
+  });
+}
+
+// ─── H. Top Idioms ───────────────────────────────────────────
+function renderTopIdioms(data) {
+  const idioms = data.vocab_summary.top_idioms.slice(0, 20);
+  const margin = { top: 10, right: 80, bottom: 20, left: 160 };
+  const barH = 22, gap = 4;
+  const width = 680, height = idioms.length * (barH + gap);
+
+  const svg = d3.select('#top-idioms-chart')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .style('max-width', '100%')
+    .append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleLinear().domain([0, d3.max(idioms, d => d.total_occurrences)]).range([0, width]);
+
+  idioms.forEach((idm, i) => {
+    const yPos = i * (barH + gap);
+    const label = idm.idiom.replace(/_/g, ' ');
+
+    // Idiom label
+    svg.append('text').attr('x', -6).attr('y', yPos + barH/2 + 4)
+      .attr('text-anchor', 'end').attr('font-size', 12).attr('fill', '#444')
+      .text(label);
+
+    // Bar
+    svg.append('rect')
+      .attr('x', 0).attr('y', yPos)
+      .attr('width', x(idm.total_occurrences)).attr('height', barH)
+      .attr('rx', 2)
+      .attr('fill', '#d4a574')
+      .attr('opacity', 0.8)
+      .on('mouseover', function(event) {
+        d3.select(this).attr('opacity', 1);
+        showTooltip(`<strong>${label}</strong><br>${idm.meaning}<br>${idm.total_occurrences} occurrences in ${idm.chapter_count} chapters`, event);
+      })
+      .on('mousemove', event => tooltip.style('left', (event.pageX+12)+'px').style('top', (event.pageY-10)+'px'))
+      .on('mouseout', function() { d3.select(this).attr('opacity', 0.8); hideTooltip(); });
+
+    // Count
+    svg.append('text').attr('x', x(idm.total_occurrences) + 6).attr('y', yPos + barH/2 + 4)
+      .attr('font-size', 11).attr('fill', '#888')
+      .text(`${idm.total_occurrences} (${idm.chapter_count} ch)`);
+  });
+
+  d3.select('#top-idioms-section').append('div').attr('class', 'insight')
+    .html('Idioms like "at last", "at any rate", and "in spite of" repeat across dozens of chapters. By the end of the novel, these phrases feel natural — learned through story, not study.');
+}
+</script>
+</body>
+</html>
