@@ -153,6 +153,27 @@ svg text { font-family: 'Georgia', serif; }
 .stat-card .number { font-size: 28px; font-weight: bold; }
 .stat-card .label { font-size: 11px; color: #888; margin-top: 4px; }
 
+/* Location legend */
+.location-legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #666;
+}
+.location-legend .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.location-legend .legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
 /* Insight callout */
 .insight {
   background: #f8f6f0;
@@ -174,10 +195,19 @@ svg text { font-family: 'Georgia', serif; }
 
 <div class="container">
 
+  <!-- Location Legend -->
+  <div class="location-legend" id="location-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#7f8c8d"></div>London</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3498db"></div>Paris</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>Marseilles</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>Tahiti</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div>Amsterdam</div>
+  </div>
+
   <!-- Journey Flow -->
   <div class="section" id="journey-section">
     <h2>A. JOURNEY FLOW</h2>
-    <div class="desc">Select a character to see their journey through the novel.</div>
+    <div class="desc">Select a character to see their journey through the novel. Colors = locations.</div>
     <div class="char-selector" id="char-selector"></div>
     <div class="journey-flow" id="journey-flow"></div>
   </div>
