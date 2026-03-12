@@ -176,15 +176,21 @@ svg text { font-family: 'Georgia', serif; }
 
 /* Download section */
 .downloads {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  display: flex;
   gap: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
 }
+.downloads::-webkit-scrollbar { height: 4px; }
+.downloads::-webkit-scrollbar-thumb { background: #d0ccc4; border-radius: 2px; }
 .download-card {
   border: 1px solid #e0dcd4;
   border-radius: 4px;
   padding: 14px;
   background: #faf8f5;
+  min-width: 150px;
+  flex-shrink: 0;
   text-decoration: none;
   color: inherit;
   transition: border-color 0.2s, box-shadow 0.2s;
