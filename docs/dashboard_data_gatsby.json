@@ -1,0 +1,1317 @@
+{
+  "sessions": [
+    {
+      "character_id": "daisy_buchanan",
+      "character_name": "Daisy Buchanan",
+      "location": "West Egg",
+      "chapter_start": 1,
+      "chapter_end": 1,
+      "sentence_count": 29,
+      "dialogue_count": 0,
+      "co_characters": [
+        "jay_gatsby",
+        "jordan_baker",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "daisy_buchanan",
+      "character_name": "Daisy Buchanan",
+      "location": "New York",
+      "chapter_start": 2,
+      "chapter_end": 2,
+      "sentence_count": 4,
+      "dialogue_count": 0,
+      "co_characters": [
+        "george_wilson",
+        "jay_gatsby",
+        "myrtle_wilson",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "daisy_buchanan",
+      "character_name": "Daisy Buchanan",
+      "location": "West Egg",
+      "chapter_start": 3,
+      "chapter_end": 3,
+      "sentence_count": 1,
+      "dialogue_count": 0,
+      "co_characters": [
+        "jay_gatsby",
+        "jordan_baker",
+        "nick_carraway"
+      ]
+    },
+    {
+      "character_id": "daisy_buchanan",
+      "character_name": "Daisy Buchanan",
+      "location": "New York",
+      "chapter_start": 4,
+      "chapter_end": 4,
+      "sentence_count": 15,
+      "dialogue_count": 0,
+      "co_characters": [
+        "jay_gatsby",
+        "jordan_baker",
+        "myrtle_wilson",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "daisy_buchanan",
+      "character_name": "Daisy Buchanan",
+      "location": "West Egg",
+      "chapter_start": 5,
+      "chapter_end": 6,
+      "sentence_count": 46,
+      "dialogue_count": 0,
+      "co_characters": [
+        "jay_gatsby",
+        "jordan_baker",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "daisy_buchanan",
+      "character_name": "Daisy Buchanan",
+      "location": "New York",
+      "chapter_start": 7,
+      "chapter_end": 7,
+      "sentence_count": 61,
+      "dialogue_count": 0,
+      "co_characters": [
+        "george_wilson",
+        "jay_gatsby",
+        "jordan_baker",
+        "myrtle_wilson",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "daisy_buchanan",
+      "character_name": "Daisy Buchanan",
+      "location": "West Egg",
+      "chapter_start": 8,
+      "chapter_end": 9,
+      "sentence_count": 28,
+      "dialogue_count": 0,
+      "co_characters": [
+        "george_wilson",
+        "jay_gatsby",
+        "jordan_baker",
+        "myrtle_wilson",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "george_wilson",
+      "character_name": "George Wilson",
+      "location": "New York",
+      "chapter_start": 2,
+      "chapter_end": 2,
+      "sentence_count": 8,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "myrtle_wilson",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "george_wilson",
+      "character_name": "George Wilson",
+      "location": "New York",
+      "chapter_start": 7,
+      "chapter_end": 7,
+      "sentence_count": 22,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "jordan_baker",
+        "myrtle_wilson",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "george_wilson",
+      "character_name": "George Wilson",
+      "location": "West Egg",
+      "chapter_start": 8,
+      "chapter_end": 9,
+      "sentence_count": 20,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "jordan_baker",
+        "myrtle_wilson",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "jay_gatsby",
+      "character_name": "Jay Gatsby",
+      "location": "West Egg",
+      "chapter_start": 1,
+      "chapter_end": 1,
+      "sentence_count": 10,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jordan_baker",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "jay_gatsby",
+      "character_name": "Jay Gatsby",
+      "location": "New York",
+      "chapter_start": 2,
+      "chapter_end": 2,
+      "sentence_count": 1,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "george_wilson",
+        "myrtle_wilson",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "jay_gatsby",
+      "character_name": "Jay Gatsby",
+      "location": "West Egg",
+      "chapter_start": 3,
+      "chapter_end": 3,
+      "sentence_count": 25,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jordan_baker",
+        "nick_carraway"
+      ]
+    },
+    {
+      "character_id": "jay_gatsby",
+      "character_name": "Jay Gatsby",
+      "location": "New York",
+      "chapter_start": 4,
+      "chapter_end": 4,
+      "sentence_count": 38,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jordan_baker",
+        "myrtle_wilson",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "jay_gatsby",
+      "character_name": "Jay Gatsby",
+      "location": "West Egg",
+      "chapter_start": 5,
+      "chapter_end": 6,
+      "sentence_count": 75,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jordan_baker",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "jay_gatsby",
+      "character_name": "Jay Gatsby",
+      "location": "New York",
+      "chapter_start": 7,
+      "chapter_end": 7,
+      "sentence_count": 63,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "george_wilson",
+        "jordan_baker",
+        "myrtle_wilson",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "jay_gatsby",
+      "character_name": "Jay Gatsby",
+      "location": "West Egg",
+      "chapter_start": 8,
+      "chapter_end": 9,
+      "sentence_count": 47,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "george_wilson",
+        "jordan_baker",
+        "myrtle_wilson",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "jordan_baker",
+      "character_name": "Jordan Baker",
+      "location": "West Egg",
+      "chapter_start": 1,
+      "chapter_end": 1,
+      "sentence_count": 21,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "jordan_baker",
+      "character_name": "Jordan Baker",
+      "location": "West Egg",
+      "chapter_start": 3,
+      "chapter_end": 3,
+      "sentence_count": 22,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "nick_carraway"
+      ]
+    },
+    {
+      "character_id": "jordan_baker",
+      "character_name": "Jordan Baker",
+      "location": "New York",
+      "chapter_start": 4,
+      "chapter_end": 4,
+      "sentence_count": 14,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "myrtle_wilson",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "jordan_baker",
+      "character_name": "Jordan Baker",
+      "location": "West Egg",
+      "chapter_start": 5,
+      "chapter_end": 6,
+      "sentence_count": 2,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "jordan_baker",
+      "character_name": "Jordan Baker",
+      "location": "New York",
+      "chapter_start": 7,
+      "chapter_end": 7,
+      "sentence_count": 35,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "george_wilson",
+        "jay_gatsby",
+        "myrtle_wilson",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "jordan_baker",
+      "character_name": "Jordan Baker",
+      "location": "West Egg",
+      "chapter_start": 8,
+      "chapter_end": 9,
+      "sentence_count": 4,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "george_wilson",
+        "jay_gatsby",
+        "myrtle_wilson",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "myrtle_wilson",
+      "character_name": "Myrtle Wilson",
+      "location": "New York",
+      "chapter_start": 2,
+      "chapter_end": 2,
+      "sentence_count": 28,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "george_wilson",
+        "jay_gatsby",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "myrtle_wilson",
+      "character_name": "Myrtle Wilson",
+      "location": "New York",
+      "chapter_start": 4,
+      "chapter_end": 4,
+      "sentence_count": 1,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "jordan_baker",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "myrtle_wilson",
+      "character_name": "Myrtle Wilson",
+      "location": "New York",
+      "chapter_start": 7,
+      "chapter_end": 7,
+      "sentence_count": 6,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "george_wilson",
+        "jay_gatsby",
+        "jordan_baker",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "myrtle_wilson",
+      "character_name": "Myrtle Wilson",
+      "location": "West Egg",
+      "chapter_start": 8,
+      "chapter_end": 9,
+      "sentence_count": 4,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "george_wilson",
+        "jay_gatsby",
+        "jordan_baker",
+        "nick_carraway",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "nick_carraway",
+      "character_name": "Nick Carraway",
+      "location": "West Egg",
+      "chapter_start": 1,
+      "chapter_end": 1,
+      "sentence_count": 10,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "jordan_baker",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "nick_carraway",
+      "character_name": "Nick Carraway",
+      "location": "West Egg",
+      "chapter_start": 3,
+      "chapter_end": 3,
+      "sentence_count": 1,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "jordan_baker"
+      ]
+    },
+    {
+      "character_id": "nick_carraway",
+      "character_name": "Nick Carraway",
+      "location": "New York",
+      "chapter_start": 4,
+      "chapter_end": 4,
+      "sentence_count": 1,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "jordan_baker",
+        "myrtle_wilson",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "nick_carraway",
+      "character_name": "Nick Carraway",
+      "location": "West Egg",
+      "chapter_start": 6,
+      "chapter_end": 6,
+      "sentence_count": 4,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "jordan_baker",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "nick_carraway",
+      "character_name": "Nick Carraway",
+      "location": "New York",
+      "chapter_start": 7,
+      "chapter_end": 7,
+      "sentence_count": 8,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "george_wilson",
+        "jay_gatsby",
+        "jordan_baker",
+        "myrtle_wilson",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "nick_carraway",
+      "character_name": "Nick Carraway",
+      "location": "West Egg",
+      "chapter_start": 9,
+      "chapter_end": 9,
+      "sentence_count": 7,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "george_wilson",
+        "jay_gatsby",
+        "jordan_baker",
+        "myrtle_wilson",
+        "tom_buchanan"
+      ]
+    },
+    {
+      "character_id": "tom_buchanan",
+      "character_name": "Tom Buchanan",
+      "location": "West Egg",
+      "chapter_start": 1,
+      "chapter_end": 1,
+      "sentence_count": 31,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "jordan_baker",
+        "nick_carraway"
+      ]
+    },
+    {
+      "character_id": "tom_buchanan",
+      "character_name": "Tom Buchanan",
+      "location": "New York",
+      "chapter_start": 2,
+      "chapter_end": 2,
+      "sentence_count": 30,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "george_wilson",
+        "jay_gatsby",
+        "myrtle_wilson"
+      ]
+    },
+    {
+      "character_id": "tom_buchanan",
+      "character_name": "Tom Buchanan",
+      "location": "New York",
+      "chapter_start": 4,
+      "chapter_end": 4,
+      "sentence_count": 11,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "jordan_baker",
+        "myrtle_wilson",
+        "nick_carraway"
+      ]
+    },
+    {
+      "character_id": "tom_buchanan",
+      "character_name": "Tom Buchanan",
+      "location": "West Egg",
+      "chapter_start": 5,
+      "chapter_end": 6,
+      "sentence_count": 26,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "jay_gatsby",
+        "jordan_baker",
+        "nick_carraway"
+      ]
+    },
+    {
+      "character_id": "tom_buchanan",
+      "character_name": "Tom Buchanan",
+      "location": "New York",
+      "chapter_start": 7,
+      "chapter_end": 7,
+      "sentence_count": 85,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "george_wilson",
+        "jay_gatsby",
+        "jordan_baker",
+        "myrtle_wilson",
+        "nick_carraway"
+      ]
+    },
+    {
+      "character_id": "tom_buchanan",
+      "character_name": "Tom Buchanan",
+      "location": "West Egg",
+      "chapter_start": 8,
+      "chapter_end": 9,
+      "sentence_count": 8,
+      "dialogue_count": 0,
+      "co_characters": [
+        "daisy_buchanan",
+        "george_wilson",
+        "jay_gatsby",
+        "jordan_baker",
+        "myrtle_wilson",
+        "nick_carraway"
+      ]
+    }
+  ],
+  "chapters": [
+    {
+      "number": 1,
+      "location": "West Egg",
+      "sentence_count": 349,
+      "dialogue_count": 0,
+      "characters": [
+        "Tom",
+        "Tom Buchanan",
+        "Jordan Baker",
+        "Gatsby",
+        "Jordan",
+        "Carraway",
+        "Miss Baker",
+        "Nick",
+        "Daisy",
+        "Mr. Gatsby"
+      ]
+    },
+    {
+      "number": 2,
+      "location": "New York",
+      "sentence_count": 293,
+      "dialogue_count": 0,
+      "characters": [
+        "Tom Buchanan",
+        "Tom",
+        "Myrtle Wilson",
+        "Mrs. Wilson",
+        "Wilson",
+        "Gatsby",
+        "George Wilson",
+        "Myrtle",
+        "Daisy"
+      ]
+    },
+    {
+      "number": 3,
+      "location": "West Egg",
+      "sentence_count": 370,
+      "dialogue_count": 0,
+      "characters": [
+        "Jordan Baker",
+        "Gatsby",
+        "Jay Gatsby",
+        "Jordan",
+        "Miss Baker",
+        "Nick",
+        "Daisy",
+        "Mr. Gatsby"
+      ]
+    },
+    {
+      "number": 4,
+      "location": "New York",
+      "sentence_count": 357,
+      "dialogue_count": 0,
+      "characters": [
+        "Tom Buchanan",
+        "Tom",
+        "Jordan Baker",
+        "Mrs. Wilson",
+        "Gatsby",
+        "Jay Gatsby",
+        "Jordan",
+        "Mr. Buchanan",
+        "Carraway",
+        "Miss Baker",
+        "Daisy",
+        "Mr. Gatsby"
+      ]
+    },
+    {
+      "number": 5,
+      "location": "West Egg",
+      "sentence_count": 304,
+      "dialogue_count": 0,
+      "characters": [
+        "Tom",
+        "Gatsby",
+        "Miss Baker",
+        "Daisy",
+        "Mr. Gatsby"
+      ]
+    },
+    {
+      "number": 6,
+      "location": "West Egg",
+      "sentence_count": 277,
+      "dialogue_count": 0,
+      "characters": [
+        "Tom Buchanan",
+        "Tom",
+        "Mrs. Buchanan",
+        "Gatsby",
+        "Jay Gatsby",
+        "Jordan",
+        "Mr. Buchanan",
+        "Nick",
+        "James Gatz",
+        "Daisy",
+        "Mr. Gatsby"
+      ]
+    },
+    {
+      "number": 7,
+      "location": "New York",
+      "sentence_count": 763,
+      "dialogue_count": 0,
+      "characters": [
+        "Tom",
+        "Tom Buchanan",
+        "Myrtle Wilson",
+        "Jordan Baker",
+        "Mrs. Wilson",
+        "Myrtle",
+        "Wilson",
+        "Gatsby",
+        "Jordan",
+        "George Wilson",
+        "Carraway",
+        "Miss Baker",
+        "Nick",
+        "Daisy",
+        "Mr. Gatsby"
+      ]
+    },
+    {
+      "number": 8,
+      "location": "West Egg",
+      "sentence_count": 269,
+      "dialogue_count": 0,
+      "characters": [
+        "Tom",
+        "Tom Buchanan",
+        "Myrtle Wilson",
+        "Jordan Baker",
+        "Mrs. Wilson",
+        "Wilson",
+        "Gatsby",
+        "Jay Gatsby",
+        "George Wilson",
+        "Myrtle",
+        "Daisy",
+        "Mr. Gatsby"
+      ]
+    },
+    {
+      "number": 9,
+      "location": "West Egg",
+      "sentence_count": 359,
+      "dialogue_count": 0,
+      "characters": [
+        "Tom",
+        "Tom Buchanan",
+        "Jordan Baker",
+        "Myrtle",
+        "Wilson",
+        "Gatsby",
+        "Jordan",
+        "Carraway",
+        "Nick",
+        "Daisy",
+        "Mr. Gatsby"
+      ]
+    }
+  ],
+  "characters": [
+    {
+      "id": "jay_gatsby",
+      "name": "Jay Gatsby"
+    },
+    {
+      "id": "nick_carraway",
+      "name": "Nick Carraway"
+    },
+    {
+      "id": "daisy_buchanan",
+      "name": "Daisy Buchanan"
+    },
+    {
+      "id": "tom_buchanan",
+      "name": "Tom Buchanan"
+    },
+    {
+      "id": "jordan_baker",
+      "name": "Jordan Baker"
+    },
+    {
+      "id": "myrtle_wilson",
+      "name": "Myrtle Wilson"
+    },
+    {
+      "id": "george_wilson",
+      "name": "George Wilson"
+    },
+    {
+      "id": "meyer_wolfsheim",
+      "name": "Meyer Wolfsheim"
+    }
+  ],
+  "chapter_stats": [
+    {
+      "chapter": 1,
+      "total_sentences": 349,
+      "dialogue_sentences": 0,
+      "narration_sentences": 349,
+      "location": "West Egg",
+      "total_sent": 349,
+      "sentence_count": 349
+    },
+    {
+      "chapter": 2,
+      "total_sentences": 293,
+      "dialogue_sentences": 0,
+      "narration_sentences": 293,
+      "location": "New York",
+      "total_sent": 293,
+      "sentence_count": 293
+    },
+    {
+      "chapter": 3,
+      "total_sentences": 370,
+      "dialogue_sentences": 0,
+      "narration_sentences": 370,
+      "location": "West Egg",
+      "total_sent": 370,
+      "sentence_count": 370
+    },
+    {
+      "chapter": 4,
+      "total_sentences": 357,
+      "dialogue_sentences": 0,
+      "narration_sentences": 357,
+      "location": "New York",
+      "total_sent": 357,
+      "sentence_count": 357
+    },
+    {
+      "chapter": 5,
+      "total_sentences": 304,
+      "dialogue_sentences": 0,
+      "narration_sentences": 304,
+      "location": "West Egg",
+      "total_sent": 304,
+      "sentence_count": 304
+    },
+    {
+      "chapter": 6,
+      "total_sentences": 277,
+      "dialogue_sentences": 0,
+      "narration_sentences": 277,
+      "location": "West Egg",
+      "total_sent": 277,
+      "sentence_count": 277
+    },
+    {
+      "chapter": 7,
+      "total_sentences": 763,
+      "dialogue_sentences": 0,
+      "narration_sentences": 763,
+      "location": "New York",
+      "total_sent": 763,
+      "sentence_count": 763
+    },
+    {
+      "chapter": 8,
+      "total_sentences": 269,
+      "dialogue_sentences": 0,
+      "narration_sentences": 269,
+      "location": "West Egg",
+      "total_sent": 269,
+      "sentence_count": 269
+    },
+    {
+      "chapter": 9,
+      "total_sentences": 359,
+      "dialogue_sentences": 0,
+      "narration_sentences": 359,
+      "location": "West Egg",
+      "total_sent": 359,
+      "sentence_count": 359
+    }
+  ],
+  "vocab_summary": {
+    "total_words": 3934,
+    "b2_plus_words": 2870,
+    "total_idioms": 245,
+    "difficulty_distribution": {
+      "A1": 0,
+      "A2": 0,
+      "B1": 1064,
+      "B2": 1463,
+      "C1": 1017,
+      "C2": 390
+    },
+    "top_vocab": [
+      {
+        "word": "lawn",
+        "total_occurrences": 27,
+        "chapter_count": 7,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "inquire",
+        "total_occurrences": 27,
+        "chapter_count": 9,
+        "difficulty": "C1",
+        "definition": ""
+      },
+      {
+        "word": "shake",
+        "total_occurrences": 27,
+        "chapter_count": 9,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "garage",
+        "total_occurrences": 27,
+        "chapter_count": 5,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "glance",
+        "total_occurrences": 25,
+        "chapter_count": 9,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "marry",
+        "total_occurrences": 23,
+        "chapter_count": 7,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "stare",
+        "total_occurrences": 23,
+        "chapter_count": 7,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "telephone",
+        "total_occurrences": 22,
+        "chapter_count": 6,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "lean",
+        "total_occurrences": 22,
+        "chapter_count": 7,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "nod",
+        "total_occurrences": 22,
+        "chapter_count": 8,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "remark",
+        "total_occurrences": 22,
+        "chapter_count": 8,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "butler",
+        "total_occurrences": 20,
+        "chapter_count": 5,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "arrive",
+        "total_occurrences": 17,
+        "chapter_count": 8,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "dozen",
+        "total_occurrences": 17,
+        "chapter_count": 7,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "coat",
+        "total_occurrences": 17,
+        "chapter_count": 9,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "grey",
+        "total_occurrences": 17,
+        "chapter_count": 8,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "porch",
+        "total_occurrences": 16,
+        "chapter_count": 5,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "murmur",
+        "total_occurrences": 16,
+        "chapter_count": 6,
+        "difficulty": "C1",
+        "definition": ""
+      },
+      {
+        "word": "insist",
+        "total_occurrences": 16,
+        "chapter_count": 6,
+        "difficulty": "B2",
+        "definition": ""
+      },
+      {
+        "word": "whisper",
+        "total_occurrences": 16,
+        "chapter_count": 8,
+        "difficulty": "B2",
+        "definition": ""
+      }
+    ],
+    "top_idioms": [
+      {
+        "idiom": "do_not_want",
+        "total_occurrences": 14,
+        "chapter_count": 7,
+        "meaning": "Used to indicate that the speaker does not like something they have seen or heard."
+      },
+      {
+        "idiom": "for_a_while",
+        "total_occurrences": 13,
+        "chapter_count": 7,
+        "meaning": "Ellipsis of please wait for a while."
+      },
+      {
+        "idiom": "up_and_down",
+        "total_occurrences": 9,
+        "chapter_count": 5,
+        "meaning": "upward and downward, alternately."
+      },
+      {
+        "idiom": "in_front_of",
+        "total_occurrences": 8,
+        "chapter_count": 6,
+        "meaning": "At or near the front part of (something)."
+      },
+      {
+        "idiom": "the_fact_that",
+        "total_occurrences": 7,
+        "chapter_count": 4,
+        "meaning": "Used to present an antecedent to a claim."
+      },
+      {
+        "idiom": "all_the_time",
+        "total_occurrences": 7,
+        "chapter_count": 5,
+        "meaning": "Always; constantly; for the complete duration."
+      },
+      {
+        "idiom": "in_the_room",
+        "total_occurrences": 6,
+        "chapter_count": 4,
+        "meaning": "Being a party to confidential negotiations."
+      },
+      {
+        "idiom": "on_the_table",
+        "total_occurrences": 6,
+        "chapter_count": 3,
+        "meaning": "Up for formal discussion; tabled."
+      },
+      {
+        "idiom": "in_the_air",
+        "total_occurrences": 6,
+        "chapter_count": 4,
+        "meaning": "In the surrounding ambience."
+      },
+      {
+        "idiom": "go_to_town",
+        "total_occurrences": 6,
+        "chapter_count": 1,
+        "meaning": "To proceed enthusiastically, vigorously, or expertly."
+      },
+      {
+        "idiom": "go_to_bed",
+        "total_occurrences": 5,
+        "chapter_count": 3,
+        "meaning": "To lie down to sleep, put oneself in one's bed."
+      },
+      {
+        "idiom": "begging_your_pardon",
+        "total_occurrences": 5,
+        "chapter_count": 3,
+        "meaning": "Alternative form of I beg your pardon."
+      },
+      {
+        "idiom": "open_the_door",
+        "total_occurrences": 5,
+        "chapter_count": 3,
+        "meaning": "Used other than figuratively or idiomatically: see open, door."
+      },
+      {
+        "idiom": "of_the_world",
+        "total_occurrences": 4,
+        "chapter_count": 4,
+        "meaning": "Used following one or more plurals of proper nouns to indicate a general category relating to those mentioned."
+      },
+      {
+        "idiom": "in_a_way",
+        "total_occurrences": 4,
+        "chapter_count": 4,
+        "meaning": "To a certain degree; to an extent; in a certain sense."
+      },
+      {
+        "idiom": "in_the_world",
+        "total_occurrences": 4,
+        "chapter_count": 3,
+        "meaning": "An intensifier, often used after an interrogative word."
+      },
+      {
+        "idiom": "on_the_edge_of",
+        "total_occurrences": 4,
+        "chapter_count": 4,
+        "meaning": "Very near, imminently approaching; ready to, about to."
+      },
+      {
+        "idiom": "down_the_road",
+        "total_occurrences": 4,
+        "chapter_count": 2,
+        "meaning": "Further along, in terms of time or progress."
+      },
+      {
+        "idiom": "on_the_couch",
+        "total_occurrences": 4,
+        "chapter_count": 3,
+        "meaning": "Undergoing psychological therapy or analysis."
+      },
+      {
+        "idiom": "over_and_over",
+        "total_occurrences": 4,
+        "chapter_count": 3,
+        "meaning": "Repeatedly; again and again; many times."
+      }
+    ]
+  },
+  "chapter_vocab": [
+    {
+      "chapter": 1,
+      "total_vocab": 1102,
+      "total_idioms": 1,
+      "by_difficulty": {
+        "C1": 177,
+        "B2": 398,
+        "B1": 465,
+        "C2": 62
+      },
+      "B2": 398,
+      "C1": 177,
+      "C2": 62,
+      "idiom_count": 37
+    },
+    {
+      "chapter": 2,
+      "total_vocab": 783,
+      "total_idioms": 1,
+      "by_difficulty": {
+        "B2": 264,
+        "B1": 330,
+        "C1": 141,
+        "C2": 48
+      },
+      "B2": 264,
+      "C1": 141,
+      "C2": 48,
+      "idiom_count": 38
+    },
+    {
+      "chapter": 3,
+      "total_vocab": 1115,
+      "total_idioms": 1,
+      "by_difficulty": {
+        "B2": 381,
+        "C2": 64,
+        "C1": 205,
+        "B1": 465
+      },
+      "B2": 381,
+      "C1": 205,
+      "C2": 64,
+      "idiom_count": 47
+    },
+    {
+      "chapter": 4,
+      "total_vocab": 901,
+      "total_idioms": 1,
+      "by_difficulty": {
+        "B2": 308,
+        "B1": 399,
+        "C1": 150,
+        "C2": 44
+      },
+      "B2": 308,
+      "C1": 150,
+      "C2": 44,
+      "idiom_count": 32
+    },
+    {
+      "chapter": 5,
+      "total_vocab": 819,
+      "total_idioms": 1,
+      "by_difficulty": {
+        "B2": 273,
+        "B1": 353,
+        "C1": 154,
+        "C2": 39
+      },
+      "B2": 273,
+      "C1": 154,
+      "C2": 39,
+      "idiom_count": 38
+    },
+    {
+      "chapter": 6,
+      "total_vocab": 797,
+      "total_idioms": 1,
+      "by_difficulty": {
+        "B2": 250,
+        "C2": 45,
+        "C1": 129,
+        "B1": 373
+      },
+      "B2": 250,
+      "C1": 129,
+      "C2": 45,
+      "idiom_count": 29
+    },
+    {
+      "chapter": 7,
+      "total_vocab": 1195,
+      "total_idioms": 1,
+      "by_difficulty": {
+        "B2": 411,
+        "C1": 219,
+        "C2": 68,
+        "B1": 497
+      },
+      "B2": 411,
+      "C1": 219,
+      "C2": 68,
+      "idiom_count": 71
+    },
+    {
+      "chapter": 8,
+      "total_vocab": 755,
+      "total_idioms": 1,
+      "by_difficulty": {
+        "B2": 231,
+        "C1": 118,
+        "B1": 371,
+        "C2": 35
+      },
+      "B2": 231,
+      "C1": 118,
+      "C2": 35,
+      "idiom_count": 37
+    },
+    {
+      "chapter": 9,
+      "total_vocab": 844,
+      "total_idioms": 1,
+      "by_difficulty": {
+        "B2": 264,
+        "C1": 129,
+        "B1": 411,
+        "C2": 40
+      },
+      "B2": 264,
+      "C1": 129,
+      "C2": 40,
+      "idiom_count": 48
+    }
+  ]
+}

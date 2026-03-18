@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marginalia — Character Session Analysis</title>
+<title>Marginalia — The Great Gatsby</title>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -112,12 +112,11 @@ body {
   padding-top: 8px;
 }
 
-/* Location colors */
-.loc-London { border-left: 4px solid #7f8c8d; }
-.loc-Paris { border-left: 4px solid #3498db; }
-.loc-Marseilles { border-left: 4px solid #e67e22; }
-.loc-Tahiti { border-left: 4px solid #27ae60; }
-.loc-Amsterdam { border-left: 4px solid #9b59b6; }
+/* Location colors — Gatsby palette (Jazz Age, green light, golden) */
+.loc-West-Egg { border-left: 4px solid #27ae60; }
+.loc-East-Egg { border-left: 4px solid #2980b9; }
+.loc-New-York { border-left: 4px solid #e67e22; }
+.loc-Valley-of-Ashes { border-left: 4px solid #7f8c8d; }
 
 /* Timeline */
 .timeline-container { overflow-x: auto; }
@@ -200,26 +199,10 @@ svg text { font-family: 'Georgia', serif; }
   border-color: #888;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
-.download-card .file-icon {
-  font-size: 18px;
-  margin-bottom: 6px;
-}
-.download-card .file-title {
-  font-size: 12px;
-  font-weight: bold;
-  color: #2c2c2c;
-  margin-bottom: 3px;
-}
-.download-card .file-desc {
-  font-size: 11px;
-  color: #888;
-  line-height: 1.4;
-}
-.download-card .file-size {
-  font-size: 10px;
-  color: #aaa;
-  margin-top: 6px;
-}
+.download-card .file-icon { font-size: 18px; margin-bottom: 6px; }
+.download-card .file-title { font-size: 12px; font-weight: bold; color: #2c2c2c; margin-bottom: 3px; }
+.download-card .file-desc { font-size: 11px; color: #888; line-height: 1.4; }
+.download-card .file-size { font-size: 10px; color: #aaa; margin-top: 6px; }
 
 /* Insight callout */
 .insight {
@@ -237,20 +220,18 @@ svg text { font-family: 'Georgia', serif; }
 
 <div class="header">
   <h1>MARGINALIA</h1>
-  <div class="subtitle">The Moon and Sixpence — Character Session Analysis</div>
-  <img src="strickland.png" alt="Charles Strickland" style="width: 120px; height: auto; opacity: 0.5; margin-top: 16px; border-radius: 4px;">
-  <div style="margin-top: 12px;"><a href="gatsby.html" style="color: #888; font-size: 13px; text-decoration: none; border-bottom: 1px dotted #ccc;">The Great Gatsby &rarr;</a></div>
+  <div class="subtitle">The Great Gatsby — Character Session Analysis</div>
+  <div style="margin-top: 12px;"><a href="index.html" style="color: #888; font-size: 13px; text-decoration: none; border-bottom: 1px dotted #ccc;">&larr; The Moon and Sixpence</a></div>
 </div>
 
 <div class="container">
 
   <!-- Location Legend -->
   <div class="location-legend" id="location-legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#7f8c8d"></div>London</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#3498db"></div>Paris</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>Marseilles</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>Tahiti</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div>Amsterdam</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>West Egg</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#2980b9"></div>East Egg</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>New York</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#7f8c8d"></div>Valley of Ashes</div>
   </div>
 
   <!-- Journey Flow -->
@@ -264,28 +245,28 @@ svg text { font-family: 'Georgia', serif; }
   <!-- Character Timeline -->
   <div class="section" id="timeline-section">
     <h2>B. CHARACTER TIMELINE</h2>
-    <div class="desc">All characters across 58 chapters. Color = location.</div>
+    <div class="desc">All characters across 9 chapters. Color = location.</div>
     <div class="timeline-container" id="timeline-container"></div>
   </div>
 
-  <!-- Silence Analysis -->
+  <!-- Gatsby's Dialogue Rate -->
   <div class="section" id="silence-section">
-    <h2>C. SILENCE ANALYSIS</h2>
-    <div class="desc">Strickland's dialogue rate per chapter. Bar height = % of sentences where Strickland speaks. Red dashed line = 5-chapter moving average. Color = location.</div>
+    <h2>C. GATSBY'S PRESENCE</h2>
+    <div class="desc">Gatsby's mention rate per chapter. Bar height = % of sentences mentioning Gatsby. Color = location.</div>
     <div id="silence-chart"></div>
   </div>
 
   <!-- Narrative Density -->
   <div class="section" id="density-section">
     <h2>D. NARRATIVE DENSITY</h2>
-    <div class="desc">Sentence count per chapter. Dark bar = dialogue, light bar = narration. Color = location. Red line = moving average.</div>
+    <div class="desc">Sentence count per chapter. Dark bar = dialogue, light bar = narration. Color = location.</div>
     <div id="density-chart"></div>
   </div>
 
   <!-- Vocabulary Overview -->
   <div class="section" id="vocab-section">
     <h2>E. VOCABULARY OVERVIEW</h2>
-    <div class="desc">4,716 unique words across 58 chapters. Difficulty distribution by CEFR level.</div>
+    <div class="desc">3,934 unique words across 9 chapters. Difficulty distribution by CEFR level.</div>
     <div class="stats-grid" id="vocab-stats"></div>
     <div id="vocab-difficulty-chart"></div>
   </div>
@@ -300,51 +281,45 @@ svg text { font-family: 'Georgia', serif; }
   <!-- Top Words -->
   <div class="section" id="top-words-section">
     <h2>G. MOST FREQUENT B2+ WORDS</h2>
-    <div class="desc">The 20 hardest words that appear most often — these are the words readers will truly learn through repetition.</div>
+    <div class="desc">The 20 hardest words that appear most often — words readers will truly learn through repetition.</div>
     <div id="top-words-chart"></div>
   </div>
 
   <!-- Top Idioms -->
   <div class="section" id="top-idioms-section">
     <h2>H. MOST FREQUENT IDIOMS</h2>
-    <div class="desc">407 idioms found. The top 20 by occurrence — phrases that become familiar through the story.</div>
+    <div class="desc">245 idioms found. The top 20 by occurrence — phrases that become familiar through the story.</div>
     <div id="top-idioms-chart"></div>
   </div>
 
   <!-- Downloads -->
   <div class="section" id="download-section">
     <h2>DOWNLOADS</h2>
-    <div class="desc">The Moon and Sixpence — free EPUB translations and vocabulary PDF.</div>
+    <div class="desc">The Great Gatsby — free EPUB translations and vocabulary PDF.</div>
     <div class="downloads">
-      <a class="download-card" href="moon_and_sixpence_en.epub" download>
+      <a class="download-card" href="great_gatsby_en.epub" download>
         <div class="file-icon">📖</div>
         <div class="file-title">English Original</div>
-        <div class="file-desc">W. Somerset Maugham. Project Gutenberg, public domain.</div>
-        <div class="file-size">EPUB · 206 KB</div>
+        <div class="file-desc">F. Scott Fitzgerald. Project Gutenberg, public domain.</div>
+        <div class="file-size">EPUB · 119 KB</div>
       </a>
-      <a class="download-card" href="moon_and_sixpence_ko.epub" download>
+      <a class="download-card" href="great_gatsby_ko.epub" download>
         <div class="file-icon">📖</div>
         <div class="file-title">Korean Translation</div>
-        <div class="file-desc">Full Korean translation. 58 chapters, translated by Claude Sonnet.</div>
-        <div class="file-size">EPUB · 247 KB</div>
+        <div class="file-desc">Full Korean translation. 9 chapters, translated by Claude Sonnet.</div>
+        <div class="file-size">EPUB · 140 KB</div>
       </a>
-      <a class="download-card" href="moon_and_sixpence_ko_bilingual.epub" download>
+      <a class="download-card" href="great_gatsby_ko_bilingual.epub" download>
         <div class="file-icon">📖</div>
         <div class="file-title">Bilingual (Paragraph)</div>
-        <div class="file-desc">Paragraph-level EN + KO side by side.</div>
-        <div class="file-size">EPUB · 454 KB</div>
+        <div class="file-desc">Paragraph-level EN + KO side by side. Includes "old sport" translator note.</div>
+        <div class="file-size">EPUB · 274 KB</div>
       </a>
-      <a class="download-card" href="moon_and_sixpence_ko_interleaved.epub" download>
+      <a class="download-card" href="great_gatsby_ko_interleaved.epub" download>
         <div class="file-icon">📖</div>
         <div class="file-title">Interleaved (Sentence)</div>
         <div class="file-desc">Sentence by sentence. 1 EN + 1 KO alternating.</div>
-        <div class="file-size">EPUB · 466 KB</div>
-      </a>
-      <a class="download-card" href="moon_and_sixpence_vocab_b2_a4.pdf" download>
-        <div class="file-icon">📄</div>
-        <div class="file-title">Vocabulary B2+</div>
-        <div class="file-desc">3,572 words + 407 idioms. By chapter, with examples.</div>
-        <div class="file-size">PDF · 10.4 MB</div>
+        <div class="file-size">EPUB · 282 KB</div>
       </a>
     </div>
   </div>
@@ -355,15 +330,23 @@ svg text { font-family: 'Georgia', serif; }
 
 <script>
 // ─── Load Data ─────────────────────────────────────────────
-const DATA_URL = 'dashboard_data.json';
+const DATA_URL = 'dashboard_data_gatsby.json';
 
 const LOCATION_COLORS = {
-  London: '#7f8c8d',
-  Paris: '#3498db',
-  Marseilles: '#e67e22',
-  Tahiti: '#27ae60',
-  Amsterdam: '#9b59b6',
+  'West Egg': '#27ae60',
+  'East Egg': '#2980b9',
+  'New York': '#e67e22',
+  'Valley of Ashes': '#7f8c8d',
+  'Plaza Hotel': '#e74c3c',
+  'Louisville': '#9b59b6',
+  'Chicago': '#f39c12',
+  'Long Island': '#16a085',
+  'Oxford': '#8e44ad',
+  'Europe': '#34495e',
+  'Minnesota': '#95a5a6',
 };
+
+const TOTAL_CHAPTERS = 9;
 
 const tooltip = d3.select('#tooltip');
 
@@ -377,7 +360,7 @@ function hideTooltip() { tooltip.style('display', 'none'); }
 d3.json(DATA_URL).then(data => {
   try { renderJourneyFlow(data); } catch(e) { console.error('JourneyFlow:', e); }
   try { renderTimeline(data); } catch(e) { console.error('Timeline:', e); }
-  try { renderSilenceChart(data); } catch(e) { console.error('Silence:', e); }
+  try { renderPresenceChart(data); } catch(e) { console.error('Presence:', e); }
   try { renderDensityChart(data); } catch(e) { console.error('Density:', e); }
   try { renderVocabOverview(data); } catch(e) { console.error('VocabOverview:', e); }
   try { renderVocabByChapter(data); } catch(e) { console.error('VocabByChapter:', e); }
@@ -391,7 +374,6 @@ function renderJourneyFlow(data) {
   const charNames = {};
   data.characters.forEach(c => charNames[c.id] = c.name);
 
-  // Major characters first (sorted by session count then mention)
   const charSessionCount = {};
   data.sessions.forEach(s => {
     charSessionCount[s.character_id] = (charSessionCount[s.character_id] || 0) + 1;
@@ -424,8 +406,9 @@ function updateJourney(charId, data, charNames) {
       flow.append('div').attr('class', 'session-arrow').html('&#8594;');
     }
 
+    const locClass = 'loc-' + sess.location.replace(/\s+/g, '-');
     const card = flow.append('div')
-      .attr('class', 'session-card loc-' + sess.location);
+      .attr('class', 'session-card ' + locClass);
 
     card.append('div').attr('class', 'loc-name').text(sess.location);
     card.append('div').attr('class', 'ch-range')
@@ -434,11 +417,10 @@ function updateJourney(charId, data, charNames) {
     const metrics = card.append('div').attr('class', 'metrics');
     metrics.html(`
       <span>${sess.sentence_count}</span> sentences<br>
-      <span>${sess.dialogue_count}</span> dialogues<br>
-      <span>${sess.present_chapters}</span> / ${sess.chapter_count} chapters
+      <span>${sess.dialogue_count}</span> dialogues
     `);
 
-    if (sess.co_characters.length > 0) {
+    if (sess.co_characters && sess.co_characters.length > 0) {
       const names = sess.co_characters.slice(0, 4).map(id => charNames[id] || id);
       const extra = sess.co_characters.length > 4 ? ` +${sess.co_characters.length - 4}` : '';
       card.append('div').attr('class', 'co-chars')
@@ -452,7 +434,6 @@ function renderTimeline(data) {
   const charNames = {};
   data.characters.forEach(c => charNames[c.id] = c.name);
 
-  // Sort characters by first appearance
   const charFirst = {};
   data.sessions.forEach(s => {
     if (!(s.character_id in charFirst) || s.chapter_start < charFirst[s.character_id]) {
@@ -462,7 +443,7 @@ function renderTimeline(data) {
   const sortedChars = Object.keys(charFirst).sort((a, b) => charFirst[a] - charFirst[b]);
 
   const margin = { top: 30, right: 30, bottom: 40, left: 150 };
-  const rowH = 28;
+  const rowH = 32;
   const width = 900;
   const height = margin.top + margin.bottom + sortedChars.length * rowH;
 
@@ -473,19 +454,16 @@ function renderTimeline(data) {
     .attr('viewBox', `0 0 ${width} ${height}`)
     .style('max-width', '100%');
 
-  const x = d3.scaleLinear().domain([1, 58]).range([margin.left, width - margin.right]);
+  const x = d3.scaleLinear().domain([1, TOTAL_CHAPTERS]).range([margin.left, width - margin.right]);
   const y = (i) => margin.top + i * rowH;
 
   // Chapter axis
   const xAxis = svg.append('g').attr('transform', `translate(0,${height - margin.bottom})`);
-  for (let ch = 1; ch <= 58; ch += 5) {
+  for (let ch = 1; ch <= TOTAL_CHAPTERS; ch++) {
     xAxis.append('text').attr('x', x(ch)).attr('y', 16)
-      .attr('text-anchor', 'middle').attr('font-size', 10).attr('fill', '#999')
+      .attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', '#999')
       .text(ch);
   }
-  xAxis.append('text').attr('x', x(58)).attr('y', 16)
-    .attr('text-anchor', 'middle').attr('font-size', 10).attr('fill', '#999')
-    .text('58');
 
   // Location background bands
   let prevLoc = null, bandStart = 1;
@@ -497,13 +475,13 @@ function renderTimeline(data) {
     }
     prevLoc = ch.location;
   });
-  bands.push({ loc: prevLoc, start: bandStart, end: 58 });
+  bands.push({ loc: prevLoc, start: bandStart, end: TOTAL_CHAPTERS });
 
   bands.forEach(b => {
     svg.append('rect')
-      .attr('x', x(b.start) - 3)
+      .attr('x', x(b.start) - 10)
       .attr('y', margin.top - 10)
-      .attr('width', x(b.end) - x(b.start) + 6)
+      .attr('width', x(b.end) - x(b.start) + 20)
       .attr('height', sortedChars.length * rowH + 4)
       .attr('fill', LOCATION_COLORS[b.loc] || '#ccc')
       .attr('opacity', 0.06);
@@ -523,7 +501,6 @@ function renderTimeline(data) {
   sortedChars.forEach((charId, i) => {
     const yPos = y(i) + rowH / 2;
 
-    // Name label
     svg.append('text')
       .attr('x', margin.left - 10)
       .attr('y', yPos + 4)
@@ -532,18 +509,17 @@ function renderTimeline(data) {
       .attr('fill', '#444')
       .text(charNames[charId] || charId);
 
-    // Session bars
     const sessions = data.sessions.filter(s => s.character_id === charId);
     sessions.forEach(sess => {
       const barX = x(sess.chapter_start);
-      const barW = Math.max(x(sess.chapter_end) - x(sess.chapter_start), 6);
+      const barW = Math.max(x(sess.chapter_end) - x(sess.chapter_start), 20);
       const color = LOCATION_COLORS[sess.location] || '#ccc';
 
       svg.append('rect')
-        .attr('x', barX)
-        .attr('y', yPos - 8)
-        .attr('width', barW)
-        .attr('height', 16)
+        .attr('x', barX - 10)
+        .attr('y', yPos - 10)
+        .attr('width', barW + 20)
+        .attr('height', 20)
         .attr('rx', 3)
         .attr('fill', color)
         .attr('opacity', 0.75)
@@ -553,8 +529,7 @@ function renderTimeline(data) {
           showTooltip(`
             <strong>${charNames[charId]}</strong> in ${sess.location}<br>
             Ch.${sess.chapter_start}\u2013${sess.chapter_end}<br>
-            ${sess.sentence_count} sentences, ${sess.dialogue_count} dialogues<br>
-            ${sess.present_chapters}/${sess.chapter_count} chapters active
+            ${sess.sentence_count} sentences
           `, event);
         })
         .on('mousemove', (event) => {
@@ -568,8 +543,8 @@ function renderTimeline(data) {
   });
 }
 
-// ─── C. Silence Analysis ───────────────────────────────────
-function renderSilenceChart(data) {
+// ─── C. Gatsby's Presence (adapted from Silence Analysis) ──
+function renderPresenceChart(data) {
   const margin = { top: 20, right: 30, bottom: 60, left: 60 };
   const width = 860;
   const height = 280;
@@ -583,50 +558,52 @@ function renderSilenceChart(data) {
     .append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`);
 
-  const stats = data.chapter_stats;
+  // Count Gatsby mentions per chapter from sessions
+  const gatsbySessions = data.sessions.filter(s => s.character_id === 'jay_gatsby');
+  const gatsbyByChapter = {};
+  gatsbySessions.forEach(s => {
+    for (let ch = s.chapter_start; ch <= s.chapter_end; ch++) {
+      gatsbyByChapter[ch] = (gatsbyByChapter[ch] || 0) + s.sentence_count / (s.chapter_end - s.chapter_start + 1);
+    }
+  });
+
+  const stats = data.chapter_stats.map(d => {
+    const mentions = gatsbyByChapter[d.chapter] || 0;
+    const rate = d.total_sentences > 0 ? (mentions / d.total_sentences) * 100 : 0;
+    return { ...d, gatsby_rate: Math.min(rate, 100) };
+  });
+
   const x = d3.scaleBand().domain(stats.map(d => d.chapter)).range([0, width]).padding(0.15);
-  const maxRate = d3.max(stats, d => d.total_sent > 0 ? (d.strickland_dial / d.total_sent) * 100 : 0);
-  const y = d3.scaleLinear().domain([0, Math.max(maxRate, 25)]).range([height, 0]);
+  const maxRate = d3.max(stats, d => d.gatsby_rate);
+  const y = d3.scaleLinear().domain([0, Math.max(maxRate * 1.1, 30)]).range([height, 0]);
 
-  // X axis
   svg.append('g').attr('transform', `translate(0,${height})`)
-    .call(d3.axisBottom(x).tickValues(stats.filter(d => d.chapter % 5 === 0 || d.chapter === 1 || d.chapter === 58).map(d => d.chapter)))
-    .selectAll('text').attr('font-size', 10);
-
+    .call(d3.axisBottom(x))
+    .selectAll('text').attr('font-size', 11);
   svg.append('text').attr('x', width / 2).attr('y', height + 40)
     .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888').text('Chapter');
 
-  // Y axis
-  svg.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => d + '%'))
+  svg.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => d.toFixed(0) + '%'))
     .selectAll('text').attr('font-size', 10);
-
   svg.append('text').attr('transform', 'rotate(-90)').attr('y', -45).attr('x', -height / 2)
     .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888')
-    .text("Strickland's dialogue rate");
+    .text("Gatsby's presence rate");
 
-  // Bars
   svg.selectAll('.bar')
     .data(stats)
     .join('rect')
     .attr('x', d => x(d.chapter))
-    .attr('y', d => {
-      const rate = d.total_sent > 0 ? (d.strickland_dial / d.total_sent) * 100 : 0;
-      return y(rate);
-    })
+    .attr('y', d => y(d.gatsby_rate))
     .attr('width', x.bandwidth())
-    .attr('height', d => {
-      const rate = d.total_sent > 0 ? (d.strickland_dial / d.total_sent) * 100 : 0;
-      return height - y(rate);
-    })
+    .attr('height', d => height - y(d.gatsby_rate))
     .attr('fill', d => LOCATION_COLORS[d.location] || '#ccc')
     .attr('opacity', 0.8)
     .on('mouseover', function(event, d) {
       d3.select(this).attr('opacity', 1);
-      const rate = d.total_sent > 0 ? ((d.strickland_dial / d.total_sent) * 100).toFixed(1) : '0';
       showTooltip(`
         <strong>Ch.${d.chapter}</strong> (${d.location})<br>
-        Strickland speaks: ${d.strickland_dial} / ${d.total_sent} sentences<br>
-        Rate: <strong>${rate}%</strong>
+        Gatsby presence: <strong>${d.gatsby_rate.toFixed(1)}%</strong><br>
+        ${d.total_sentences} total sentences
       `, event);
     })
     .on('mousemove', (event) => {
@@ -637,39 +614,8 @@ function renderSilenceChart(data) {
       hideTooltip();
     });
 
-  // Legend (top-right)
-  const cLegend = svg.append('g').attr('transform', `translate(${width - 200}, 0)`);
-  cLegend.append('rect').attr('x', 0).attr('y', 0).attr('width', 14).attr('height', 14).attr('fill', '#3498db').attr('opacity', 0.8);
-  cLegend.append('text').attr('x', 20).attr('y', 11).attr('font-size', 11).attr('fill', '#444').text('Dialogue rate');
-  cLegend.append('line').attr('x1', 100).attr('x2', 130).attr('y1', 7).attr('y2', 7).attr('stroke', '#e74c3c').attr('stroke-width', 2).attr('stroke-dasharray', '6,3');
-  cLegend.append('text').attr('x', 136).attr('y', 11).attr('font-size', 11).attr('fill', '#444').text('Moving avg');
-
-  // Moving average line
-  const windowSize = 5;
-  const movAvg = stats.map((d, i) => {
-    const start = Math.max(0, i - Math.floor(windowSize / 2));
-    const end = Math.min(stats.length, i + Math.ceil(windowSize / 2));
-    const slice = stats.slice(start, end);
-    const avg = d3.mean(slice, s => s.total_sent > 0 ? (s.strickland_dial / s.total_sent) * 100 : 0);
-    return { chapter: d.chapter, avg };
-  });
-
-  const line = d3.line()
-    .x(d => x(d.chapter) + x.bandwidth() / 2)
-    .y(d => y(d.avg))
-    .curve(d3.curveBasis);
-
-  svg.append('path')
-    .datum(movAvg)
-    .attr('fill', 'none')
-    .attr('stroke', '#e74c3c')
-    .attr('stroke-width', 2)
-    .attr('stroke-dasharray', '6,3')
-    .attr('d', line);
-
-  // Insight
   d3.select('#silence-section').append('div').attr('class', 'insight')
-    .html('London ~15% &rarr; Paris peak ~22% &rarr; Marseilles ~5% &rarr; Tahiti ~3.5%. As Strickland paints more, he speaks less. The art replaces the words.');
+    .html('Gatsby dominates Ch.5 (the reunion with Daisy) and Ch.7 (the Plaza confrontation). He is barely present in Ch.2 (Tom\'s affair) — the world he doesn\'t belong to.');
 }
 
 // ─── D. Narrative Density ──────────────────────────────────
@@ -689,43 +635,40 @@ function renderDensityChart(data) {
 
   const chapters = data.chapters;
   const x = d3.scaleBand().domain(chapters.map(d => d.number)).range([0, width]).padding(0.1);
-  const y = d3.scaleLinear().domain([0, d3.max(chapters, d => d.sentence_count) * 1.05]).range([height, 0]);
+  const y = d3.scaleLinear().domain([0, d3.max(chapters, d => d.sentence_count || 0) * 1.1]).range([height, 0]);
 
-  // X axis
   svg.append('g').attr('transform', `translate(0,${height})`)
-    .call(d3.axisBottom(x).tickValues(chapters.filter(d => d.number % 5 === 0 || d.number === 1 || d.number === 58).map(d => d.number)))
-    .selectAll('text').attr('font-size', 10);
-
+    .call(d3.axisBottom(x))
+    .selectAll('text').attr('font-size', 11);
   svg.append('text').attr('x', width / 2).attr('y', height + 40)
     .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888').text('Chapter');
 
-  // Y axis
   svg.append('g').call(d3.axisLeft(y).ticks(5))
     .selectAll('text').attr('font-size', 10);
-
   svg.append('text').attr('transform', 'rotate(-90)').attr('y', -45).attr('x', -height / 2)
     .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888')
     .text('Sentences per chapter');
 
-  // Stacked bars: narration + dialogue
+  // Stacked bars
   chapters.forEach(ch => {
-    const narr = ch.sentence_count - ch.dialogue_count;
-    const dial = ch.dialogue_count;
+    const total = ch.sentence_count || 0;
+    const dial = ch.dialogue_count || 0;
+    const narr = total - dial;
     const color = LOCATION_COLORS[ch.location] || '#ccc';
 
-    // Narration (bottom)
+    // Narration (bottom, lighter)
     svg.append('rect')
       .attr('x', x(ch.number))
-      .attr('y', y(narr + dial))
+      .attr('y', y(total))
       .attr('width', x.bandwidth())
       .attr('height', height - y(narr))
       .attr('fill', color)
       .attr('opacity', 0.5);
 
-    // Dialogue (top)
+    // Dialogue (top, darker)
     svg.append('rect')
       .attr('x', x(ch.number))
-      .attr('y', y(narr + dial))
+      .attr('y', y(total))
       .attr('width', x.bandwidth())
       .attr('height', height - y(dial))
       .attr('fill', color)
@@ -733,8 +676,7 @@ function renderDensityChart(data) {
       .on('mouseover', function(event) {
         showTooltip(`
           <strong>Ch.${ch.number}</strong> (${ch.location})<br>
-          ${ch.sentence_count} sentences (${ch.dialogue_count} dialogue)<br>
-          Characters: ${ch.characters.join(', ') || 'none'}
+          ${total} sentences (${dial} dialogue)
         `, event);
       })
       .on('mousemove', (event) => {
@@ -743,64 +685,40 @@ function renderDensityChart(data) {
       .on('mouseout', hideTooltip);
   });
 
-  // Legend (top-right)
+  // Legend
   const dLegend = svg.append('g').attr('transform', `translate(${width - 220}, 0)`);
-  dLegend.append('rect').attr('x', 0).attr('y', 0).attr('width', 14).attr('height', 14).attr('fill', '#3498db').attr('opacity', 0.85);
+  dLegend.append('rect').attr('x', 0).attr('y', 0).attr('width', 14).attr('height', 14).attr('fill', '#27ae60').attr('opacity', 0.85);
   dLegend.append('text').attr('x', 20).attr('y', 11).attr('font-size', 11).attr('fill', '#444').text('Dialogue');
-  dLegend.append('rect').attr('x', 0).attr('y', 20).attr('width', 14).attr('height', 14).attr('fill', '#3498db').attr('opacity', 0.5);
+  dLegend.append('rect').attr('x', 0).attr('y', 20).attr('width', 14).attr('height', 14).attr('fill', '#27ae60').attr('opacity', 0.5);
   dLegend.append('text').attr('x', 20).attr('y', 31).attr('font-size', 11).attr('fill', '#444').text('Narration');
-  dLegend.append('line').attr('x1', 100).attr('x2', 130).attr('y1', 7).attr('y2', 7).attr('stroke', '#e74c3c').attr('stroke-width', 2);
-  dLegend.append('text').attr('x', 136).attr('y', 11).attr('font-size', 11).attr('fill', '#444').text('Moving avg');
 
-  // Moving average line
-  const windowSize = 5;
-  const movAvg = chapters.map((d, i) => {
-    const start = Math.max(0, i - Math.floor(windowSize / 2));
-    const end = Math.min(chapters.length, i + Math.ceil(windowSize / 2));
-    const avg = d3.mean(chapters.slice(start, end), c => c.sentence_count);
-    return { chapter: d.number, avg };
-  });
-
-  const line = d3.line()
-    .x(d => x(d.chapter) + x.bandwidth() / 2)
-    .y(d => y(d.avg))
-    .curve(d3.curveBasis);
-
-  svg.append('path')
-    .datum(movAvg)
-    .attr('fill', 'none')
-    .attr('stroke', '#e74c3c')
-    .attr('stroke-width', 2)
-    .attr('d', line);
-
-  // Annotate peaks
+  // Peak annotations
   const peaks = [
-    { ch: 12, label: '"I\'ve got to paint"' },
-    { ch: 28, label: 'Stroeve betrayal' },
-    { ch: 55, label: 'The masterpiece' },
+    { ch: 5, label: 'Gatsby meets Daisy' },
+    { ch: 7, label: 'Plaza confrontation' },
   ];
   peaks.forEach(p => {
     const ch = chapters.find(c => c.number === p.ch);
     if (!ch) return;
+    const total = ch.sentence_count || 0;
     svg.append('line')
       .attr('x1', x(p.ch) + x.bandwidth() / 2)
       .attr('x2', x(p.ch) + x.bandwidth() / 2)
-      .attr('y1', y(ch.sentence_count) - 5)
-      .attr('y2', y(ch.sentence_count) - 25)
+      .attr('y1', y(total) - 5)
+      .attr('y2', y(total) - 30)
       .attr('stroke', '#e74c3c')
       .attr('stroke-width', 1);
     svg.append('text')
       .attr('x', x(p.ch) + x.bandwidth() / 2)
-      .attr('y', y(ch.sentence_count) - 28)
+      .attr('y', y(total) - 33)
       .attr('text-anchor', 'middle')
       .attr('font-size', 10)
       .attr('fill', '#e74c3c')
       .text(p.label);
   });
 
-  // Insight
   d3.select('#density-section').append('div').attr('class', 'insight')
-    .html('Ch.12 (205 sent): Strickland declares his calling. Ch.28 (190 sent): Stroeve loses everything. Ch.55 (213 sent): The masterpiece and its destruction. Maugham spends his words where it matters most.');
+    .html('Ch.VII towers at 763 sentences — nearly a third of the novel. The Plaza Hotel confrontation, Myrtle\'s death, and its aftermath all compress into a single relentless chapter.');
 }
 
 // ─── E. Vocabulary Overview ──────────────────────────────────
@@ -820,7 +738,6 @@ function renderVocabOverview(data) {
     card.append('div').attr('class', 'label').text(c.label);
   });
 
-  // Difficulty distribution bar chart
   const dist = vs.difficulty_distribution;
   const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
   const levelColors = { A1: '#27ae60', A2: '#2ecc71', B1: '#3498db', B2: '#e67e22', C1: '#e74c3c', C2: '#8e44ad' };
@@ -854,14 +771,13 @@ function renderVocabOverview(data) {
     .on('mousemove', event => tooltip.style('left', (event.pageX+12)+'px').style('top', (event.pageY-10)+'px'))
     .on('mouseout', function() { d3.select(this).attr('opacity', 0.85); hideTooltip(); });
 
-  // Count labels on bars
   svg.selectAll('.label').data(barData).join('text')
     .attr('x', d => x(d.level) + x.bandwidth()/2).attr('y', d => y(d.count) - 5)
     .attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', '#444')
     .text(d => d.count.toLocaleString());
 
   d3.select('#vocab-section').append('div').attr('class', 'insight')
-    .html(`${vs.b2_plus_words} words at B2 or above — these are the words that make literary English challenging. Encountering them repeatedly in context is far more effective than memorizing lists.`);
+    .html(`${vs.b2_plus_words} words at B2 or above (${Math.round(vs.b2_plus_words / vs.total_words * 100)}%). Fitzgerald's prose is deceptively simple — but "lawn", "glance", "murmur", and "gesture" carry the weight of a world built on appearances.`);
 }
 
 // ─── F. Vocabulary by Chapter ────────────────────────────────
@@ -883,8 +799,8 @@ function renderVocabByChapter(data) {
   const y = d3.scaleLinear().domain([0, maxVal * 1.1]).range([height, 0]);
 
   svg.append('g').attr('transform', `translate(0,${height})`)
-    .call(d3.axisBottom(x).tickValues(chapters.filter(d => d.chapter % 5 === 0 || d.chapter === 1).map(d => d.chapter)))
-    .selectAll('text').attr('font-size', 10);
+    .call(d3.axisBottom(x))
+    .selectAll('text').attr('font-size', 11);
   svg.append('text').attr('x', width/2).attr('y', height+40).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888').text('Chapter');
 
   svg.append('g').call(d3.axisLeft(y).ticks(5)).selectAll('text').attr('font-size', 10);
@@ -915,12 +831,6 @@ function renderVocabByChapter(data) {
     });
   });
 
-  // Idiom line overlay
-  const idiomLine = d3.line()
-    .x(d => x(d.chapter) + x.bandwidth()/2)
-    .y(d => y(d.idiom_count * (maxVal / d3.max(chapters, c => c.idiom_count || 1))))
-    .curve(d3.curveBasis);
-
   // Legend
   const legend = svg.append('g').attr('transform', `translate(${width - 180}, 0)`);
   stack.forEach((level, i) => {
@@ -929,7 +839,7 @@ function renderVocabByChapter(data) {
   });
 
   d3.select('#vocab-chapter-section').append('div').attr('class', 'insight')
-    .html('Vocabulary difficulty is fairly consistent across chapters, with C1/C2 words concentrated where Maugham explores art, philosophy, and Tahitian culture.');
+    .html('Ch.VII (Plaza confrontation) has the highest vocabulary density — Fitzgerald packs dialogue, description, and symbolism into the novel\'s longest chapter.');
 }
 
 // ─── G. Top Words ────────────────────────────────────────────
@@ -954,12 +864,10 @@ function renderTopWords(data) {
   words.forEach((w, i) => {
     const yPos = i * (barH + gap);
 
-    // Word label
     svg.append('text').attr('x', -6).attr('y', yPos + barH/2 + 4)
       .attr('text-anchor', 'end').attr('font-size', 12).attr('fill', '#444')
       .text(w.word);
 
-    // Bar
     svg.append('rect')
       .attr('x', 0).attr('y', yPos)
       .attr('width', x(w.total_occurrences)).attr('height', barH)
@@ -968,12 +876,11 @@ function renderTopWords(data) {
       .attr('opacity', 0.8)
       .on('mouseover', function(event) {
         d3.select(this).attr('opacity', 1);
-        showTooltip(`<strong>${w.word}</strong> (${w.difficulty})<br>${w.total_occurrences} occurrences in ${w.chapter_count} chapters<br>${w.definition}`, event);
+        showTooltip(`<strong>${w.word}</strong> (${w.difficulty})<br>${w.total_occurrences} occurrences in ${w.chapter_count} chapters<br>${w.definition || ''}`, event);
       })
       .on('mousemove', event => tooltip.style('left', (event.pageX+12)+'px').style('top', (event.pageY-10)+'px'))
       .on('mouseout', function() { d3.select(this).attr('opacity', 0.8); hideTooltip(); });
 
-    // Count + difficulty badge
     svg.append('text').attr('x', x(w.total_occurrences) + 6).attr('y', yPos + barH/2 + 4)
       .attr('font-size', 11).attr('fill', '#888')
       .text(`${w.total_occurrences} (${w.difficulty})`);
@@ -1001,12 +908,10 @@ function renderTopIdioms(data) {
     const yPos = i * (barH + gap);
     const label = idm.idiom.replace(/_/g, ' ');
 
-    // Idiom label
     svg.append('text').attr('x', -6).attr('y', yPos + barH/2 + 4)
       .attr('text-anchor', 'end').attr('font-size', 12).attr('fill', '#444')
       .text(label);
 
-    // Bar
     svg.append('rect')
       .attr('x', 0).attr('y', yPos)
       .attr('width', x(idm.total_occurrences)).attr('height', barH)
@@ -1015,19 +920,18 @@ function renderTopIdioms(data) {
       .attr('opacity', 0.8)
       .on('mouseover', function(event) {
         d3.select(this).attr('opacity', 1);
-        showTooltip(`<strong>${label}</strong><br>${idm.meaning}<br>${idm.total_occurrences} occurrences in ${idm.chapter_count} chapters`, event);
+        showTooltip(`<strong>${label}</strong><br>${idm.meaning || ''}<br>${idm.total_occurrences} occurrences in ${idm.chapter_count} chapters`, event);
       })
       .on('mousemove', event => tooltip.style('left', (event.pageX+12)+'px').style('top', (event.pageY-10)+'px'))
       .on('mouseout', function() { d3.select(this).attr('opacity', 0.8); hideTooltip(); });
 
-    // Count
     svg.append('text').attr('x', x(idm.total_occurrences) + 6).attr('y', yPos + barH/2 + 4)
       .attr('font-size', 11).attr('fill', '#888')
       .text(`${idm.total_occurrences} (${idm.chapter_count} ch)`);
   });
 
   d3.select('#top-idioms-section').append('div').attr('class', 'insight')
-    .html('Idioms like "at last", "at any rate", and "in spite of" repeat across dozens of chapters. By the end of the novel, these phrases feel natural — learned through story, not study.');
+    .html('Fitzgerald\'s idioms paint a world of restless motion — "up and down", "a great deal", "for a while". The language itself oscillates, mirroring the novel\'s tension between dream and disillusionment.');
 }
 </script>
 </body>
