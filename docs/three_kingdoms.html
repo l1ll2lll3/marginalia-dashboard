@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marginalia — 삼국지연의 인물 지도</title>
+<script>
+  (function (w, h, _a, t, a, b) {
+    w = w[a] = w[a] || {
+      config: {
+        projectAccessKey: "x604ku488n0uq-x2gsksptdlb10r-x4aa021lo6ro0e",
+        pcode: 38129,
+        sampleRate: 100,
+        proxyBaseUrl: "https://rum-ap-northeast-2.whatap-browser-agent.io/",
+      },
+    };
+    a = h.createElement(_a);
+    a.async = 1;
+    a.src = t;
+    t = h.getElementsByTagName(_a)[0];
+    t.parentNode.insertBefore(a, t);
+  })(window, document, 'script', 'https://repo.whatap-browser-agent.io/rum/prod/v1/whatap-browser-agent.js', 'WhatapBrowserAgent', '');
+</script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-tile@1"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Georgia', serif; background: #faf8f5; color: #2c2c2c; line-height: 1.6; }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+h1 { font-size: 28px; margin-bottom: 4px; }
+.subtitle { font-size: 14px; color: #888; margin-bottom: 16px; }
+#map-container { width: 100%; height: 520px; border-radius: 8px; overflow: hidden; background: #f0ede6; }
+.city-label { font-family: 'Georgia', serif; font-size: 11px; fill: #2c2c2c; pointer-events: none; }
+.char-label { font-family: 'Georgia', serif; font-size: 10px; pointer-events: none; }
+.tooltip {
+  position: fixed; background: rgba(44,44,44,0.95); color: #fff; padding: 10px 14px;
+  border-radius: 6px; font-size: 13px; display: none; pointer-events: none; z-index: 100;
+  max-width: 300px; line-height: 1.6;
+}
+.legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; font-size: 13px; }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+.faction-section { margin-top: 20px; }
+.faction-title { font-size: 16px; font-weight: bold; margin-bottom: 6px; }
+.char-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.char-chip {
+  padding: 4px 10px; border-radius: 14px; font-size: 12px; cursor: pointer;
+  border: 1.5px solid #ddd; background: #fff; transition: all 0.2s;
+}
+.char-chip:hover { transform: scale(1.05); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+.char-chip .count { color: #999; font-size: 10px; margin-left: 4px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>三國演義 삼국지연의 — 인물 지도</h1>
+  <div class="subtitle">120회 전체 NER 추출. 40명 주요 인물 + 24개 장소. 인물 클릭 → 거점 줌.</div>
+  <div id="map-container"></div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>수도</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div>전투</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#8e7cc3"></div>도시</div>
+    <div class="legend-item" style="margin-left:16px">
+      <div class="legend-dot" style="background:#27ae60"></div>촉한 蜀
+    </div>
+    <div class="legend-item"><div class="legend-dot" style="background:#2980b9"></div>조위 魏</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>동오 吳</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#7f8c8d"></div>군웅 群</div>
+  </div>
+  <div id="char-list"></div>
+</div>
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const STADIA_KEY = '5538bf1d-5c88-4d24-9fd3-e81cea1a4883';
+const FACTION_COLORS = { '蜀': '#27ae60', '魏': '#2980b9', '吳': '#e74c3c', '群': '#7f8c8d', '기타': '#aaa' };
+const LOC_TYPE_COLORS = { capital: '#e67e22', battle: '#c0392b', city: '#8e7cc3' };
+
+const LOCATIONS = {"洛阳": {"en": "Luoyang", "coords": [112.45, 34.62], "type": "capital", "note": "후한/위 수도", "ko": "낙양"}, "许昌": {"en": "Xuchang", "coords": [113.85, 34.02], "type": "capital", "note": "조조 본거지", "ko": "허창"}, "长安": {"en": "Chang'an", "coords": [108.94, 34.26], "type": "capital", "note": "서한 수도, 동탁 천도", "ko": "장안"}, "成都": {"en": "Chengdu", "coords": [104.07, 30.67], "type": "capital", "note": "촉한 수도", "ko": "성도"}, "建业": {"en": "Jianye (Nanjing)", "coords": [118.8, 32.06], "type": "capital", "note": "동오 수도", "ko": "건업"}, "赤壁": {"en": "Chibi", "coords": [113.95, 29.73], "type": "battle", "note": "적벽대전", "ko": "적벽"}, "荆州": {"en": "Jingzhou", "coords": [112.19, 30.33], "type": "city", "note": "쟁탈의 핵심", "ko": "형주"}, "汉中": {"en": "Hanzhong", "coords": [107.03, 33.07], "type": "city", "note": "촉한 북벌 기지", "ko": "한중"}, "五丈原": {"en": "Wuzhangyuan", "coords": [107.68, 34.28], "type": "battle", "note": "제갈량 최후", "ko": "오장원"}, "长坂坡": {"en": "Changban", "coords": [111.75, 30.82], "type": "battle", "note": "조자룡 단기", "ko": "장판파"}, "白帝城": {"en": "Baidicheng", "coords": [109.55, 31.05], "type": "city", "note": "유비 임종", "ko": "백제성"}, "官渡": {"en": "Guandu", "coords": [113.82, 34.72], "type": "battle", "note": "관도대전", "ko": "관도"}, "邺城": {"en": "Yecheng", "coords": [114.35, 36.33], "type": "city", "note": "원소→조조 거점", "ko": "업성"}, "新野": {"en": "Xinye", "coords": [112.36, 32.52], "type": "city", "note": "유비 주둔, 삼고초려", "ko": "신야"}, "襄阳": {"en": "Xiangyang", "coords": [112.14, 32.04], "type": "city", "note": "유표 거점", "ko": "양양"}, "合肥": {"en": "Hefei", "coords": [117.28, 31.82], "type": "battle", "note": "장료의 합비대전", "ko": "합비"}, "夷陵": {"en": "Yiling", "coords": [111.32, 30.77], "type": "battle", "note": "이릉대전, 유비 대패", "ko": "이릉"}, "定军山": {"en": "Dingjunshan", "coords": [106.9, 33.1], "type": "battle", "note": "황충이 하후연 참", "ko": "정군산"}, "下邳": {"en": "Xiapi", "coords": [117.96, 34.32], "type": "city", "note": "여포 최후", "ko": "하비"}, "虎牢关": {"en": "Hulao Pass", "coords": [113.05, 34.73], "type": "battle", "note": "삼영전여포", "ko": "호로관"}, "濮阳": {"en": "Puyang", "coords": [115.03, 35.76], "type": "city", "note": "조조 vs 여포", "ko": "복양"}, "柴桑": {"en": "Chaisang", "coords": [115.97, 29.71], "type": "city", "note": "주유 본거지", "ko": "시상"}, "街亭": {"en": "Jieting", "coords": [105.75, 34.74], "type": "battle", "note": "마속 실패, 제1차 북벌", "ko": "가정"}, "祁山": {"en": "Qishan", "coords": [105.35, 34.15], "type": "battle", "note": "제갈량 북벌 기지", "ko": "기산"}};
+const CHARACTERS = [{"name_zh": "玄德", "name_ko": "유비", "aliases": ["先主", "劉備", "蜀主"], "faction": "蜀", "mention_count": 1622, "first_chapter": 1, "chapters": [1, 2, 5, 6, 7, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 31, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 106, 113, 115, 117, 118, 119, 120]}, {"name_zh": "孔明", "name_ko": "제갈량", "aliases": ["武侯", "諸葛亮"], "faction": "蜀", "mention_count": 1160, "first_chapter": 36, "chapters": [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 60, 62, 63, 64, 65, 66, 67, 70, 71, 72, 73, 76, 77, 78, 79, 80, 81, 82, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 111, 113, 114, 115, 116, 117, 118, 119, 120]}, {"name_zh": "關公", "name_ko": "관우", "aliases": ["關羽", "雲長"], "faction": "蜀", "mention_count": 956, "first_chapter": 1, "chapters": [1, 2, 5, 7, 11, 13, 14, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 31, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 45, 49, 50, 51, 52, 53, 55, 56, 60, 63, 65, 66, 67, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 85, 87, 94, 97, 110]}, {"name_zh": "曹操", "name_ko": "조조", "aliases": [], "faction": "魏", "mention_count": 931, "first_chapter": 1, "chapters": [1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 88, 91, 94, 97, 106, 114, 119, 120]}, {"name_zh": "張飛", "name_ko": "장비", "aliases": ["翼德"], "faction": "蜀", "mention_count": 417, "first_chapter": 1, "chapters": [1, 2, 5, 6, 7, 11, 13, 14, 15, 16, 18, 19, 21, 22, 24, 25, 28, 31, 34, 35, 36, 37, 38, 39, 40, 41, 42, 45, 49, 50, 51, 52, 53, 56, 57, 60, 61, 63, 64, 65, 69, 70, 71, 72, 73, 77, 81, 83, 85, 99]}, {"name_zh": "趙雲", "name_ko": "조자룡", "aliases": ["子龍"], "faction": "蜀", "mention_count": 410, "first_chapter": 7, "chapters": [7, 11, 21, 28, 31, 34, 35, 36, 39, 40, 41, 42, 43, 45, 49, 50, 51, 52, 53, 54, 55, 56, 57, 60, 61, 63, 64, 65, 70, 71, 72, 73, 80, 81, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 110]}, {"name_zh": "呂布", "name_ko": "여포", "aliases": ["奉先"], "faction": "群", "mention_count": 375, "first_chapter": 3, "chapters": [3, 4, 5, 6, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 25, 31, 40, 43, 44, 48, 56, 59, 60, 93, 97]}, {"name_zh": "司馬懿", "name_ko": "사마의", "aliases": ["仲達"], "faction": "魏", "mention_count": 322, "first_chapter": 39, "chapters": [39, 67, 69, 73, 75, 77, 78, 80, 85, 86, 91, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 119]}, {"name_zh": "孫權", "name_ko": "손권", "aliases": [], "faction": "吳", "mention_count": 319, "first_chapter": 15, "chapters": [15, 29, 34, 38, 39, 40, 42, 43, 44, 45, 47, 49, 50, 52, 53, 54, 55, 56, 57, 58, 60, 61, 62, 63, 65, 66, 67, 68, 73, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 96, 97, 98, 102, 103, 105, 106, 108, 110, 113, 120]}, {"name_zh": "魏延", "name_ko": "위연", "aliases": [], "faction": "蜀", "mention_count": 286, "first_chapter": 41, "chapters": [41, 53, 55, 56, 60, 61, 62, 63, 64, 65, 70, 71, 72, 73, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105]}, {"name_zh": "周瑜", "name_ko": "주유", "aliases": ["公瑾"], "faction": "吳", "mention_count": 282, "first_chapter": 15, "chapters": [15, 29, 38, 39, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 75, 77]}, {"name_zh": "姜維", "name_ko": "강유", "aliases": [], "faction": "蜀", "mention_count": 272, "first_chapter": 92, "chapters": [92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120]}, {"name_zh": "袁紹", "name_ko": "원소", "aliases": [], "faction": "群", "mention_count": 249, "first_chapter": 2, "chapters": [2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15, 16, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 38, 40, 41, 43, 44, 45, 48, 50, 56, 91, 93, 120]}, {"name_zh": "後主", "name_ko": "유선", "aliases": ["劉禪"], "faction": "蜀", "mention_count": 219, "first_chapter": 34, "chapters": [34, 41, 73, 80, 85, 86, 87, 91, 96, 97, 98, 99, 100, 101, 102, 104, 105, 106, 107, 108, 110, 112, 113, 114, 115, 116, 117, 118, 119, 120]}, {"name_zh": "馬超", "name_ko": "마초", "aliases": [], "faction": "蜀", "mention_count": 214, "first_chapter": 10, "chapters": [10, 57, 58, 59, 60, 64, 65, 67, 69, 71, 72, 73, 74, 79, 81, 85, 86, 87, 92]}, {"name_zh": "魯肅", "name_ko": "노숙", "aliases": ["子敬"], "faction": "吳", "mention_count": 197, "first_chapter": 29, "chapters": [29, 42, 43, 44, 45, 46, 47, 48, 49, 51, 52, 53, 54, 56, 57, 58, 66, 67, 69, 75, 77, 82, 83]}, {"name_zh": "張郃", "name_ko": "장합", "aliases": [], "faction": "魏", "mention_count": 195, "first_chapter": 22, "chapters": [22, 30, 31, 40, 41, 42, 48, 50, 56, 58, 67, 69, 70, 71, 94, 95, 96, 97, 98, 99, 101]}, {"name_zh": "黃忠", "name_ko": "황충", "aliases": [], "faction": "蜀", "mention_count": 187, "first_chapter": 53, "chapters": [53, 55, 56, 60, 62, 63, 64, 65, 70, 71, 72, 73, 81, 82, 83, 91]}, {"name_zh": "張遼", "name_ko": "장료", "aliases": ["文遠"], "faction": "魏", "mention_count": 162, "first_chapter": 11, "chapters": [11, 12, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 30, 31, 32, 33, 40, 42, 46, 48, 49, 50, 53, 58, 67, 68, 85, 86, 98]}, {"name_zh": "鄧艾", "name_ko": "등애", "aliases": [], "faction": "魏", "mention_count": 161, "first_chapter": 110, "chapters": [110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120]}, {"name_zh": "孟獲", "name_ko": "맹획", "aliases": [], "faction": "群", "mention_count": 159, "first_chapter": 85, "chapters": [85, 86, 87, 88, 89, 90, 91]}, {"name_zh": "徐晃", "name_ko": "서황", "aliases": [], "faction": "魏", "mention_count": 134, "first_chapter": 13, "chapters": [13, 14, 19, 23, 24, 25, 26, 27, 30, 31, 32, 33, 46, 48, 50, 56, 57, 58, 59, 67, 68, 71, 72, 75, 76, 79, 86, 94]}, {"name_zh": "孫策", "name_ko": "손책", "aliases": ["伯符"], "faction": "吳", "mention_count": 127, "first_chapter": 7, "chapters": [7, 8, 15, 16, 17, 18, 21, 28, 29, 38, 42, 44, 48, 57, 68, 82, 98, 120]}, {"name_zh": "劉表", "name_ko": "유표", "aliases": [], "faction": "群", "mention_count": 126, "first_chapter": 6, "chapters": [6, 7, 8, 15, 16, 17, 18, 21, 23, 28, 29, 31, 32, 33, 34, 35, 38, 39, 40, 41, 42, 43, 44, 53, 56, 62, 93, 120]}, {"name_zh": "曹仁", "name_ko": "조인", "aliases": [], "faction": "魏", "mention_count": 125, "first_chapter": 5, "chapters": [5, 6, 11, 12, 14, 19, 22, 29, 30, 31, 35, 36, 40, 41, 42, 43, 50, 51, 58, 66, 67, 68, 73, 74, 75, 76, 84, 85, 86]}, {"name_zh": "許褚", "name_ko": "허저", "aliases": [], "faction": "魏", "mention_count": 125, "first_chapter": 12, "chapters": [12, 14, 16, 17, 19, 21, 23, 24, 25, 27, 30, 31, 32, 33, 40, 41, 42, 48, 50, 56, 57, 58, 59, 61, 66, 67, 68, 72, 79, 86, 116]}, {"name_zh": "董卓", "name_ko": "동탁", "aliases": [], "faction": "群", "mention_count": 119, "first_chapter": 1, "chapters": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 19, 20, 22, 24, 44, 56, 93, 109, 120]}, {"name_zh": "夏侯惇", "name_ko": "하후돈", "aliases": [], "faction": "魏", "mention_count": 114, "first_chapter": 5, "chapters": [5, 6, 10, 11, 12, 14, 16, 17, 18, 19, 23, 24, 25, 26, 27, 28, 30, 31, 33, 39, 40, 41, 42, 43, 48, 50, 51, 66, 67, 69, 70, 71, 72, 78, 79, 91]}, {"name_zh": "關興", "name_ko": "관흥", "aliases": [], "faction": "蜀", "mention_count": 106, "first_chapter": 74, "chapters": [74, 77, 78, 81, 82, 83, 84, 85, 87, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102]}, {"name_zh": "呂蒙", "name_ko": "여몽", "aliases": ["子明"], "faction": "吳", "mention_count": 105, "first_chapter": 17, "chapters": [17, 23, 38, 44, 49, 50, 51, 56, 61, 66, 67, 68, 73, 75, 76, 77, 82, 83, 103, 110, 117]}, {"name_zh": "袁術", "name_ko": "원술", "aliases": [], "faction": "群", "mention_count": 96, "first_chapter": 3, "chapters": [3, 5, 6, 7, 8, 9, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21, 43, 44, 48, 56, 93, 120]}, {"name_zh": "劉璋", "name_ko": "유장", "aliases": [], "faction": "群", "mention_count": 95, "first_chapter": 16, "chapters": [16, 21, 38, 54, 56, 57, 59, 60, 61, 62, 63, 64, 65, 67, 117]}, {"name_zh": "龐德", "name_ko": "龐德", "aliases": [], "faction": "기타", "mention_count": 95, "first_chapter": 58, "chapters": [58, 59, 64, 67, 68, 72, 74, 75, 79]}, {"name_zh": "司馬昭", "name_ko": "사마소", "aliases": [], "faction": "魏", "mention_count": 95, "first_chapter": 94, "chapters": [94, 95, 102, 103, 104, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119]}, {"name_zh": "夏侯淵", "name_ko": "하후연", "aliases": [], "faction": "魏", "mention_count": 94, "first_chapter": 5, "chapters": [5, 6, 12, 14, 18, 19, 24, 30, 31, 40, 42, 48, 56, 57, 58, 59, 64, 67, 69, 70, 71, 91, 102, 116]}, {"name_zh": "甘寧", "name_ko": "감녕", "aliases": [], "faction": "吳", "mention_count": 93, "first_chapter": 38, "chapters": [38, 39, 44, 45, 46, 47, 49, 50, 51, 53, 56, 66, 67, 68, 82, 83]}, {"name_zh": "王平", "name_ko": "왕평", "aliases": [], "faction": "蜀", "mention_count": 92, "first_chapter": 71, "chapters": [71, 72, 73, 87, 88, 89, 90, 91, 92, 93, 95, 96, 97, 98, 99, 100, 101, 102, 104, 105]}, {"name_zh": "曹洪", "name_ko": "조홍", "aliases": [], "faction": "魏", "mention_count": 91, "first_chapter": 5, "chapters": [5, 6, 11, 12, 14, 17, 22, 24, 26, 30, 31, 32, 33, 40, 41, 48, 50, 51, 56, 57, 58, 59, 61, 69, 70, 71, 78, 80]}, {"name_zh": "于禁", "name_ko": "우금", "aliases": [], "faction": "魏", "mention_count": 90, "first_chapter": 10, "chapters": [10, 11, 12, 14, 16, 17, 18, 22, 23, 24, 26, 27, 30, 31, 33, 39, 40, 41, 45, 46, 48, 58, 59, 73, 74, 75, 79, 82]}, {"name_zh": "陸遜", "name_ko": "육손", "aliases": [], "faction": "吳", "mention_count": 90, "first_chapter": 38, "chapters": [38, 44, 49, 50, 53, 68, 75, 76, 83, 84, 85, 86, 87, 96, 97, 98, 102, 103, 108, 119]}];
+const CHAR_BASES = {"유비": "成都", "제갈량": "成都", "관우": "荆州", "장비": "成都", "조자룡": "成都", "위연": "汉中", "강유": "成都", "마초": "汉中", "황충": "成都", "방통": "成都", "관흥": "成都", "관평": "荆州", "왕평": "成都", "장포": "成都", "유선": "成都", "조조": "许昌", "사마의": "洛阳", "장료": "合肥", "장합": "洛阳", "서황": "洛阳", "하후돈": "许昌", "하후연": "汉中", "허저": "许昌", "등애": "洛阳", "조인": "许昌", "조홍": "许昌", "우금": "许昌", "사마소": "洛阳", "조비": "洛阳", "손권": "建业", "주유": "柴桑", "노숙": "建业", "여몽": "建业", "감녕": "建业", "손책": "建业", "육손": "建业", "여포": "下邳", "동탁": "长安", "원소": "邺城", "원술": "建业", "유표": "襄阳", "맹획": "成都", "유장": "成都", "장로": "汉中"};
+const CHAR_JOURNEYS = {"유비": ["洛阳", "下邳", "许昌", "新野", "长坂坡", "赤壁", "荆州", "成都", "汉中", "夷陵", "白帝城"], "제갈량": ["新野", "赤壁", "荆州", "成都", "汉中", "祁山", "街亭", "祁山", "五丈原"], "관우": ["虎牢关", "下邳", "许昌", "荆州"], "조조": ["洛阳", "许昌", "濮阳", "官渡", "邺城", "赤壁", "许昌", "汉中", "洛阳"], "장비": ["虎牢关", "下邳", "新野", "长坂坡", "荆州", "成都"], "조자룡": ["长坂坡", "荆州", "成都", "汉中"], "여포": ["洛阳", "长安", "濮阳", "下邳"], "주유": ["柴桑", "赤壁"], "손권": ["建业", "合肥", "建业"], "강유": ["成都", "汉中", "祁山", "成都"], "사마의": ["洛阳", "五丈原", "洛阳"]};
+
+const tooltip = d3.select('#tooltip');
+const container = d3.select('#map-container');
+const rect = container.node().getBoundingClientRect();
+const W = rect.width || 1000;
+const H = rect.height || 520;
+const svg = container.append('svg').attr('width', W).attr('height', H);
+
+// Auto-fit to all locations
+const allCoords = Object.values(LOCATIONS).map(l => l.coords);
+const lngs = allCoords.map(c => c[0]);
+const lats = allCoords.map(c => c[1]);
+const centerLng = (d3.min(lngs) + d3.max(lngs)) / 2;
+const centerLat = (d3.min(lats) + d3.max(lats)) / 2;
+const tempProj = d3.geoMercator().center([centerLng, centerLat]).translate([W/2, H/2]).scale(1);
+const points = allCoords.map(c => tempProj(c));
+const fitScale = Math.min(W * 0.85 / (d3.max(points, p=>p[0]) - d3.min(points, p=>p[0])),
+                          H * 0.85 / (d3.max(points, p=>p[1]) - d3.min(points, p=>p[1])));
+
+const projection = d3.geoMercator().center([centerLng, centerLat]).scale(fitScale).translate([W/2, H/2]);
+
+const tileGroup = svg.append('g').attr('class', 'tiles');
+const g = svg.append('g').attr('class', 'overlay');
+
+function renderTiles(transform) {
+  const tiles = d3.tile()
+    .size([W, H])
+    .scale(transform.k * projection.scale() * 2 * Math.PI)
+    .translate(transform.apply(projection([0, 0])))();
+  tileGroup.selectAll('image').remove();
+  tileGroup.selectAll('image').data(tiles).join('image')
+    .attr('xlink:href', d => `https://tiles.stadiamaps.com/tiles/stamen_watercolor/${d[2]}/${d[0]}/${d[1]}.jpg?api_key=${STADIA_KEY}`)
+    .attr('x', d => Math.round((d[0] + tiles.translate[0]) * tiles.scale))
+    .attr('y', d => Math.round((d[1] + tiles.translate[1]) * tiles.scale))
+    .attr('width', Math.round(tiles.scale) + 1)
+    .attr('height', Math.round(tiles.scale) + 1);
+}
+
+const zoom = d3.zoom().scaleExtent([0.5, 30])
+  .on('zoom', event => { g.attr('transform', event.transform); renderTiles(event.transform); });
+svg.call(zoom);
+renderTiles(d3.zoomIdentity);
+
+// Plot locations
+Object.entries(LOCATIONS).forEach(([name, loc]) => {
+  const [x, y] = projection(loc.coords);
+  const color = LOC_TYPE_COLORS[loc.type] || '#888';
+  const r = loc.type === 'capital' ? 7 : loc.type === 'battle' ? 5 : 4;
+  const isCapital = loc.type === 'capital';
+  g.append('circle').attr('cx', x).attr('cy', y).attr('r', r)
+    .attr('fill', color).attr('stroke', '#fff').attr('stroke-width', 1.5).attr('opacity', 0.85)
+    .style('cursor', 'pointer')
+    .on('mouseover', function(event) {
+      tooltip.html(`<b>${loc.ko || name}</b> ${name}<br>${loc.en}<br>${loc.note}`)
+        .style('display','block').style('left',(event.clientX+12)+'px').style('top',(event.clientY-10)+'px');
+      // 호버 시 라벨 표시
+      d3.select(this.parentNode).select(`.label-${name.replace(/[^a-zA-Z]/g,'')}`)
+        .attr('opacity', 1);
+    }).on('mouseout', function() {
+      tooltip.style('display','none');
+      // 수도가 아니면 라벨 숨기기
+      if (!isCapital) {
+        d3.select(this.parentNode).select(`.label-${name.replace(/[^a-zA-Z]/g,'')}`)
+          .attr('opacity', 0);
+      }
+    });
+  const koName = loc.ko || name;
+  g.append('text').attr('class', `city-label label-${name.replace(/[^a-zA-Z]/g,'')}`)
+    .attr('x', x+r+3).attr('y', y+3)
+    .attr('opacity', isCapital ? 1 : 0)
+    .text(`${koName} ${name}`);
+});
+
+// Character list by faction
+const factionOrder = ['蜀', '魏', '吳', '群', '기타'];
+const charList = d3.select('#char-list');
+
+factionOrder.forEach(faction => {
+  const fChars = CHARACTERS.filter(c => c.faction === faction);
+  if (fChars.length === 0) return;
+  const fNames = { '蜀':'촉한 蜀漢', '魏':'조위 曹魏', '吳':'동오 東吳', '群':'군웅 群雄', '기타':'기타' };
+  const section = charList.append('div').attr('class', 'faction-section');
+  section.append('div').attr('class', 'faction-title')
+    .style('color', FACTION_COLORS[faction]).text(fNames[faction] || faction);
+  const grid = section.append('div').attr('class', 'char-grid');
+
+  fChars.forEach(c => {
+    const chip = grid.append('div').attr('class', 'char-chip')
+      .style('border-color', FACTION_COLORS[faction]);
+    chip.html(`${c.name_ko} <span style="color:#888">${c.name_zh}</span><span class="count">${c.mention_count}</span>`);
+    chip.on('mouseover', event => {
+      const aliases = c.aliases && c.aliases.length > 0 ? '<br>별명: ' + c.aliases.join(', ') : '';
+      const base = CHAR_BASES[c.name_ko] || '?';
+      tooltip.html(`<b>${c.name_ko}</b> ${c.name_zh}${aliases}<br>등장: ${c.mention_count}회<br>거점: ${base}`)
+        .style('display','block').style('left',(event.clientX+12)+'px').style('top',(event.clientY-10)+'px');
+    }).on('mouseout', () => tooltip.style('display','none'));
+    chip.on('click', () => {
+      // 기존 경로 제거
+      g.selectAll('.journey-path, .journey-dot, .journey-order').remove();
+
+      const journey = CHAR_JOURNEYS[c.name_ko];
+      if (!journey || journey.length === 0) {
+        // 경로 없으면 거점으로 줌
+        const base = CHAR_BASES[c.name_ko];
+        if (base && LOCATIONS[base]) {
+          const [tx, ty] = projection(LOCATIONS[base].coords);
+          svg.transition().duration(750).call(
+            zoom.transform, d3.zoomIdentity.translate(W/2 - tx*3, H/2 - ty*3).scale(3)
+          );
+        }
+        return;
+      }
+
+      const color = FACTION_COLORS[c.faction] || '#888';
+
+      // 경로선 그리기
+      for (let i = 0; i < journey.length - 1; i++) {
+        const fromLoc = LOCATIONS[journey[i]];
+        const toLoc = LOCATIONS[journey[i+1]];
+        if (!fromLoc || !toLoc) continue;
+        const interp = d3.geoInterpolate(fromLoc.coords, toLoc.coords);
+        const arcPoints = d3.range(0, 1.01, 0.03).map(t => interp(t));
+        g.append('path').attr('class', 'journey-path')
+          .datum({type: 'LineString', coordinates: arcPoints})
+          .attr('d', d3.geoPath().projection(projection))
+          .attr('fill', 'none').attr('stroke', color)
+          .attr('stroke-width', 3).attr('stroke-dasharray', '8 4').attr('opacity', 0.8);
+      }
+
+      // 경로 위 순서 점 + 호버 툴팁
+      journey.forEach((locName, idx) => {
+        const loc = LOCATIONS[locName];
+        if (!loc) return;
+        const [x, y] = projection(loc.coords);
+        const koName = loc.ko || locName;
+
+        // 투명한 큰 히트 영역 (마우스 잡기 쉽게)
+        g.append('circle').attr('class', 'journey-dot')
+          .attr('cx', x).attr('cy', y).attr('r', 16)
+          .attr('fill', 'transparent').style('cursor', 'pointer')
+          .on('mouseover', event => {
+            tooltip.html(`<b>${idx+1}. ${koName}</b> ${locName}<br>${loc.note || ''}`)
+              .style('display','block').style('left',(event.clientX+12)+'px').style('top',(event.clientY-10)+'px');
+          }).on('mouseout', () => tooltip.style('display','none'));
+
+        // 보이는 점
+        g.append('circle').attr('class', 'journey-dot')
+          .attr('cx', x).attr('cy', y).attr('r', 10)
+          .attr('fill', color).attr('stroke', '#fff').attr('stroke-width', 2)
+          .style('pointer-events', 'none');
+        g.append('text').attr('class', 'journey-order')
+          .attr('x', x).attr('y', y + 4).attr('text-anchor', 'middle')
+          .attr('fill', '#fff').attr('font-size', '11px').attr('font-weight', 'bold')
+          .style('pointer-events', 'none')
+          .text(idx + 1);
+      });
+
+      // 줌 리셋
+      svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+    });
+  });
+});
+</script>
+</body>
+</html>

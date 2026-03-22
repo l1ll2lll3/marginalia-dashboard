@@ -1,0 +1,418 @@
+{
+  "locations": {
+    "洛阳": {
+      "en": "Luoyang",
+      "coords": [
+        112.45,
+        34.62
+      ],
+      "type": "capital",
+      "note": "후한/위 수도"
+    },
+    "许昌": {
+      "en": "Xuchang",
+      "coords": [
+        113.85,
+        34.02
+      ],
+      "type": "capital",
+      "note": "조조 본거지"
+    },
+    "长安": {
+      "en": "Chang'an",
+      "coords": [
+        108.94,
+        34.26
+      ],
+      "type": "capital",
+      "note": "서한 수도, 동탁 천도"
+    },
+    "成都": {
+      "en": "Chengdu",
+      "coords": [
+        104.07,
+        30.67
+      ],
+      "type": "capital",
+      "note": "촉한 수도"
+    },
+    "建业": {
+      "en": "Jianye (Nanjing)",
+      "coords": [
+        118.8,
+        32.06
+      ],
+      "type": "capital",
+      "note": "동오 수도"
+    },
+    "赤壁": {
+      "en": "Chibi",
+      "coords": [
+        113.95,
+        29.73
+      ],
+      "type": "battle",
+      "note": "적벽대전"
+    },
+    "荆州": {
+      "en": "Jingzhou",
+      "coords": [
+        112.19,
+        30.33
+      ],
+      "type": "city",
+      "note": "쟁탈의 핵심"
+    },
+    "汉中": {
+      "en": "Hanzhong",
+      "coords": [
+        107.03,
+        33.07
+      ],
+      "type": "city",
+      "note": "촉한 북벌 기지"
+    },
+    "五丈原": {
+      "en": "Wuzhangyuan",
+      "coords": [
+        107.68,
+        34.28
+      ],
+      "type": "battle",
+      "note": "제갈량 최후"
+    },
+    "长坂坡": {
+      "en": "Changban",
+      "coords": [
+        111.75,
+        30.82
+      ],
+      "type": "battle",
+      "note": "조자룡 단기"
+    },
+    "白帝城": {
+      "en": "Baidicheng",
+      "coords": [
+        109.55,
+        31.05
+      ],
+      "type": "city",
+      "note": "유비 임종"
+    },
+    "官渡": {
+      "en": "Guandu",
+      "coords": [
+        113.82,
+        34.72
+      ],
+      "type": "battle",
+      "note": "관도대전"
+    },
+    "邺城": {
+      "en": "Yecheng",
+      "coords": [
+        114.35,
+        36.33
+      ],
+      "type": "city",
+      "note": "원소→조조 거점"
+    },
+    "新野": {
+      "en": "Xinye",
+      "coords": [
+        112.36,
+        32.52
+      ],
+      "type": "city",
+      "note": "유비 주둔, 삼고초려"
+    },
+    "襄阳": {
+      "en": "Xiangyang",
+      "coords": [
+        112.14,
+        32.04
+      ],
+      "type": "city",
+      "note": "유표 거점"
+    },
+    "合肥": {
+      "en": "Hefei",
+      "coords": [
+        117.28,
+        31.82
+      ],
+      "type": "battle",
+      "note": "장료의 합비대전"
+    },
+    "夷陵": {
+      "en": "Yiling",
+      "coords": [
+        111.32,
+        30.77
+      ],
+      "type": "battle",
+      "note": "이릉대전, 유비 대패"
+    },
+    "定军山": {
+      "en": "Dingjunshan",
+      "coords": [
+        106.9,
+        33.1
+      ],
+      "type": "battle",
+      "note": "황충이 하후연 참"
+    },
+    "下邳": {
+      "en": "Xiapi",
+      "coords": [
+        117.96,
+        34.32
+      ],
+      "type": "city",
+      "note": "여포 최후"
+    },
+    "虎牢关": {
+      "en": "Hulao Pass",
+      "coords": [
+        113.05,
+        34.73
+      ],
+      "type": "battle",
+      "note": "삼영전여포"
+    },
+    "濮阳": {
+      "en": "Puyang",
+      "coords": [
+        115.03,
+        35.76
+      ],
+      "type": "city",
+      "note": "조조 vs 여포"
+    },
+    "柴桑": {
+      "en": "Chaisang",
+      "coords": [
+        115.97,
+        29.71
+      ],
+      "type": "city",
+      "note": "주유 본거지"
+    },
+    "街亭": {
+      "en": "Jieting",
+      "coords": [
+        105.75,
+        34.74
+      ],
+      "type": "battle",
+      "note": "마속 실패, 제1차 북벌"
+    },
+    "祁山": {
+      "en": "Qishan",
+      "coords": [
+        105.35,
+        34.15
+      ],
+      "type": "battle",
+      "note": "제갈량 북벌 기지"
+    }
+  },
+  "characters": {
+    "蜀汉": [
+      {
+        "name": "刘备",
+        "en": "Liu Bei",
+        "ko": "유비",
+        "role": "君主",
+        "base": "成都"
+      },
+      {
+        "name": "关羽",
+        "en": "Guan Yu",
+        "ko": "관우",
+        "role": "五虎将",
+        "base": "荆州"
+      },
+      {
+        "name": "张飞",
+        "en": "Zhang Fei",
+        "ko": "장비",
+        "role": "五虎将",
+        "base": "成都"
+      },
+      {
+        "name": "诸葛亮",
+        "en": "Zhuge Liang",
+        "ko": "제갈량",
+        "role": "丞相",
+        "base": "成都"
+      },
+      {
+        "name": "赵云",
+        "en": "Zhao Yun",
+        "ko": "조자룡",
+        "role": "五虎将",
+        "base": "成都"
+      },
+      {
+        "name": "马超",
+        "en": "Ma Chao",
+        "ko": "마초",
+        "role": "五虎将",
+        "base": "汉中"
+      },
+      {
+        "name": "黄忠",
+        "en": "Huang Zhong",
+        "ko": "황충",
+        "role": "五虎将",
+        "base": "汉中"
+      },
+      {
+        "name": "庞统",
+        "en": "Pang Tong",
+        "ko": "방통",
+        "role": "军师",
+        "base": "成都"
+      },
+      {
+        "name": "姜维",
+        "en": "Jiang Wei",
+        "ko": "강유",
+        "role": "大将",
+        "base": "成都"
+      }
+    ],
+    "曹魏": [
+      {
+        "name": "曹操",
+        "en": "Cao Cao",
+        "ko": "조조",
+        "role": "君主",
+        "base": "许昌"
+      },
+      {
+        "name": "曹丕",
+        "en": "Cao Pi",
+        "ko": "조비",
+        "role": "皇帝",
+        "base": "洛阳"
+      },
+      {
+        "name": "司马懿",
+        "en": "Sima Yi",
+        "ko": "사마의",
+        "role": "军师",
+        "base": "洛阳"
+      },
+      {
+        "name": "夏侯惇",
+        "en": "Xiahou Dun",
+        "ko": "하후돈",
+        "role": "大将",
+        "base": "许昌"
+      },
+      {
+        "name": "张辽",
+        "en": "Zhang Liao",
+        "ko": "장료",
+        "role": "五子将",
+        "base": "合肥"
+      },
+      {
+        "name": "荀彧",
+        "en": "Xun Yu",
+        "ko": "순욱",
+        "role": "谋士",
+        "base": "许昌"
+      },
+      {
+        "name": "郭嘉",
+        "en": "Guo Jia",
+        "ko": "곽가",
+        "role": "谋士",
+        "base": "许昌"
+      }
+    ],
+    "东吴": [
+      {
+        "name": "孙权",
+        "en": "Sun Quan",
+        "ko": "손권",
+        "role": "君主",
+        "base": "建业"
+      },
+      {
+        "name": "周瑜",
+        "en": "Zhou Yu",
+        "ko": "주유",
+        "role": "都督",
+        "base": "柴桑"
+      },
+      {
+        "name": "陆逊",
+        "en": "Lu Xun",
+        "ko": "육손",
+        "role": "都督",
+        "base": "建业"
+      },
+      {
+        "name": "鲁肃",
+        "en": "Lu Su",
+        "ko": "노숙",
+        "role": "谋士",
+        "base": "建业"
+      },
+      {
+        "name": "甘宁",
+        "en": "Gan Ning",
+        "ko": "감녕",
+        "role": "大将",
+        "base": "建业"
+      }
+    ],
+    "群雄": [
+      {
+        "name": "吕布",
+        "en": "Lü Bu",
+        "ko": "여포",
+        "role": "猛将",
+        "base": "下邳"
+      },
+      {
+        "name": "董卓",
+        "en": "Dong Zhuo",
+        "ko": "동탁",
+        "role": "暴君",
+        "base": "长安"
+      },
+      {
+        "name": "袁绍",
+        "en": "Yuan Shao",
+        "ko": "원소",
+        "role": "群雄",
+        "base": "邺城"
+      },
+      {
+        "name": "刘表",
+        "en": "Liu Biao",
+        "ko": "유표",
+        "role": "群雄",
+        "base": "襄阳"
+      },
+      {
+        "name": "貂蝉",
+        "en": "Diaochan",
+        "ko": "초선",
+        "role": "美人计",
+        "base": "长安"
+      }
+    ]
+  },
+  "faction_colors": {
+    "蜀汉": "#27ae60",
+    "曹魏": "#2980b9",
+    "东吴": "#e74c3c",
+    "群雄": "#7f8c8d"
+  }
+}
