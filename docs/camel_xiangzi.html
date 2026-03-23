@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marginalia — 骆驼祥子 낙타상자</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-tile@1"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Georgia', serif;
+  background: #faf8f5;
+  color: #2c2c2c;
+  line-height: 1.6;
+}
+.header {
+  text-align: center;
+  padding: 40px 20px 20px;
+  border-bottom: 1px solid #e0dcd4;
+}
+.header h1 { font-size: 28px; font-weight: normal; letter-spacing: 2px; }
+.header .subtitle { color: #888; font-size: 14px; margin-top: 4px; font-style: italic; }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+/* Section */
+.section {
+  margin: 40px 0;
+  background: white;
+  border: 1px solid #e8e4dc;
+  border-radius: 4px;
+  padding: 30px;
+}
+.section h2 {
+  font-size: 18px;
+  font-weight: normal;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  color: #444;
+}
+.section .desc {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 20px;
+}
+
+/* Character selector */
+.char-selector {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.char-btn {
+  padding: 6px 14px;
+  border: 1px solid #d0ccc4;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.char-btn:hover { border-color: #888; }
+.char-btn.active { background: #2c2c2c; color: white; border-color: #2c2c2c; }
+
+/* Journey map */
+#journey-map {
+  width: 100%;
+  height: 400px;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  background: #f0ede6;
+  overflow: hidden;
+}
+#journey-map svg { width: 100%; height: 100%; }
+#journey-map .land { fill: #e8e3d8; stroke: #ccc; stroke-width: 0.5; }
+#journey-map .route { fill: none; stroke-width: 2.5; stroke-dasharray: 6 3; opacity: 0.7; }
+#journey-map .city-dot { stroke: #fff; stroke-width: 2; }
+#journey-map .city-label { font-family: 'Georgia', serif; font-size: 13px; fill: #2c2c2c; }
+#journey-map .route-order { font-family: 'Georgia', serif; font-size: 11px; fill: #fff; }
+
+/* Journey flow */
+.journey-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+.session-card {
+  min-width: 160px;
+  border: 1px solid #e0dcd4;
+  border-radius: 4px;
+  padding: 16px;
+  background: white;
+  position: relative;
+  flex-shrink: 0;
+}
+.session-card .loc-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+.session-card .ch-range {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 12px;
+}
+.session-card .metrics {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.8;
+}
+.session-card .metrics span { font-weight: bold; color: #2c2c2c; }
+.session-arrow {
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  color: #bbb;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.session-card .co-chars {
+  font-size: 11px;
+  color: #999;
+  margin-top: 8px;
+  border-top: 1px solid #f0ece4;
+  padding-top: 8px;
+}
+
+/* Location colors — Gatsby palette (Jazz Age, green light, golden) */
+.loc-West-Egg { border-left: 4px solid #27ae60; }
+.loc-East-Egg { border-left: 4px solid #2980b9; }
+.loc-New-York { border-left: 4px solid #e67e22; }
+.loc-Valley-of-Ashes { border-left: 4px solid #7f8c8d; }
+
+/* Timeline */
+.timeline-container { overflow-x: auto; }
+svg text { font-family: 'Georgia', serif; }
+
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  background: white;
+  border: 1px solid #d0ccc4;
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-size: 12px;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 100;
+  max-width: 280px;
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  text-align: center;
+  padding: 16px;
+  background: #faf8f5;
+  border-radius: 4px;
+}
+.stat-card .number { font-size: 28px; font-weight: bold; }
+.stat-card .label { font-size: 11px; color: #888; margin-top: 4px; }
+
+/* Location legend */
+.location-legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #666;
+}
+.location-legend .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.location-legend .legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* Download section */
+.downloads {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+}
+.downloads::-webkit-scrollbar { height: 4px; }
+.downloads::-webkit-scrollbar-thumb { background: #d0ccc4; border-radius: 2px; }
+.download-card {
+  border: 1px solid #e0dcd4;
+  border-radius: 4px;
+  padding: 14px;
+  background: #faf8f5;
+  min-width: 150px;
+  flex-shrink: 0;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  display: block;
+}
+.download-card:hover {
+  border-color: #888;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.download-card .file-icon { font-size: 18px; margin-bottom: 6px; }
+.download-card .file-title { font-size: 12px; font-weight: bold; color: #2c2c2c; margin-bottom: 3px; }
+.download-card .file-desc { font-size: 11px; color: #888; line-height: 1.4; }
+.download-card .file-size { font-size: 10px; color: #aaa; margin-top: 6px; }
+
+/* Insight callout */
+.insight {
+  background: #f8f6f0;
+  border-left: 3px solid #d4a574;
+  padding: 12px 16px;
+  margin: 16px 0;
+  font-size: 13px;
+  color: #666;
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>MARGINALIA</h1>
+  <div class="subtitle">骆驼祥子 낙타상자 — Character Session Analysis</div>
+</div>
+
+<div class="container">
+
+  <!-- Location Legend -->
+  <div class="location-legend" id="location-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>인화차창</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#2980b9"></div>조댁</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>남성</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#7f8c8d"></div>서성</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>북평</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div>서산</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div>대잡원</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#16a085"></div>동성</div>
+  </div>
+
+  <!-- Journey Flow -->
+  <div class="section" id="journey-section">
+    <h2>A. JOURNEY FLOW</h2>
+    <div class="desc">Select a character to see their journey through the novel. Colors = locations.</div>
+    <div class="char-selector" id="char-selector"></div>
+    <div class="journey-flow" id="journey-flow"></div>
+  </div>
+
+  <!-- Character Timeline -->
+  <div class="section" id="timeline-section">
+    <h2>B. CHARACTER TIMELINE</h2>
+    <div class="desc">All characters across 9 chapters. Color = location.</div>
+    <div class="timeline-container" id="timeline-container"></div>
+  </div>
+
+  <!-- Gatsby's Dialogue Rate -->
+  <div class="section" id="silence-section">
+    <h2>C. 샹쯔(祥子)의 존재감</h2>
+    <div class="desc">Xiangzi's mention rate per chapter. Bar height = % of sentences mentioning Xiangzi(祥子). Color = location.</div>
+    <div id="silence-chart"></div>
+  </div>
+
+  <!-- Narrative Density -->
+  <div class="section" id="density-section">
+    <h2>D. NARRATIVE DENSITY</h2>
+    <div class="desc">Sentence count per chapter. Dark bar = dialogue, light bar = narration. Color = location.</div>
+    <div id="density-chart"></div>
+  </div>
+
+  <!-- Vocabulary Overview -->
+  <div class="section" id="vocab-section">
+    <h2>E. VOCABULARY OVERVIEW</h2>
+    <div class="desc">3,934 unique words across 9 chapters. Difficulty distribution by CEFR level.</div>
+    <div class="stats-grid" id="vocab-stats"></div>
+    <div id="vocab-difficulty-chart"></div>
+  </div>
+
+  <!-- Vocabulary by Chapter -->
+  <div class="section" id="vocab-chapter-section">
+    <h2>F. VOCABULARY BY CHAPTER</h2>
+    <div class="desc">B2+ words and idioms per chapter. Stacked by difficulty level.</div>
+    <div id="vocab-chapter-chart"></div>
+  </div>
+
+  <!-- Top Words -->
+  <div class="section" id="top-words-section">
+    <h2>G. MOST FREQUENT B2+ WORDS</h2>
+    <div class="desc">The 20 hardest words that appear most often — words readers will truly learn through repetition.</div>
+    <div id="top-words-chart"></div>
+  </div>
+
+  <!-- Top Idioms -->
+  <div class="section" id="top-idioms-section">
+    <h2>H. MOST FREQUENT IDIOMS</h2>
+    <div class="desc">245 idioms found. The top 20 by occurrence — phrases that become familiar through the story.</div>
+    <div id="top-idioms-chart"></div>
+  </div>
+
+  <!-- Downloads -->
+  <div class="section" id="download-section">
+    <h2>DOWNLOADS</h2>
+    <div class="desc">骆驼祥子 낙타상자 — free EPUB translations and vocabulary PDF.</div>
+    <div class="downloads">
+      <a class="download-card" href="camel_xiangzi_zh.epub" download>
+        <div class="file-icon">📖</div>
+        <div class="file-title">English Original</div>
+        <div class="file-desc">F. Scott Fitzgerald. Project Gutenberg, public domain.</div>
+        <div class="file-size">EPUB · 119 KB</div>
+      </a>
+      <a class="download-card" href="camel_xiangzi_ko.epub" download>
+        <div class="file-icon">📖</div>
+        <div class="file-title">Korean Translation</div>
+        <div class="file-desc">Full Korean translation. 9 chapters, translated by Claude Sonnet.</div>
+        <div class="file-size">EPUB · 140 KB</div>
+      </a>
+      <a class="download-card" href="great_gatsby_ko_bilingual.epub" download>
+        <div class="file-icon">📖</div>
+        <div class="file-title">Bilingual (Paragraph)</div>
+        <div class="file-desc">Paragraph-level EN + KO side by side. Includes "old sport" translator note.</div>
+        <div class="file-size">EPUB · 274 KB</div>
+      </a>
+      <a class="download-card" href="great_gatsby_ko_interleaved.epub" download>
+        <div class="file-icon">📖</div>
+        <div class="file-title">Interleaved (Sentence)</div>
+        <div class="file-desc">Sentence by sentence. 1 EN + 1 KO alternating.</div>
+        <div class="file-size">EPUB · 282 KB</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<div class="tooltip" id="tooltip" style="display:none;"></div>
+
+<script>
+// ─── Load Data ─────────────────────────────────────────────
+const DATA_URL = 'dashboard_data_camel_xiangzi.json';
+
+const LOCATION_COLORS = {
+  '人和车厂': '#27ae60',
+  '曹宅': '#2980b9',
+  '南城': '#e67e22',
+  '西城': '#7f8c8d',
+  '北平': '#e74c3c',
+  '西山': '#9b59b6',
+  '大杂院': '#f39c12',
+  '东城': '#16a085',
+};
+
+const TOTAL_CHAPTERS = 24;
+
+const tooltip = d3.select('#tooltip');
+
+function showTooltip(html, event) {
+  tooltip.html(html).style('display', 'block')
+    .style('left', (event.pageX + 12) + 'px')
+    .style('top', (event.pageY - 10) + 'px');
+}
+function hideTooltip() { tooltip.style('display', 'none'); }
+
+d3.json(DATA_URL).then(data => {
+  try { renderJourneyFlow(data); } catch(e) { console.error('JourneyFlow:', e); }
+  try { renderTimeline(data); } catch(e) { console.error('Timeline:', e); }
+  try { renderPresenceChart(data); } catch(e) { console.error('Presence:', e); }
+  try { renderDensityChart(data); } catch(e) { console.error('Density:', e); }
+  try { renderVocabOverview(data); } catch(e) { console.error('VocabOverview:', e); }
+  try { renderVocabByChapter(data); } catch(e) { console.error('VocabByChapter:', e); }
+  try { renderTopWords(data); } catch(e) { console.error('TopWords:', e); }
+  try { renderTopIdioms(data); } catch(e) { console.error('TopIdioms:', e); }
+}).catch(e => console.error('Data load failed:', e));
+
+// ─── A0. Journey Map ──────────────────────────────────────
+const CITY_COORDS = {};
+
+
+
+const STADIA_KEY = '5538bf1d-5c88-4d24-9fd3-e81cea1a4883';
+
+function renderJourneyMap(data, charId) {
+  const container = d3.select('#journey-map');
+  container.html('');
+
+  const rect = container.node().getBoundingClientRect();
+  const W = rect.width || 900;
+  const H = rect.height || 400;
+
+  const svg = container.append('svg')
+    .attr('width', W).attr('height', H);
+
+  // Get sessions for this character
+  const sessions = data.sessions.filter(s => s.character_id === charId);
+  const route = [];
+  sessions.forEach(s => {
+    if (route.length === 0 || route[route.length - 1] !== s.location) {
+      if (CITY_COORDS[s.location]) route.push(s.location);
+    }
+  });
+
+  // Auto-fit: 모든 도시가 보이면서 타일이 컨테이너를 꽉 채우도록
+  const allCoords = Object.values(CITY_COORDS);
+  const lngs = allCoords.map(c => c[0]);
+  const lats = allCoords.map(c => c[1]);
+  const centerLng = (d3.min(lngs) + d3.max(lngs)) / 2;
+  const centerLat = (d3.min(lats) + d3.max(lats)) / 2;
+
+  // fitSize 방식: 임시 projection으로 bounding box 계산 후 스케일 맞추기
+  const tempProj = d3.geoMercator().center([centerLng, centerLat]).translate([W/2, H/2]).scale(1);
+  const points = allCoords.map(c => tempProj(c));
+  const xMin = d3.min(points, p => p[0]);
+  const xMax = d3.max(points, p => p[0]);
+  const yMin = d3.min(points, p => p[1]);
+  const yMax = d3.max(points, p => p[1]);
+  const dataW = xMax - xMin || 1;
+  const dataH = yMax - yMin || 1;
+  const padding = 0.15; // 15% 패딩 (도시 라벨 공간)
+  const fitScale = Math.min(W * (1 - padding) / dataW, H * (1 - padding) / dataH);
+
+  let projection = d3.geoMercator()
+    .center([centerLng, centerLat])
+    .scale(fitScale)
+    .translate([W / 2, H / 2]);
+
+  const path = d3.geoPath().projection(projection);
+
+  // Tile layer + overlay group
+  const tileGroup = svg.append('g').attr('class', 'tiles');
+  const g = svg.append('g').attr('class', 'overlay');
+
+  function renderTiles(transform) {
+    const tiles = d3.tile()
+      .size([W, H])
+      .scale(transform.k * projection.scale() * 2 * Math.PI)
+      .translate(transform.apply(projection([0, 0])))
+      ();
+
+    tileGroup.selectAll('image').remove();
+    tileGroup.selectAll('image')
+      .data(tiles)
+      .join('image')
+        .attr('xlink:href', d =>
+          `https://tiles.stadiamaps.com/tiles/stamen_watercolor/${d[2]}/${d[0]}/${d[1]}.jpg?api_key=${STADIA_KEY}`)
+        .attr('x', d => Math.round((d[0] + tiles.translate[0]) * tiles.scale))
+        .attr('y', d => Math.round((d[1] + tiles.translate[1]) * tiles.scale))
+        .attr('width', Math.round(tiles.scale) + 1)
+        .attr('height', Math.round(tiles.scale) + 1);
+  }
+
+  const zoom = d3.zoom()
+    .scaleExtent([0.5, 20])
+    .on('zoom', (event) => {
+      g.attr('transform', event.transform);
+      renderTiles(event.transform);
+    });
+  svg.call(zoom);
+
+  // Initial tile render
+  renderTiles(d3.zoomIdentity);
+
+  {
+    // Routes
+    for (let i = 0; i < route.length - 1; i++) {
+      const from = CITY_COORDS[route[i]];
+      const to = CITY_COORDS[route[i + 1]];
+      const color = LOCATION_COLORS[route[i + 1]] || '#888';
+      const interp = d3.geoInterpolate(from, to);
+      const arcPoints = d3.range(0, 1.01, 0.02).map(t => interp(t));
+      g.append('path')
+        .datum({type: 'LineString', coordinates: arcPoints})
+        .attr('class', 'route').attr('d', path).attr('stroke', color);
+    }
+
+    // Mentioned-only cities (small, muted — not in route but in CITY_COORDS)
+    const routeSet = new Set(route);
+    Object.entries(CITY_COORDS).forEach(([loc, coords]) => {
+      if (routeSet.has(loc)) return;
+      const pt = projection(coords);
+      if (!pt) return;
+      const [x, y] = pt;
+
+      g.append('circle')
+        .attr('cx', x).attr('cy', y).attr('r', 5)
+        .attr('fill', 'none').attr('stroke', '#b0a898').attr('stroke-width', 1.5)
+        .attr('stroke-dasharray', '3 2');
+      g.append('text').attr('class', 'city-label')
+        .attr('x', x + 10).attr('y', y + 4)
+        .attr('text-anchor', 'start')
+        .style('fill', '#b0a898').style('font-size', '11px').style('font-style', 'italic')
+        .text(loc);
+    });
+
+    // Route city dots + labels (on top)
+    route.forEach((loc, i) => {
+      const coords = CITY_COORDS[loc];
+      const [x, y] = projection(coords);
+      const color = LOCATION_COLORS[loc] || '#888';
+      const isFictional = FICTIONAL_LOCS.has(loc);
+
+      g.append('circle').attr('class', 'city-dot')
+        .attr('cx', x).attr('cy', y).attr('r', 8).attr('fill', color)
+        .attr('stroke-dasharray', isFictional ? '4 2' : 'none');
+      g.append('text').attr('class', 'route-order')
+        .attr('x', x).attr('y', y + 4).attr('text-anchor', 'middle').text(i + 1);
+
+      const dx = loc === 'New York' ? -14 : loc === 'West Egg' ? 14 : loc === 'East Egg' ? 14 : 14;
+      const dy = loc === 'New York' ? -12 : loc === 'Valley of Ashes' ? 18 : 4;
+      const anchor = loc === 'New York' ? 'end' : 'start';
+      g.append('text').attr('class', 'city-label')
+        .attr('x', x + dx).attr('y', y + dy).attr('text-anchor', anchor)
+        .style('font-style', isFictional ? 'italic' : 'normal')
+        .text(loc);
+    });
+
+    // Legend for fictional + mentioned
+    const legend = svg.append('g').attr('transform', `translate(${W - 200}, ${H - 50})`);
+    legend.append('circle').attr('cx', 0).attr('cy', 0).attr('r', 5)
+      .attr('fill', 'none').attr('stroke', '#b0a898').attr('stroke-width', 1.5).attr('stroke-dasharray', '3 2');
+    legend.append('text').attr('x', 12).attr('y', 4)
+      .style('font-size', '11px').style('fill', '#b0a898').text('mentioned');
+    legend.append('circle').attr('cx', 0).attr('cy', 20).attr('r', 5)
+      .attr('fill', '#888').attr('stroke', '#fff').attr('stroke-width', 1.5).attr('stroke-dasharray', '4 2');
+    legend.append('text').attr('x', 12).attr('y', 24)
+      .style('font-size', '11px').style('fill', '#888').style('font-style', 'italic').text('fictional');
+
+  }
+}
+
+// ─── A. Journey Flow ───────────────────────────────────────
+function renderJourneyFlow(data) {
+  const selector = d3.select('#char-selector');
+  const charNames = {};
+  data.characters.forEach(c => charNames[c.id] = c.name_ko || c.name);
+
+  const charSessionCount = {};
+  data.sessions.forEach(s => {
+    charSessionCount[s.character_id] = (charSessionCount[s.character_id] || 0) + 1;
+  });
+  const sortedChars = data.characters.slice()
+    .sort((a, b) => (charSessionCount[b.id] || 0) - (charSessionCount[a.id] || 0));
+
+  sortedChars.forEach((c, i) => {
+    selector.append('button')
+      .attr('class', 'char-btn' + (i === 0 ? ' active' : ''))
+      .text(c.name)
+      .on('click', function() {
+        selector.selectAll('.char-btn').classed('active', false);
+        d3.select(this).classed('active', true);
+        updateJourney(c.id, data, charNames);
+        
+      });
+  });
+
+  updateJourney(sortedChars[0].id, data, charNames);
+  
+}
+
+function updateJourney(charId, data, charNames) {
+  const flow = d3.select('#journey-flow');
+  flow.html('');
+
+  const sessions = data.sessions.filter(s => s.character_id === charId);
+
+  sessions.forEach((sess, i) => {
+    if (i > 0) {
+      flow.append('div').attr('class', 'session-arrow').html('&#8594;');
+    }
+
+    const locClass = 'loc-' + sess.location.replace(/\s+/g, '-');
+    const card = flow.append('div')
+      .attr('class', 'session-card ' + locClass);
+
+    card.append('div').attr('class', 'loc-name').text(sess.location);
+    card.append('div').attr('class', 'ch-range')
+      .text(`Ch.${sess.chapter_start}${sess.chapter_start !== sess.chapter_end ? ' \u2013 ' + sess.chapter_end : ''}`);
+
+    const metrics = card.append('div').attr('class', 'metrics');
+    metrics.html(`
+      <span>${sess.sentence_count}</span> sentences<br>
+      <span>${sess.dialogue_count}</span> dialogues
+    `);
+
+    if (sess.co_characters && sess.co_characters.length > 0) {
+      const names = sess.co_characters.slice(0, 4).map(id => charNames[id] || id);
+      const extra = sess.co_characters.length > 4 ? ` +${sess.co_characters.length - 4}` : '';
+      card.append('div').attr('class', 'co-chars')
+        .text('with: ' + names.join(', ') + extra);
+    }
+  });
+}
+
+// ─── B. Character Timeline ─────────────────────────────────
+function renderTimeline(data) {
+  const charNames = {};
+  data.characters.forEach(c => charNames[c.id] = c.name_ko || c.name);
+
+  const charFirst = {};
+  data.sessions.forEach(s => {
+    if (!(s.character_id in charFirst) || s.chapter_start < charFirst[s.character_id]) {
+      charFirst[s.character_id] = s.chapter_start;
+    }
+  });
+  const sortedChars = Object.keys(charFirst).sort((a, b) => charFirst[a] - charFirst[b]);
+
+  const margin = { top: 30, right: 30, bottom: 40, left: 150 };
+  const rowH = 32;
+  const width = 900;
+  const height = margin.top + margin.bottom + sortedChars.length * rowH;
+
+  const svg = d3.select('#timeline-container')
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height)
+    .attr('viewBox', `0 0 ${width} ${height}`)
+    .style('max-width', '100%');
+
+  const x = d3.scaleLinear().domain([1, TOTAL_CHAPTERS]).range([margin.left, width - margin.right]);
+  const y = (i) => margin.top + i * rowH;
+
+  // Chapter axis
+  const xAxis = svg.append('g').attr('transform', `translate(0,${height - margin.bottom})`);
+  for (let ch = 1; ch <= TOTAL_CHAPTERS; ch++) {
+    xAxis.append('text').attr('x', x(ch)).attr('y', 16)
+      .attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', '#999')
+      .text(ch);
+  }
+
+  // Location background bands
+  let prevLoc = null, bandStart = 1;
+  const bands = [];
+  data.chapters.forEach((ch, i) => {
+    if (ch.location !== prevLoc && prevLoc !== null) {
+      bands.push({ loc: prevLoc, start: bandStart, end: ch.number - 1 });
+      bandStart = ch.number;
+    }
+    prevLoc = ch.location;
+  });
+  bands.push({ loc: prevLoc, start: bandStart, end: TOTAL_CHAPTERS });
+
+  bands.forEach(b => {
+    svg.append('rect')
+      .attr('x', x(b.start) - 10)
+      .attr('y', margin.top - 10)
+      .attr('width', x(b.end) - x(b.start) + 20)
+      .attr('height', sortedChars.length * rowH + 4)
+      .attr('fill', LOCATION_COLORS[b.loc] || '#ccc')
+      .attr('opacity', 0.06);
+  });
+
+  // Location labels at top
+  bands.forEach(b => {
+    const cx = (x(b.start) + x(b.end)) / 2;
+    svg.append('text').attr('x', cx).attr('y', margin.top - 16)
+      .attr('text-anchor', 'middle').attr('font-size', 10)
+      .attr('fill', LOCATION_COLORS[b.loc] || '#999')
+      .attr('font-weight', 'bold')
+      .text(b.loc);
+  });
+
+  // Each character row
+  sortedChars.forEach((charId, i) => {
+    const yPos = y(i) + rowH / 2;
+
+    svg.append('text')
+      .attr('x', margin.left - 10)
+      .attr('y', yPos + 4)
+      .attr('text-anchor', 'end')
+      .attr('font-size', 12)
+      .attr('fill', '#444')
+      .text(charNames[charId] || charId);
+
+    const sessions = data.sessions.filter(s => s.character_id === charId);
+    sessions.forEach(sess => {
+      const barX = x(sess.chapter_start);
+      const barW = Math.max(x(sess.chapter_end) - x(sess.chapter_start), 20);
+      const color = LOCATION_COLORS[sess.location] || '#ccc';
+
+      svg.append('rect')
+        .attr('x', barX - 10)
+        .attr('y', yPos - 10)
+        .attr('width', barW + 20)
+        .attr('height', 20)
+        .attr('rx', 3)
+        .attr('fill', color)
+        .attr('opacity', 0.75)
+        .style('cursor', 'pointer')
+        .on('mouseover', function(event) {
+          d3.select(this).attr('opacity', 1);
+          showTooltip(`
+            <strong>${charNames[charId]}</strong> in ${sess.location}<br>
+            Ch.${sess.chapter_start}\u2013${sess.chapter_end}<br>
+            ${sess.sentence_count} sentences
+          `, event);
+        })
+        .on('mousemove', (event) => {
+          tooltip.style('left', (event.pageX + 12) + 'px').style('top', (event.pageY - 10) + 'px');
+        })
+        .on('mouseout', function() {
+          d3.select(this).attr('opacity', 0.75);
+          hideTooltip();
+        });
+    });
+  });
+}
+
+// ─── C. Gatsby's Presence (adapted from Silence Analysis) ──
+function renderPresenceChart(data) {
+  const margin = { top: 20, right: 30, bottom: 60, left: 60 };
+  const width = 860;
+  const height = 280;
+
+  const svg = d3.select('#silence-chart')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .style('max-width', '100%')
+    .append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`);
+
+  // xiangzi_mention 데이터 직접 사용
+  const mentionMap = {};
+  (data.xiangzi_mention || []).forEach(m => { mentionMap[m.chapter] = m.rate; });
+
+  const stats = data.chapter_stats.map(d => {
+    return { ...d, xiangzi_rate: mentionMap[d.chapter] || 0 };
+  });
+
+  const x = d3.scaleBand().domain(stats.map(d => d.chapter)).range([0, width]).padding(0.15);
+  const maxRate = d3.max(stats, d => d.xiangzi_rate);
+  const y = d3.scaleLinear().domain([0, Math.max(maxRate * 1.1, 30)]).range([height, 0]);
+
+  svg.append('g').attr('transform', `translate(0,${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll('text').attr('font-size', 11);
+  svg.append('text').attr('x', width / 2).attr('y', height + 40)
+    .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888').text('Chapter');
+
+  svg.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => d.toFixed(0) + '%'))
+    .selectAll('text').attr('font-size', 10);
+  svg.append('text').attr('transform', 'rotate(-90)').attr('y', -45).attr('x', -height / 2)
+    .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888')
+    .text("샹쯔(祥子) 언급률");
+
+  svg.selectAll('.bar')
+    .data(stats)
+    .join('rect')
+    .attr('x', d => x(d.chapter))
+    .attr('y', d => y(d.xiangzi_rate))
+    .attr('width', x.bandwidth())
+    .attr('height', d => height - y(d.xiangzi_rate))
+    .attr('fill', d => LOCATION_COLORS[d.location] || '#ccc')
+    .attr('opacity', 0.8)
+    .on('mouseover', function(event, d) {
+      d3.select(this).attr('opacity', 1);
+      showTooltip(`
+        <strong>Ch.${d.chapter}</strong> (${d.location})<br>
+        Gatsby presence: <strong>${d.xiangzi_rate.toFixed(1)}%</strong><br>
+        ${d.total_sentences} total sentences
+      `, event);
+    })
+    .on('mousemove', (event) => {
+      tooltip.style('left', (event.pageX + 12) + 'px').style('top', (event.pageY - 10) + 'px');
+    })
+    .on('mouseout', function() {
+      d3.select(this).attr('opacity', 0.8);
+      hideTooltip();
+    });
+
+  d3.select('#silence-section').append('div').attr('class', 'insight')
+    .html('샹쯔(祥子)는 거의 모든 챕터의 중심이다. 그의 존재감이 낮아지는 순간은 주변 인물의 이야기가 전면에 나올 때뿐이다.');
+}
+
+// ─── D. Narrative Density ──────────────────────────────────
+function renderDensityChart(data) {
+  const margin = { top: 20, right: 30, bottom: 60, left: 60 };
+  const width = 860;
+  const height = 280;
+
+  const svg = d3.select('#density-chart')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .style('max-width', '100%')
+    .append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const chapters = data.chapters;
+  const x = d3.scaleBand().domain(chapters.map(d => d.number)).range([0, width]).padding(0.1);
+  const y = d3.scaleLinear().domain([0, d3.max(chapters, d => d.sentence_count || 0) * 1.1]).range([height, 0]);
+
+  svg.append('g').attr('transform', `translate(0,${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll('text').attr('font-size', 11);
+  svg.append('text').attr('x', width / 2).attr('y', height + 40)
+    .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888').text('Chapter');
+
+  svg.append('g').call(d3.axisLeft(y).ticks(5))
+    .selectAll('text').attr('font-size', 10);
+  svg.append('text').attr('transform', 'rotate(-90)').attr('y', -45).attr('x', -height / 2)
+    .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888')
+    .text('Sentences per chapter');
+
+  // Stacked bars
+  chapters.forEach(ch => {
+    const total = ch.sentence_count || 0;
+    const dial = ch.dialogue_count || 0;
+    const narr = total - dial;
+    const color = LOCATION_COLORS[ch.location] || '#ccc';
+
+    // Narration (bottom, lighter)
+    svg.append('rect')
+      .attr('x', x(ch.number))
+      .attr('y', y(total))
+      .attr('width', x.bandwidth())
+      .attr('height', height - y(narr))
+      .attr('fill', color)
+      .attr('opacity', 0.5);
+
+    // Dialogue (top, darker)
+    svg.append('rect')
+      .attr('x', x(ch.number))
+      .attr('y', y(total))
+      .attr('width', x.bandwidth())
+      .attr('height', height - y(dial))
+      .attr('fill', color)
+      .attr('opacity', 0.85)
+      .on('mouseover', function(event) {
+        showTooltip(`
+          <strong>Ch.${ch.number}</strong> (${ch.location})<br>
+          ${total} sentences (${dial} dialogue)
+        `, event);
+      })
+      .on('mousemove', (event) => {
+        tooltip.style('left', (event.pageX + 12) + 'px').style('top', (event.pageY - 10) + 'px');
+      })
+      .on('mouseout', hideTooltip);
+  });
+
+  // Legend
+  const dLegend = svg.append('g').attr('transform', `translate(${width - 220}, 0)`);
+  dLegend.append('rect').attr('x', 0).attr('y', 0).attr('width', 14).attr('height', 14).attr('fill', '#27ae60').attr('opacity', 0.85);
+  dLegend.append('text').attr('x', 20).attr('y', 11).attr('font-size', 11).attr('fill', '#444').text('Dialogue');
+  dLegend.append('rect').attr('x', 0).attr('y', 20).attr('width', 14).attr('height', 14).attr('fill', '#27ae60').attr('opacity', 0.5);
+  dLegend.append('text').attr('x', 20).attr('y', 31).attr('font-size', 11).attr('fill', '#444').text('Narration');
+
+  // Peak annotations
+  const peaks = [
+    { ch: 8, label: '호뉴 결혼' },
+    { ch: 19, label: '호뉴 사망' },
+  ];
+  peaks.forEach(p => {
+    const ch = chapters.find(c => c.number === p.ch);
+    if (!ch) return;
+    const total = ch.sentence_count || 0;
+    svg.append('line')
+      .attr('x1', x(p.ch) + x.bandwidth() / 2)
+      .attr('x2', x(p.ch) + x.bandwidth() / 2)
+      .attr('y1', y(total) - 5)
+      .attr('y2', y(total) - 30)
+      .attr('stroke', '#e74c3c')
+      .attr('stroke-width', 1);
+    svg.append('text')
+      .attr('x', x(p.ch) + x.bandwidth() / 2)
+      .attr('y', y(total) - 33)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', 10)
+      .attr('fill', '#e74c3c')
+      .text(p.label);
+  });
+
+  d3.select('#density-section').append('div').attr('class', 'insight')
+    .html('24챕터에 걸쳐 상자의 인력거꾼 인생이 펼쳐진다. 챕터별 문장 수 변화는 서사의 밀도를 보여준다.');
+}
+
+// ─── E. Vocabulary Overview ──────────────────────────────────
+function renderVocabOverview(data) {
+  const vs = data.vocab_summary;
+  const stats = d3.select('#vocab-stats');
+
+  const cards = [
+    { number: vs.total_words.toLocaleString(), label: 'Total Words' },
+    { number: vs.b2_plus_words.toLocaleString(), label: 'B2+ Words' },
+    { number: vs.total_idioms.toLocaleString(), label: 'Idioms' },
+    { number: Math.round(vs.b2_plus_words / vs.total_words * 100) + '%', label: 'B2+ Ratio' },
+  ];
+  cards.forEach(c => {
+    const card = stats.append('div').attr('class', 'stat-card');
+    card.append('div').attr('class', 'number').text(c.number);
+    card.append('div').attr('class', 'label').text(c.label);
+  });
+
+  const dist = vs.difficulty_distribution;
+  const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+  const levelColors = { A1: '#27ae60', A2: '#2ecc71', B1: '#3498db', B2: '#e67e22', C1: '#e74c3c', C2: '#8e44ad' };
+  const barData = levels.map(l => ({ level: l, count: dist[l] || 0 }));
+
+  const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+  const width = 500, height = 200;
+
+  const svg = d3.select('#vocab-difficulty-chart')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .style('max-width', '100%')
+    .append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleBand().domain(levels).range([0, width]).padding(0.3);
+  const y = d3.scaleLinear().domain([0, d3.max(barData, d => d.count) * 1.1]).range([height, 0]);
+
+  svg.append('g').attr('transform', `translate(0,${height})`).call(d3.axisBottom(x)).selectAll('text').attr('font-size', 12);
+  svg.append('g').call(d3.axisLeft(y).ticks(5)).selectAll('text').attr('font-size', 10);
+
+  svg.selectAll('.bar').data(barData).join('rect')
+    .attr('x', d => x(d.level)).attr('y', d => y(d.count))
+    .attr('width', x.bandwidth()).attr('height', d => height - y(d.count))
+    .attr('fill', d => levelColors[d.level]).attr('opacity', 0.85)
+    .on('mouseover', function(event, d) {
+      d3.select(this).attr('opacity', 1);
+      showTooltip(`<strong>${d.level}</strong>: ${d.count.toLocaleString()} words (${(d.count / vs.total_words * 100).toFixed(1)}%)`, event);
+    })
+    .on('mousemove', event => tooltip.style('left', (event.pageX+12)+'px').style('top', (event.pageY-10)+'px'))
+    .on('mouseout', function() { d3.select(this).attr('opacity', 0.85); hideTooltip(); });
+
+  svg.selectAll('.label').data(barData).join('text')
+    .attr('x', d => x(d.level) + x.bandwidth()/2).attr('y', d => y(d.count) - 5)
+    .attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', '#444')
+    .text(d => d.count.toLocaleString());
+
+  d3.select('#vocab-section').append('div').attr('class', 'insight')
+    .html(`${vs.b2_plus_words} words at B2 or above (${Math.round(vs.b2_plus_words / vs.total_words * 100)}%). Fitzgerald's prose is deceptively simple — but "lawn", "glance", "murmur", and "gesture" carry the weight of a world built on appearances.`);
+}
+
+// ─── F. Vocabulary by Chapter ────────────────────────────────
+function renderVocabByChapter(data) {
+  const chapters = data.chapter_vocab;
+  const margin = { top: 20, right: 30, bottom: 60, left: 60 };
+  const width = 860, height = 280;
+
+  const svg = d3.select('#vocab-chapter-chart')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .style('max-width', '100%')
+    .append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleBand().domain(chapters.map(d => d.chapter)).range([0, width]).padding(0.1);
+  const maxVal = d3.max(chapters, d => (d.B2||0) + (d.C1||0) + (d.C2||0));
+  const y = d3.scaleLinear().domain([0, maxVal * 1.1]).range([height, 0]);
+
+  svg.append('g').attr('transform', `translate(0,${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll('text').attr('font-size', 11);
+  svg.append('text').attr('x', width/2).attr('y', height+40).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888').text('Chapter');
+
+  svg.append('g').call(d3.axisLeft(y).ticks(5)).selectAll('text').attr('font-size', 10);
+  svg.append('text').attr('transform', 'rotate(-90)').attr('y', -45).attr('x', -height/2)
+    .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', '#888').text('B2+ unique words');
+
+  const levelColors = { B2: '#e67e22', C1: '#e74c3c', C2: '#8e44ad' };
+  const stack = ['B2', 'C1', 'C2'];
+
+  chapters.forEach(ch => {
+    let cumY = 0;
+    stack.forEach(level => {
+      const val = ch[level] || 0;
+      svg.append('rect')
+        .attr('x', x(ch.chapter))
+        .attr('y', y(cumY + val))
+        .attr('width', x.bandwidth())
+        .attr('height', height - y(val))
+        .attr('fill', levelColors[level])
+        .attr('opacity', 0.8)
+        .on('mouseover', function(event) {
+          d3.select(this).attr('opacity', 1);
+          showTooltip(`<strong>Ch.${ch.chapter}</strong><br>B2: ${ch.B2||0} / C1: ${ch.C1||0} / C2: ${ch.C2||0}<br>Idioms: ${ch.idiom_count}`, event);
+        })
+        .on('mousemove', event => tooltip.style('left', (event.pageX+12)+'px').style('top', (event.pageY-10)+'px'))
+        .on('mouseout', function() { d3.select(this).attr('opacity', 0.8); hideTooltip(); });
+      cumY += val;
+    });
+  });
+
+  // Legend
+  const legend = svg.append('g').attr('transform', `translate(${width - 180}, 0)`);
+  stack.forEach((level, i) => {
+    legend.append('rect').attr('x', 0).attr('y', i*18).attr('width', 14).attr('height', 14).attr('fill', levelColors[level]).attr('opacity', 0.8);
+    legend.append('text').attr('x', 20).attr('y', i*18+11).attr('font-size', 11).attr('fill', '#444').text(level);
+  });
+
+  d3.select('#vocab-chapter-section').append('div').attr('class', 'insight')
+    .html('챕터별 B2+ 어휘 분포. 라오서의 구어체 베이징 방언이 어휘 난이도에 어떻게 반영되는지 보여준다.');
+}
+
+// ─── G. Top Words ────────────────────────────────────────────
+function renderTopWords(data) {
+  const words = data.vocab_summary.top_vocab.slice(0, 20);
+  const margin = { top: 10, right: 80, bottom: 20, left: 140 };
+  const barH = 22, gap = 4;
+  const width = 700, height = words.length * (barH + gap);
+
+  const levelColors = { B2: '#e67e22', C1: '#e74c3c', C2: '#8e44ad' };
+
+  const svg = d3.select('#top-words-chart')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .style('max-width', '100%')
+    .append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleLinear().domain([0, d3.max(words, d => d.total_occurrences)]).range([0, width]);
+
+  words.forEach((w, i) => {
+    const yPos = i * (barH + gap);
+
+    svg.append('text').attr('x', -6).attr('y', yPos + barH/2 + 4)
+      .attr('text-anchor', 'end').attr('font-size', 12).attr('fill', '#444')
+      .text(w.word);
+
+    svg.append('rect')
+      .attr('x', 0).attr('y', yPos)
+      .attr('width', x(w.total_occurrences)).attr('height', barH)
+      .attr('rx', 2)
+      .attr('fill', levelColors[w.difficulty] || '#999')
+      .attr('opacity', 0.8)
+      .on('mouseover', function(event) {
+        d3.select(this).attr('opacity', 1);
+        showTooltip(`<strong>${w.word}</strong> (${w.difficulty})<br>${w.total_occurrences} occurrences in ${w.chapter_count} chapters<br>${w.definition || ''}`, event);
+      })
+      .on('mousemove', event => tooltip.style('left', (event.pageX+12)+'px').style('top', (event.pageY-10)+'px'))
+      .on('mouseout', function() { d3.select(this).attr('opacity', 0.8); hideTooltip(); });
+
+    svg.append('text').attr('x', x(w.total_occurrences) + 6).attr('y', yPos + barH/2 + 4)
+      .attr('font-size', 11).attr('fill', '#888')
+      .text(`${w.total_occurrences} (${w.difficulty})`);
+  });
+}
+
+// ─── H. Top Idioms ───────────────────────────────────────────
+function renderTopIdioms(data) {
+  const idioms = data.vocab_summary.top_idioms.slice(0, 20);
+  const margin = { top: 10, right: 80, bottom: 20, left: 160 };
+  const barH = 22, gap = 4;
+  const width = 680, height = idioms.length * (barH + gap);
+
+  const svg = d3.select('#top-idioms-chart')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .style('max-width', '100%')
+    .append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleLinear().domain([0, d3.max(idioms, d => d.total_occurrences)]).range([0, width]);
+
+  idioms.forEach((idm, i) => {
+    const yPos = i * (barH + gap);
+    const label = idm.idiom.replace(/_/g, ' ');
+
+    svg.append('text').attr('x', -6).attr('y', yPos + barH/2 + 4)
+      .attr('text-anchor', 'end').attr('font-size', 12).attr('fill', '#444')
+      .text(label);
+
+    svg.append('rect')
+      .attr('x', 0).attr('y', yPos)
+      .attr('width', x(idm.total_occurrences)).attr('height', barH)
+      .attr('rx', 2)
+      .attr('fill', '#d4a574')
+      .attr('opacity', 0.8)
+      .on('mouseover', function(event) {
+        d3.select(this).attr('opacity', 1);
+        showTooltip(`<strong>${label}</strong><br>${idm.meaning || ''}<br>${idm.total_occurrences} occurrences in ${idm.chapter_count} chapters`, event);
+      })
+      .on('mousemove', event => tooltip.style('left', (event.pageX+12)+'px').style('top', (event.pageY-10)+'px'))
+      .on('mouseout', function() { d3.select(this).attr('opacity', 0.8); hideTooltip(); });
+
+    svg.append('text').attr('x', x(idm.total_occurrences) + 6).attr('y', yPos + barH/2 + 4)
+      .attr('font-size', 11).attr('fill', '#888')
+      .text(`${idm.total_occurrences} (${idm.chapter_count} ch)`);
+  });
+
+  d3.select('#top-idioms-section').append('div').attr('class', 'insight')
+    .html('Fitzgerald\'s idioms paint a world of restless motion — "up and down", "a great deal", "for a while". The language itself oscillates, mirroring the novel\'s tension between dream and disillusionment.');
+}
+</script>
+</body>
+</html>

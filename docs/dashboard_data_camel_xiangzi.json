@@ -1,0 +1,1488 @@
+{
+  "characters": [
+    {
+      "id": "xiangzi",
+      "name": "祥子",
+      "name_ko": "샹쯔",
+      "role": "major"
+    },
+    {
+      "id": "huniu",
+      "name": "虎妞",
+      "name_ko": "호뉴",
+      "role": "major"
+    },
+    {
+      "id": "liu_si",
+      "name": "刘四爷",
+      "name_ko": "류쓰예",
+      "role": "major"
+    },
+    {
+      "id": "xiao_fuzi",
+      "name": "小福子",
+      "name_ko": "샤오푸쯔",
+      "role": "major"
+    },
+    {
+      "id": "mr_cao",
+      "name": "曹先生",
+      "name_ko": "차오 선생",
+      "role": "supporting"
+    },
+    {
+      "id": "gao_ma",
+      "name": "高妈",
+      "name_ko": "가오마",
+      "role": "supporting"
+    },
+    {
+      "id": "er_qiangzi",
+      "name": "二强子",
+      "name_ko": "얼창즈",
+      "role": "supporting"
+    },
+    {
+      "id": "ruan_ming",
+      "name": "阮明",
+      "name_ko": "루안밍",
+      "role": "minor"
+    }
+  ],
+  "sessions": [
+    {
+      "character_id": "er_qiangzi",
+      "character_name": "얼창즈",
+      "location": "大杂院",
+      "chapter_start": 17,
+      "chapter_end": 19,
+      "sentence_count": 20,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "liu_si",
+        "xiangzi",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "er_qiangzi",
+      "character_name": "얼창즈",
+      "location": "人和车厂",
+      "chapter_start": 20,
+      "chapter_end": 20,
+      "sentence_count": 7,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "xiangzi",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "er_qiangzi",
+      "character_name": "얼창즈",
+      "location": "曹宅",
+      "chapter_start": 22,
+      "chapter_end": 23,
+      "sentence_count": 5,
+      "dialogue_count": 0,
+      "co_characters": [
+        "gao_ma",
+        "huniu",
+        "liu_si",
+        "mr_cao",
+        "ruan_ming",
+        "xiangzi",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "gao_ma",
+      "character_name": "가오마",
+      "location": "曹宅",
+      "chapter_start": 7,
+      "chapter_end": 8,
+      "sentence_count": 24,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "liu_si",
+        "mr_cao",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "gao_ma",
+      "character_name": "가오마",
+      "location": "北平",
+      "chapter_start": 9,
+      "chapter_end": 10,
+      "sentence_count": 1,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "liu_si",
+        "mr_cao",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "gao_ma",
+      "character_name": "가오마",
+      "location": "曹宅",
+      "chapter_start": 11,
+      "chapter_end": 14,
+      "sentence_count": 14,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "mr_cao",
+        "ruan_ming",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "gao_ma",
+      "character_name": "가오마",
+      "location": "曹宅",
+      "chapter_start": 22,
+      "chapter_end": 23,
+      "sentence_count": 11,
+      "dialogue_count": 0,
+      "co_characters": [
+        "er_qiangzi",
+        "huniu",
+        "liu_si",
+        "mr_cao",
+        "ruan_ming",
+        "xiangzi",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "huniu",
+      "character_name": "호뉴",
+      "location": "人和车厂",
+      "chapter_start": 4,
+      "chapter_end": 4,
+      "sentence_count": 7,
+      "dialogue_count": 0,
+      "co_characters": [
+        "liu_si",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "huniu",
+      "character_name": "호뉴",
+      "location": "西城",
+      "chapter_start": 5,
+      "chapter_end": 5,
+      "sentence_count": 2,
+      "dialogue_count": 0,
+      "co_characters": [
+        "liu_si",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "huniu",
+      "character_name": "호뉴",
+      "location": "曹宅",
+      "chapter_start": 6,
+      "chapter_end": 8,
+      "sentence_count": 6,
+      "dialogue_count": 0,
+      "co_characters": [
+        "gao_ma",
+        "liu_si",
+        "mr_cao",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "huniu",
+      "character_name": "호뉴",
+      "location": "北平",
+      "chapter_start": 9,
+      "chapter_end": 10,
+      "sentence_count": 9,
+      "dialogue_count": 0,
+      "co_characters": [
+        "gao_ma",
+        "liu_si",
+        "mr_cao",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "huniu",
+      "character_name": "호뉴",
+      "location": "曹宅",
+      "chapter_start": 11,
+      "chapter_end": 14,
+      "sentence_count": 25,
+      "dialogue_count": 0,
+      "co_characters": [
+        "gao_ma",
+        "liu_si",
+        "mr_cao",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "huniu",
+      "character_name": "호뉴",
+      "location": "南城",
+      "chapter_start": 15,
+      "chapter_end": 15,
+      "sentence_count": 15,
+      "dialogue_count": 0,
+      "co_characters": [
+        "liu_si",
+        "mr_cao",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "huniu",
+      "character_name": "호뉴",
+      "location": "大杂院",
+      "chapter_start": 16,
+      "chapter_end": 19,
+      "sentence_count": 73,
+      "dialogue_count": 0,
+      "co_characters": [
+        "er_qiangzi",
+        "liu_si",
+        "mr_cao",
+        "xiangzi",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "huniu",
+      "character_name": "호뉴",
+      "location": "人和车厂",
+      "chapter_start": 20,
+      "chapter_end": 20,
+      "sentence_count": 12,
+      "dialogue_count": 0,
+      "co_characters": [
+        "er_qiangzi",
+        "xiangzi",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "huniu",
+      "character_name": "호뉴",
+      "location": "大杂院",
+      "chapter_start": 21,
+      "chapter_end": 21,
+      "sentence_count": 5,
+      "dialogue_count": 0,
+      "co_characters": [
+        "liu_si",
+        "xiangzi",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "huniu",
+      "character_name": "호뉴",
+      "location": "曹宅",
+      "chapter_start": 22,
+      "chapter_end": 23,
+      "sentence_count": 5,
+      "dialogue_count": 0,
+      "co_characters": [
+        "er_qiangzi",
+        "gao_ma",
+        "liu_si",
+        "mr_cao",
+        "ruan_ming",
+        "xiangzi",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "liu_si",
+      "character_name": "류쓰예",
+      "location": "人和车厂",
+      "chapter_start": 4,
+      "chapter_end": 4,
+      "sentence_count": 20,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "liu_si",
+      "character_name": "류쓰예",
+      "location": "西城",
+      "chapter_start": 5,
+      "chapter_end": 5,
+      "sentence_count": 1,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "liu_si",
+      "character_name": "류쓰예",
+      "location": "曹宅",
+      "chapter_start": 6,
+      "chapter_end": 8,
+      "sentence_count": 9,
+      "dialogue_count": 0,
+      "co_characters": [
+        "gao_ma",
+        "huniu",
+        "mr_cao",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "liu_si",
+      "character_name": "류쓰예",
+      "location": "北平",
+      "chapter_start": 9,
+      "chapter_end": 10,
+      "sentence_count": 4,
+      "dialogue_count": 0,
+      "co_characters": [
+        "gao_ma",
+        "huniu",
+        "mr_cao",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "liu_si",
+      "character_name": "류쓰예",
+      "location": "曹宅",
+      "chapter_start": 13,
+      "chapter_end": 14,
+      "sentence_count": 43,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "mr_cao",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "liu_si",
+      "character_name": "류쓰예",
+      "location": "南城",
+      "chapter_start": 15,
+      "chapter_end": 15,
+      "sentence_count": 4,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "mr_cao",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "liu_si",
+      "character_name": "류쓰예",
+      "location": "大杂院",
+      "chapter_start": 16,
+      "chapter_end": 19,
+      "sentence_count": 4,
+      "dialogue_count": 0,
+      "co_characters": [
+        "er_qiangzi",
+        "huniu",
+        "mr_cao",
+        "xiangzi",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "liu_si",
+      "character_name": "류쓰예",
+      "location": "大杂院",
+      "chapter_start": 21,
+      "chapter_end": 21,
+      "sentence_count": 2,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "xiangzi",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "liu_si",
+      "character_name": "류쓰예",
+      "location": "曹宅",
+      "chapter_start": 22,
+      "chapter_end": 23,
+      "sentence_count": 5,
+      "dialogue_count": 0,
+      "co_characters": [
+        "er_qiangzi",
+        "gao_ma",
+        "huniu",
+        "mr_cao",
+        "ruan_ming",
+        "xiangzi",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "mr_cao",
+      "character_name": "차오 선생",
+      "location": "曹宅",
+      "chapter_start": 6,
+      "chapter_end": 8,
+      "sentence_count": 47,
+      "dialogue_count": 0,
+      "co_characters": [
+        "gao_ma",
+        "huniu",
+        "liu_si",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "mr_cao",
+      "character_name": "차오 선생",
+      "location": "北平",
+      "chapter_start": 9,
+      "chapter_end": 10,
+      "sentence_count": 3,
+      "dialogue_count": 0,
+      "co_characters": [
+        "gao_ma",
+        "huniu",
+        "liu_si",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "mr_cao",
+      "character_name": "차오 선생",
+      "location": "曹宅",
+      "chapter_start": 11,
+      "chapter_end": 14,
+      "sentence_count": 58,
+      "dialogue_count": 0,
+      "co_characters": [
+        "gao_ma",
+        "huniu",
+        "liu_si",
+        "ruan_ming",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "mr_cao",
+      "character_name": "차오 선생",
+      "location": "南城",
+      "chapter_start": 15,
+      "chapter_end": 15,
+      "sentence_count": 2,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "liu_si",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "mr_cao",
+      "character_name": "차오 선생",
+      "location": "大杂院",
+      "chapter_start": 16,
+      "chapter_end": 19,
+      "sentence_count": 1,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "liu_si",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "mr_cao",
+      "character_name": "차오 선생",
+      "location": "曹宅",
+      "chapter_start": 22,
+      "chapter_end": 23,
+      "sentence_count": 30,
+      "dialogue_count": 0,
+      "co_characters": [
+        "er_qiangzi",
+        "gao_ma",
+        "huniu",
+        "liu_si",
+        "ruan_ming",
+        "xiangzi",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "ruan_ming",
+      "character_name": "루안밍",
+      "location": "曹宅",
+      "chapter_start": 12,
+      "chapter_end": 14,
+      "sentence_count": 7,
+      "dialogue_count": 0,
+      "co_characters": [
+        "gao_ma",
+        "mr_cao",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "ruan_ming",
+      "character_name": "루안밍",
+      "location": "曹宅",
+      "chapter_start": 22,
+      "chapter_end": 23,
+      "sentence_count": 1,
+      "dialogue_count": 0,
+      "co_characters": [
+        "er_qiangzi",
+        "gao_ma",
+        "huniu",
+        "liu_si",
+        "mr_cao",
+        "xiangzi",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "ruan_ming",
+      "character_name": "루안밍",
+      "location": "北平",
+      "chapter_start": 24,
+      "chapter_end": 24,
+      "sentence_count": 24,
+      "dialogue_count": 0,
+      "co_characters": [
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "xiangzi",
+      "character_name": "샹쯔",
+      "location": "西城",
+      "chapter_start": 1,
+      "chapter_end": 2,
+      "sentence_count": 34,
+      "dialogue_count": 0,
+      "co_characters": []
+    },
+    {
+      "character_id": "xiangzi",
+      "character_name": "샹쯔",
+      "location": "北平",
+      "chapter_start": 3,
+      "chapter_end": 3,
+      "sentence_count": 26,
+      "dialogue_count": 0,
+      "co_characters": []
+    },
+    {
+      "character_id": "xiangzi",
+      "character_name": "샹쯔",
+      "location": "人和车厂",
+      "chapter_start": 4,
+      "chapter_end": 4,
+      "sentence_count": 41,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "liu_si"
+      ]
+    },
+    {
+      "character_id": "xiangzi",
+      "character_name": "샹쯔",
+      "location": "西城",
+      "chapter_start": 5,
+      "chapter_end": 5,
+      "sentence_count": 42,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "liu_si"
+      ]
+    },
+    {
+      "character_id": "xiangzi",
+      "character_name": "샹쯔",
+      "location": "曹宅",
+      "chapter_start": 6,
+      "chapter_end": 8,
+      "sentence_count": 97,
+      "dialogue_count": 0,
+      "co_characters": [
+        "gao_ma",
+        "huniu",
+        "liu_si",
+        "mr_cao"
+      ]
+    },
+    {
+      "character_id": "xiangzi",
+      "character_name": "샹쯔",
+      "location": "北平",
+      "chapter_start": 9,
+      "chapter_end": 10,
+      "sentence_count": 43,
+      "dialogue_count": 0,
+      "co_characters": [
+        "gao_ma",
+        "huniu",
+        "liu_si",
+        "mr_cao"
+      ]
+    },
+    {
+      "character_id": "xiangzi",
+      "character_name": "샹쯔",
+      "location": "曹宅",
+      "chapter_start": 11,
+      "chapter_end": 14,
+      "sentence_count": 177,
+      "dialogue_count": 0,
+      "co_characters": [
+        "gao_ma",
+        "huniu",
+        "liu_si",
+        "mr_cao",
+        "ruan_ming"
+      ]
+    },
+    {
+      "character_id": "xiangzi",
+      "character_name": "샹쯔",
+      "location": "南城",
+      "chapter_start": 15,
+      "chapter_end": 15,
+      "sentence_count": 29,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "liu_si",
+        "mr_cao"
+      ]
+    },
+    {
+      "character_id": "xiangzi",
+      "character_name": "샹쯔",
+      "location": "大杂院",
+      "chapter_start": 16,
+      "chapter_end": 19,
+      "sentence_count": 104,
+      "dialogue_count": 0,
+      "co_characters": [
+        "er_qiangzi",
+        "huniu",
+        "liu_si",
+        "mr_cao",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "xiangzi",
+      "character_name": "샹쯔",
+      "location": "人和车厂",
+      "chapter_start": 20,
+      "chapter_end": 20,
+      "sentence_count": 39,
+      "dialogue_count": 0,
+      "co_characters": [
+        "er_qiangzi",
+        "huniu",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "xiangzi",
+      "character_name": "샹쯔",
+      "location": "大杂院",
+      "chapter_start": 21,
+      "chapter_end": 21,
+      "sentence_count": 42,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "liu_si",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "xiangzi",
+      "character_name": "샹쯔",
+      "location": "曹宅",
+      "chapter_start": 22,
+      "chapter_end": 23,
+      "sentence_count": 63,
+      "dialogue_count": 0,
+      "co_characters": [
+        "er_qiangzi",
+        "gao_ma",
+        "huniu",
+        "liu_si",
+        "mr_cao",
+        "ruan_ming",
+        "xiao_fuzi"
+      ]
+    },
+    {
+      "character_id": "xiangzi",
+      "character_name": "샹쯔",
+      "location": "北平",
+      "chapter_start": 24,
+      "chapter_end": 24,
+      "sentence_count": 16,
+      "dialogue_count": 0,
+      "co_characters": [
+        "ruan_ming"
+      ]
+    },
+    {
+      "character_id": "xiao_fuzi",
+      "character_name": "샤오푸쯔",
+      "location": "大杂院",
+      "chapter_start": 17,
+      "chapter_end": 19,
+      "sentence_count": 49,
+      "dialogue_count": 0,
+      "co_characters": [
+        "er_qiangzi",
+        "huniu",
+        "liu_si",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "xiao_fuzi",
+      "character_name": "샤오푸쯔",
+      "location": "人和车厂",
+      "chapter_start": 20,
+      "chapter_end": 20,
+      "sentence_count": 12,
+      "dialogue_count": 0,
+      "co_characters": [
+        "er_qiangzi",
+        "huniu",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "xiao_fuzi",
+      "character_name": "샤오푸쯔",
+      "location": "大杂院",
+      "chapter_start": 21,
+      "chapter_end": 21,
+      "sentence_count": 2,
+      "dialogue_count": 0,
+      "co_characters": [
+        "huniu",
+        "liu_si",
+        "xiangzi"
+      ]
+    },
+    {
+      "character_id": "xiao_fuzi",
+      "character_name": "샤오푸쯔",
+      "location": "曹宅",
+      "chapter_start": 22,
+      "chapter_end": 23,
+      "sentence_count": 28,
+      "dialogue_count": 0,
+      "co_characters": [
+        "er_qiangzi",
+        "gao_ma",
+        "huniu",
+        "liu_si",
+        "mr_cao",
+        "ruan_ming",
+        "xiangzi"
+      ]
+    }
+  ],
+  "chapters": [
+    {
+      "number": 1,
+      "location": "西城",
+      "sentence_count": 163,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 2,
+      "location": "西城",
+      "sentence_count": 153,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 3,
+      "location": "北平",
+      "sentence_count": 217,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 4,
+      "location": "人和车厂",
+      "sentence_count": 182,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 5,
+      "location": "西城",
+      "sentence_count": 172,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 6,
+      "location": "曹宅",
+      "sentence_count": 207,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 7,
+      "location": "曹宅",
+      "sentence_count": 194,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 8,
+      "location": "曹宅",
+      "sentence_count": 152,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 9,
+      "location": "北平",
+      "sentence_count": 178,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 10,
+      "location": "北平",
+      "sentence_count": 212,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 11,
+      "location": "曹宅",
+      "sentence_count": 229,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 12,
+      "location": "曹宅",
+      "sentence_count": 248,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 13,
+      "location": "曹宅",
+      "sentence_count": 235,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 14,
+      "location": "曹宅",
+      "sentence_count": 216,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 15,
+      "location": "南城",
+      "sentence_count": 234,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 16,
+      "location": "大杂院",
+      "sentence_count": 229,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 17,
+      "location": "大杂院",
+      "sentence_count": 211,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 18,
+      "location": "大杂院",
+      "sentence_count": 181,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 19,
+      "location": "大杂院",
+      "sentence_count": 206,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 20,
+      "location": "人和车厂",
+      "sentence_count": 203,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 21,
+      "location": "大杂院",
+      "sentence_count": 197,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 22,
+      "location": "曹宅",
+      "sentence_count": 215,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 23,
+      "location": "曹宅",
+      "sentence_count": 184,
+      "dialogue_count": 0,
+      "characters": []
+    },
+    {
+      "number": 24,
+      "location": "北平",
+      "sentence_count": 170,
+      "dialogue_count": 0,
+      "characters": []
+    }
+  ],
+  "chapter_stats": [
+    {
+      "chapter": 1,
+      "dialogue_count": 0,
+      "total": 163,
+      "location": "西城"
+    },
+    {
+      "chapter": 2,
+      "dialogue_count": 0,
+      "total": 153,
+      "location": "西城"
+    },
+    {
+      "chapter": 3,
+      "dialogue_count": 0,
+      "total": 217,
+      "location": "北平"
+    },
+    {
+      "chapter": 4,
+      "dialogue_count": 0,
+      "total": 182,
+      "location": "人和车厂"
+    },
+    {
+      "chapter": 5,
+      "dialogue_count": 0,
+      "total": 172,
+      "location": "西城"
+    },
+    {
+      "chapter": 6,
+      "dialogue_count": 0,
+      "total": 207,
+      "location": "曹宅"
+    },
+    {
+      "chapter": 7,
+      "dialogue_count": 0,
+      "total": 194,
+      "location": "曹宅"
+    },
+    {
+      "chapter": 8,
+      "dialogue_count": 0,
+      "total": 152,
+      "location": "曹宅"
+    },
+    {
+      "chapter": 9,
+      "dialogue_count": 0,
+      "total": 178,
+      "location": "北平"
+    },
+    {
+      "chapter": 10,
+      "dialogue_count": 0,
+      "total": 212,
+      "location": "北平"
+    },
+    {
+      "chapter": 11,
+      "dialogue_count": 0,
+      "total": 229,
+      "location": "曹宅"
+    },
+    {
+      "chapter": 12,
+      "dialogue_count": 0,
+      "total": 248,
+      "location": "曹宅"
+    },
+    {
+      "chapter": 13,
+      "dialogue_count": 0,
+      "total": 235,
+      "location": "曹宅"
+    },
+    {
+      "chapter": 14,
+      "dialogue_count": 0,
+      "total": 216,
+      "location": "曹宅"
+    },
+    {
+      "chapter": 15,
+      "dialogue_count": 0,
+      "total": 234,
+      "location": "南城"
+    },
+    {
+      "chapter": 16,
+      "dialogue_count": 0,
+      "total": 229,
+      "location": "大杂院"
+    },
+    {
+      "chapter": 17,
+      "dialogue_count": 0,
+      "total": 211,
+      "location": "大杂院"
+    },
+    {
+      "chapter": 18,
+      "dialogue_count": 0,
+      "total": 181,
+      "location": "大杂院"
+    },
+    {
+      "chapter": 19,
+      "dialogue_count": 0,
+      "total": 206,
+      "location": "大杂院"
+    },
+    {
+      "chapter": 20,
+      "dialogue_count": 0,
+      "total": 203,
+      "location": "人和车厂"
+    },
+    {
+      "chapter": 21,
+      "dialogue_count": 0,
+      "total": 197,
+      "location": "大杂院"
+    },
+    {
+      "chapter": 22,
+      "dialogue_count": 0,
+      "total": 215,
+      "location": "曹宅"
+    },
+    {
+      "chapter": 23,
+      "dialogue_count": 0,
+      "total": 184,
+      "location": "曹宅"
+    },
+    {
+      "chapter": 24,
+      "dialogue_count": 0,
+      "total": 170,
+      "location": "北平"
+    }
+  ],
+  "vocab_summary": {
+    "C2": 7454,
+    "C1": 7010,
+    "B2": 5266
+  },
+  "chapter_vocab": [
+    {
+      "chapter": 1,
+      "C2": 332,
+      "C1": 334,
+      "B2": 248
+    },
+    {
+      "chapter": 2,
+      "C2": 265,
+      "B2": 210,
+      "C1": 282
+    },
+    {
+      "chapter": 3,
+      "C1": 308,
+      "C2": 378,
+      "B2": 278
+    },
+    {
+      "chapter": 4,
+      "C1": 304,
+      "B2": 160,
+      "C2": 283
+    },
+    {
+      "chapter": 5,
+      "C2": 308,
+      "C1": 291,
+      "B2": 249
+    },
+    {
+      "chapter": 6,
+      "C2": 347,
+      "B2": 223,
+      "C1": 298
+    },
+    {
+      "chapter": 7,
+      "C2": 280,
+      "C1": 245,
+      "B2": 214
+    },
+    {
+      "chapter": 8,
+      "B2": 212,
+      "C1": 301,
+      "C2": 359
+    },
+    {
+      "chapter": 9,
+      "C1": 234,
+      "C2": 245,
+      "B2": 157
+    },
+    {
+      "chapter": 10,
+      "C2": 250,
+      "C1": 288,
+      "B2": 207
+    },
+    {
+      "chapter": 11,
+      "B2": 206,
+      "C1": 232,
+      "C2": 253
+    },
+    {
+      "chapter": 12,
+      "C1": 287,
+      "B2": 191,
+      "C2": 280
+    },
+    {
+      "chapter": 13,
+      "C2": 263,
+      "C1": 321,
+      "B2": 192
+    },
+    {
+      "chapter": 14,
+      "B2": 192,
+      "C1": 232,
+      "C2": 291
+    },
+    {
+      "chapter": 15,
+      "C1": 321,
+      "B2": 188,
+      "C2": 341
+    },
+    {
+      "chapter": 16,
+      "C1": 315,
+      "C2": 283,
+      "B2": 271
+    },
+    {
+      "chapter": 17,
+      "C1": 367,
+      "C2": 369,
+      "B2": 255
+    },
+    {
+      "chapter": 18,
+      "C2": 363,
+      "B2": 235,
+      "C1": 312
+    },
+    {
+      "chapter": 19,
+      "C1": 263,
+      "C2": 318,
+      "B2": 241
+    },
+    {
+      "chapter": 20,
+      "C2": 312,
+      "C1": 297,
+      "B2": 232
+    },
+    {
+      "chapter": 21,
+      "C2": 346,
+      "C1": 294,
+      "B2": 223
+    },
+    {
+      "chapter": 22,
+      "C1": 275,
+      "C2": 296,
+      "B2": 235
+    },
+    {
+      "chapter": 23,
+      "C1": 269,
+      "C2": 259,
+      "B2": 203
+    },
+    {
+      "chapter": 24,
+      "C2": 433,
+      "B2": 244,
+      "C1": 340
+    }
+  ],
+  "top_vocab": [
+    {
+      "word": "什么",
+      "count": 355,
+      "difficulty": "B2"
+    },
+    {
+      "word": "没有",
+      "count": 329,
+      "difficulty": "B2"
+    },
+    {
+      "word": "一个",
+      "count": 196,
+      "difficulty": "B2"
+    },
+    {
+      "word": "他们",
+      "count": 185,
+      "difficulty": "B2"
+    },
+    {
+      "word": "这个",
+      "count": 179,
+      "difficulty": "B2"
+    },
+    {
+      "word": "起来",
+      "count": 167,
+      "difficulty": "B2"
+    },
+    {
+      "word": "那么",
+      "count": 159,
+      "difficulty": "B2"
+    },
+    {
+      "word": "觉得",
+      "count": 135,
+      "difficulty": "B2"
+    },
+    {
+      "word": "东西",
+      "count": 127,
+      "difficulty": "B2"
+    },
+    {
+      "word": "出来",
+      "count": 122,
+      "difficulty": "B2"
+    },
+    {
+      "word": "现在",
+      "count": 96,
+      "difficulty": "B2"
+    },
+    {
+      "word": "仿佛",
+      "count": 96,
+      "difficulty": "B2"
+    },
+    {
+      "word": "已经",
+      "count": 88,
+      "difficulty": "B2"
+    },
+    {
+      "word": "四爷",
+      "count": 81,
+      "difficulty": "B2"
+    },
+    {
+      "word": "的话",
+      "count": 76,
+      "difficulty": "B2"
+    },
+    {
+      "word": "看见",
+      "count": 73,
+      "difficulty": "B2"
+    },
+    {
+      "word": "不会",
+      "count": 59,
+      "difficulty": "B2"
+    },
+    {
+      "word": "晓得",
+      "count": 57,
+      "difficulty": "B2"
+    },
+    {
+      "word": "心里",
+      "count": 45,
+      "difficulty": "B2"
+    },
+    {
+      "word": "买卖",
+      "count": 44,
+      "difficulty": "B2"
+    }
+  ],
+  "top_idioms": [],
+  "xiangzi_mention": [
+    {
+      "chapter": 1,
+      "rate": 8.6
+    },
+    {
+      "chapter": 2,
+      "rate": 15.0
+    },
+    {
+      "chapter": 3,
+      "rate": 12.0
+    },
+    {
+      "chapter": 4,
+      "rate": 25.8
+    },
+    {
+      "chapter": 5,
+      "rate": 27.9
+    },
+    {
+      "chapter": 6,
+      "rate": 15.9
+    },
+    {
+      "chapter": 7,
+      "rate": 20.6
+    },
+    {
+      "chapter": 8,
+      "rate": 18.4
+    },
+    {
+      "chapter": 9,
+      "rate": 20.8
+    },
+    {
+      "chapter": 10,
+      "rate": 4.2
+    },
+    {
+      "chapter": 11,
+      "rate": 23.6
+    },
+    {
+      "chapter": 12,
+      "rate": 14.9
+    },
+    {
+      "chapter": 13,
+      "rate": 22.1
+    },
+    {
+      "chapter": 14,
+      "rate": 22.2
+    },
+    {
+      "chapter": 15,
+      "rate": 12.4
+    },
+    {
+      "chapter": 16,
+      "rate": 12.2
+    },
+    {
+      "chapter": 17,
+      "rate": 10.4
+    },
+    {
+      "chapter": 18,
+      "rate": 8.8
+    },
+    {
+      "chapter": 19,
+      "rate": 18.9
+    },
+    {
+      "chapter": 20,
+      "rate": 20.2
+    },
+    {
+      "chapter": 21,
+      "rate": 21.3
+    },
+    {
+      "chapter": 22,
+      "rate": 21.4
+    },
+    {
+      "chapter": 23,
+      "rate": 13.0
+    },
+    {
+      "chapter": 24,
+      "rate": 10.6
+    }
+  ]
+}
