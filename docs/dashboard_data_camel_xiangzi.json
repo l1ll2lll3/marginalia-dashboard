@@ -2,51 +2,35 @@
   "characters": [
     {
       "id": "xiangzi",
-      "name": "祥子",
-      "name_ko": "샹쯔",
-      "role": "major"
+      "name": "샹쯔"
     },
     {
       "id": "huniu",
-      "name": "虎妞",
-      "name_ko": "호뉴",
-      "role": "major"
+      "name": "호뉴"
     },
     {
       "id": "liu_si",
-      "name": "刘四爷",
-      "name_ko": "류쓰예",
-      "role": "major"
+      "name": "류쓰예"
     },
     {
       "id": "xiao_fuzi",
-      "name": "小福子",
-      "name_ko": "샤오푸쯔",
-      "role": "major"
+      "name": "샤오푸쯔"
     },
     {
       "id": "mr_cao",
-      "name": "曹先生",
-      "name_ko": "차오 선생",
-      "role": "supporting"
+      "name": "차오 선생"
     },
     {
       "id": "gao_ma",
-      "name": "高妈",
-      "name_ko": "가오마",
-      "role": "supporting"
+      "name": "가오마"
     },
     {
       "id": "er_qiangzi",
-      "name": "二强子",
-      "name_ko": "얼창즈",
-      "role": "supporting"
+      "name": "얼창즈"
     },
     {
       "id": "ruan_ming",
-      "name": "阮明",
-      "name_ko": "루안밍",
-      "role": "minor"
+      "name": "루안밍"
     }
   ],
   "sessions": [
@@ -990,403 +974,712 @@
   "chapter_stats": [
     {
       "chapter": 1,
-      "dialogue_count": 0,
-      "total": 163,
-      "location": "西城"
+      "total_sentences": 163,
+      "dialogue_sentences": 0,
+      "narration_sentences": 163,
+      "location": "西城",
+      "total_sent": 163,
+      "sentence_count": 163
     },
     {
       "chapter": 2,
-      "dialogue_count": 0,
-      "total": 153,
-      "location": "西城"
+      "total_sentences": 153,
+      "dialogue_sentences": 0,
+      "narration_sentences": 153,
+      "location": "西城",
+      "total_sent": 153,
+      "sentence_count": 153
     },
     {
       "chapter": 3,
-      "dialogue_count": 0,
-      "total": 217,
-      "location": "北平"
+      "total_sentences": 217,
+      "dialogue_sentences": 0,
+      "narration_sentences": 217,
+      "location": "北平",
+      "total_sent": 217,
+      "sentence_count": 217
     },
     {
       "chapter": 4,
-      "dialogue_count": 0,
-      "total": 182,
-      "location": "人和车厂"
+      "total_sentences": 182,
+      "dialogue_sentences": 0,
+      "narration_sentences": 182,
+      "location": "人和车厂",
+      "total_sent": 182,
+      "sentence_count": 182
     },
     {
       "chapter": 5,
-      "dialogue_count": 0,
-      "total": 172,
-      "location": "西城"
+      "total_sentences": 172,
+      "dialogue_sentences": 0,
+      "narration_sentences": 172,
+      "location": "西城",
+      "total_sent": 172,
+      "sentence_count": 172
     },
     {
       "chapter": 6,
-      "dialogue_count": 0,
-      "total": 207,
-      "location": "曹宅"
+      "total_sentences": 207,
+      "dialogue_sentences": 0,
+      "narration_sentences": 207,
+      "location": "曹宅",
+      "total_sent": 207,
+      "sentence_count": 207
     },
     {
       "chapter": 7,
-      "dialogue_count": 0,
-      "total": 194,
-      "location": "曹宅"
+      "total_sentences": 194,
+      "dialogue_sentences": 0,
+      "narration_sentences": 194,
+      "location": "曹宅",
+      "total_sent": 194,
+      "sentence_count": 194
     },
     {
       "chapter": 8,
-      "dialogue_count": 0,
-      "total": 152,
-      "location": "曹宅"
+      "total_sentences": 152,
+      "dialogue_sentences": 0,
+      "narration_sentences": 152,
+      "location": "曹宅",
+      "total_sent": 152,
+      "sentence_count": 152
     },
     {
       "chapter": 9,
-      "dialogue_count": 0,
-      "total": 178,
-      "location": "北平"
+      "total_sentences": 178,
+      "dialogue_sentences": 0,
+      "narration_sentences": 178,
+      "location": "北平",
+      "total_sent": 178,
+      "sentence_count": 178
     },
     {
       "chapter": 10,
-      "dialogue_count": 0,
-      "total": 212,
-      "location": "北平"
+      "total_sentences": 212,
+      "dialogue_sentences": 0,
+      "narration_sentences": 212,
+      "location": "北平",
+      "total_sent": 212,
+      "sentence_count": 212
     },
     {
       "chapter": 11,
-      "dialogue_count": 0,
-      "total": 229,
-      "location": "曹宅"
+      "total_sentences": 229,
+      "dialogue_sentences": 0,
+      "narration_sentences": 229,
+      "location": "曹宅",
+      "total_sent": 229,
+      "sentence_count": 229
     },
     {
       "chapter": 12,
-      "dialogue_count": 0,
-      "total": 248,
-      "location": "曹宅"
+      "total_sentences": 248,
+      "dialogue_sentences": 0,
+      "narration_sentences": 248,
+      "location": "曹宅",
+      "total_sent": 248,
+      "sentence_count": 248
     },
     {
       "chapter": 13,
-      "dialogue_count": 0,
-      "total": 235,
-      "location": "曹宅"
+      "total_sentences": 235,
+      "dialogue_sentences": 0,
+      "narration_sentences": 235,
+      "location": "曹宅",
+      "total_sent": 235,
+      "sentence_count": 235
     },
     {
       "chapter": 14,
-      "dialogue_count": 0,
-      "total": 216,
-      "location": "曹宅"
+      "total_sentences": 216,
+      "dialogue_sentences": 0,
+      "narration_sentences": 216,
+      "location": "曹宅",
+      "total_sent": 216,
+      "sentence_count": 216
     },
     {
       "chapter": 15,
-      "dialogue_count": 0,
-      "total": 234,
-      "location": "南城"
+      "total_sentences": 234,
+      "dialogue_sentences": 0,
+      "narration_sentences": 234,
+      "location": "南城",
+      "total_sent": 234,
+      "sentence_count": 234
     },
     {
       "chapter": 16,
-      "dialogue_count": 0,
-      "total": 229,
-      "location": "大杂院"
+      "total_sentences": 229,
+      "dialogue_sentences": 0,
+      "narration_sentences": 229,
+      "location": "大杂院",
+      "total_sent": 229,
+      "sentence_count": 229
     },
     {
       "chapter": 17,
-      "dialogue_count": 0,
-      "total": 211,
-      "location": "大杂院"
+      "total_sentences": 211,
+      "dialogue_sentences": 0,
+      "narration_sentences": 211,
+      "location": "大杂院",
+      "total_sent": 211,
+      "sentence_count": 211
     },
     {
       "chapter": 18,
-      "dialogue_count": 0,
-      "total": 181,
-      "location": "大杂院"
+      "total_sentences": 181,
+      "dialogue_sentences": 0,
+      "narration_sentences": 181,
+      "location": "大杂院",
+      "total_sent": 181,
+      "sentence_count": 181
     },
     {
       "chapter": 19,
-      "dialogue_count": 0,
-      "total": 206,
-      "location": "大杂院"
+      "total_sentences": 206,
+      "dialogue_sentences": 0,
+      "narration_sentences": 206,
+      "location": "大杂院",
+      "total_sent": 206,
+      "sentence_count": 206
     },
     {
       "chapter": 20,
-      "dialogue_count": 0,
-      "total": 203,
-      "location": "人和车厂"
+      "total_sentences": 203,
+      "dialogue_sentences": 0,
+      "narration_sentences": 203,
+      "location": "人和车厂",
+      "total_sent": 203,
+      "sentence_count": 203
     },
     {
       "chapter": 21,
-      "dialogue_count": 0,
-      "total": 197,
-      "location": "大杂院"
+      "total_sentences": 197,
+      "dialogue_sentences": 0,
+      "narration_sentences": 197,
+      "location": "大杂院",
+      "total_sent": 197,
+      "sentence_count": 197
     },
     {
       "chapter": 22,
-      "dialogue_count": 0,
-      "total": 215,
-      "location": "曹宅"
+      "total_sentences": 215,
+      "dialogue_sentences": 0,
+      "narration_sentences": 215,
+      "location": "曹宅",
+      "total_sent": 215,
+      "sentence_count": 215
     },
     {
       "chapter": 23,
-      "dialogue_count": 0,
-      "total": 184,
-      "location": "曹宅"
+      "total_sentences": 184,
+      "dialogue_sentences": 0,
+      "narration_sentences": 184,
+      "location": "曹宅",
+      "total_sent": 184,
+      "sentence_count": 184
     },
     {
       "chapter": 24,
-      "dialogue_count": 0,
-      "total": 170,
-      "location": "北平"
+      "total_sentences": 170,
+      "dialogue_sentences": 0,
+      "narration_sentences": 170,
+      "location": "北平",
+      "total_sent": 170,
+      "sentence_count": 170
     }
   ],
-  "vocab_summary": {
-    "C2": 7454,
-    "C1": 7010,
-    "B2": 5266
-  },
   "chapter_vocab": [
     {
       "chapter": 1,
-      "C2": 332,
+      "total_vocab": 914,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C2": 332,
+        "C1": 334,
+        "B2": 248
+      },
+      "B2": 248,
       "C1": 334,
-      "B2": 248
+      "C2": 332,
+      "idiom_count": 0
     },
     {
       "chapter": 2,
-      "C2": 265,
+      "total_vocab": 757,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C2": 265,
+        "B2": 210,
+        "C1": 282
+      },
       "B2": 210,
-      "C1": 282
+      "C1": 282,
+      "C2": 265,
+      "idiom_count": 0
     },
     {
       "chapter": 3,
+      "total_vocab": 964,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C1": 308,
+        "C2": 378,
+        "B2": 278
+      },
+      "B2": 278,
       "C1": 308,
       "C2": 378,
-      "B2": 278
+      "idiom_count": 0
     },
     {
       "chapter": 4,
-      "C1": 304,
+      "total_vocab": 747,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C1": 304,
+        "B2": 160,
+        "C2": 283
+      },
       "B2": 160,
-      "C2": 283
+      "C1": 304,
+      "C2": 283,
+      "idiom_count": 0
     },
     {
       "chapter": 5,
-      "C2": 308,
+      "total_vocab": 848,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C2": 308,
+        "C1": 291,
+        "B2": 249
+      },
+      "B2": 249,
       "C1": 291,
-      "B2": 249
+      "C2": 308,
+      "idiom_count": 0
     },
     {
       "chapter": 6,
-      "C2": 347,
+      "total_vocab": 868,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C2": 347,
+        "B2": 223,
+        "C1": 298
+      },
       "B2": 223,
-      "C1": 298
+      "C1": 298,
+      "C2": 347,
+      "idiom_count": 0
     },
     {
       "chapter": 7,
-      "C2": 280,
+      "total_vocab": 739,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C2": 280,
+        "C1": 245,
+        "B2": 214
+      },
+      "B2": 214,
       "C1": 245,
-      "B2": 214
+      "C2": 280,
+      "idiom_count": 0
     },
     {
       "chapter": 8,
+      "total_vocab": 872,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "B2": 212,
+        "C1": 301,
+        "C2": 359
+      },
       "B2": 212,
       "C1": 301,
-      "C2": 359
+      "C2": 359,
+      "idiom_count": 0
     },
     {
       "chapter": 9,
+      "total_vocab": 636,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C1": 234,
+        "C2": 245,
+        "B2": 157
+      },
+      "B2": 157,
       "C1": 234,
       "C2": 245,
-      "B2": 157
+      "idiom_count": 0
     },
     {
       "chapter": 10,
-      "C2": 250,
+      "total_vocab": 745,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C2": 250,
+        "C1": 288,
+        "B2": 207
+      },
+      "B2": 207,
       "C1": 288,
-      "B2": 207
+      "C2": 250,
+      "idiom_count": 0
     },
     {
       "chapter": 11,
+      "total_vocab": 691,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "B2": 206,
+        "C1": 232,
+        "C2": 253
+      },
       "B2": 206,
       "C1": 232,
-      "C2": 253
+      "C2": 253,
+      "idiom_count": 0
     },
     {
       "chapter": 12,
-      "C1": 287,
+      "total_vocab": 758,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C1": 287,
+        "B2": 191,
+        "C2": 280
+      },
       "B2": 191,
-      "C2": 280
+      "C1": 287,
+      "C2": 280,
+      "idiom_count": 0
     },
     {
       "chapter": 13,
-      "C2": 263,
+      "total_vocab": 776,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C2": 263,
+        "C1": 321,
+        "B2": 192
+      },
+      "B2": 192,
       "C1": 321,
-      "B2": 192
+      "C2": 263,
+      "idiom_count": 0
     },
     {
       "chapter": 14,
+      "total_vocab": 715,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "B2": 192,
+        "C1": 232,
+        "C2": 291
+      },
       "B2": 192,
       "C1": 232,
-      "C2": 291
+      "C2": 291,
+      "idiom_count": 0
     },
     {
       "chapter": 15,
-      "C1": 321,
+      "total_vocab": 850,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C1": 321,
+        "B2": 188,
+        "C2": 341
+      },
       "B2": 188,
-      "C2": 341
+      "C1": 321,
+      "C2": 341,
+      "idiom_count": 0
     },
     {
       "chapter": 16,
+      "total_vocab": 869,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C1": 315,
+        "C2": 283,
+        "B2": 271
+      },
+      "B2": 271,
       "C1": 315,
       "C2": 283,
-      "B2": 271
+      "idiom_count": 0
     },
     {
       "chapter": 17,
+      "total_vocab": 991,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C1": 367,
+        "C2": 369,
+        "B2": 255
+      },
+      "B2": 255,
       "C1": 367,
       "C2": 369,
-      "B2": 255
+      "idiom_count": 0
     },
     {
       "chapter": 18,
-      "C2": 363,
+      "total_vocab": 910,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C2": 363,
+        "B2": 235,
+        "C1": 312
+      },
       "B2": 235,
-      "C1": 312
+      "C1": 312,
+      "C2": 363,
+      "idiom_count": 0
     },
     {
       "chapter": 19,
+      "total_vocab": 822,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C1": 263,
+        "C2": 318,
+        "B2": 241
+      },
+      "B2": 241,
       "C1": 263,
       "C2": 318,
-      "B2": 241
+      "idiom_count": 0
     },
     {
       "chapter": 20,
-      "C2": 312,
+      "total_vocab": 841,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C2": 312,
+        "C1": 297,
+        "B2": 232
+      },
+      "B2": 232,
       "C1": 297,
-      "B2": 232
+      "C2": 312,
+      "idiom_count": 0
     },
     {
       "chapter": 21,
-      "C2": 346,
+      "total_vocab": 863,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C2": 346,
+        "C1": 294,
+        "B2": 223
+      },
+      "B2": 223,
       "C1": 294,
-      "B2": 223
+      "C2": 346,
+      "idiom_count": 0
     },
     {
       "chapter": 22,
+      "total_vocab": 806,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C1": 275,
+        "C2": 296,
+        "B2": 235
+      },
+      "B2": 235,
       "C1": 275,
       "C2": 296,
-      "B2": 235
+      "idiom_count": 0
     },
     {
       "chapter": 23,
+      "total_vocab": 731,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C1": 269,
+        "C2": 259,
+        "B2": 203
+      },
+      "B2": 203,
       "C1": 269,
       "C2": 259,
-      "B2": 203
+      "idiom_count": 0
     },
     {
       "chapter": 24,
-      "C2": 433,
+      "total_vocab": 1017,
+      "total_idioms": 0,
+      "by_difficulty": {
+        "C2": 433,
+        "B2": 244,
+        "C1": 340
+      },
       "B2": 244,
-      "C1": 340
+      "C1": 340,
+      "C2": 433,
+      "idiom_count": 0
     }
   ],
-  "top_vocab": [
-    {
-      "word": "什么",
-      "count": 355,
-      "difficulty": "B2"
+  "vocab_summary": {
+    "total_words": 19730,
+    "b2_plus_words": 19730,
+    "total_idioms": 0,
+    "difficulty_distribution": {
+      "C2": 7454,
+      "C1": 7010,
+      "B2": 5266
     },
-    {
-      "word": "没有",
-      "count": 329,
-      "difficulty": "B2"
-    },
-    {
-      "word": "一个",
-      "count": 196,
-      "difficulty": "B2"
-    },
-    {
-      "word": "他们",
-      "count": 185,
-      "difficulty": "B2"
-    },
-    {
-      "word": "这个",
-      "count": 179,
-      "difficulty": "B2"
-    },
-    {
-      "word": "起来",
-      "count": 167,
-      "difficulty": "B2"
-    },
-    {
-      "word": "那么",
-      "count": 159,
-      "difficulty": "B2"
-    },
-    {
-      "word": "觉得",
-      "count": 135,
-      "difficulty": "B2"
-    },
-    {
-      "word": "东西",
-      "count": 127,
-      "difficulty": "B2"
-    },
-    {
-      "word": "出来",
-      "count": 122,
-      "difficulty": "B2"
-    },
-    {
-      "word": "现在",
-      "count": 96,
-      "difficulty": "B2"
-    },
-    {
-      "word": "仿佛",
-      "count": 96,
-      "difficulty": "B2"
-    },
-    {
-      "word": "已经",
-      "count": 88,
-      "difficulty": "B2"
-    },
-    {
-      "word": "四爷",
-      "count": 81,
-      "difficulty": "B2"
-    },
-    {
-      "word": "的话",
-      "count": 76,
-      "difficulty": "B2"
-    },
-    {
-      "word": "看见",
-      "count": 73,
-      "difficulty": "B2"
-    },
-    {
-      "word": "不会",
-      "count": 59,
-      "difficulty": "B2"
-    },
-    {
-      "word": "晓得",
-      "count": 57,
-      "difficulty": "B2"
-    },
-    {
-      "word": "心里",
-      "count": 45,
-      "difficulty": "B2"
-    },
-    {
-      "word": "买卖",
-      "count": 44,
-      "difficulty": "B2"
-    }
-  ],
-  "top_idioms": [],
+    "top_vocab": [
+      {
+        "word": "什么",
+        "total_occurrences": 355,
+        "chapter_count": 24,
+        "difficulty": "C2",
+        "definition": ""
+      },
+      {
+        "word": "没有",
+        "total_occurrences": 329,
+        "chapter_count": 24,
+        "difficulty": "C1",
+        "definition": ""
+      },
+      {
+        "word": "一个",
+        "total_occurrences": 196,
+        "chapter_count": 24,
+        "difficulty": "C2",
+        "definition": ""
+      },
+      {
+        "word": "他们",
+        "total_occurrences": 185,
+        "chapter_count": 21,
+        "difficulty": "C2",
+        "definition": ""
+      },
+      {
+        "word": "这个",
+        "total_occurrences": 179,
+        "chapter_count": 24,
+        "difficulty": "C2",
+        "definition": ""
+      },
+      {
+        "word": "起来",
+        "total_occurrences": 167,
+        "chapter_count": 24,
+        "difficulty": "C2",
+        "definition": ""
+      },
+      {
+        "word": "那么",
+        "total_occurrences": 159,
+        "chapter_count": 24,
+        "difficulty": "C2",
+        "definition": ""
+      },
+      {
+        "word": "觉得",
+        "total_occurrences": 135,
+        "chapter_count": 23,
+        "difficulty": "C2",
+        "definition": ""
+      },
+      {
+        "word": "东西",
+        "total_occurrences": 127,
+        "chapter_count": 22,
+        "difficulty": "C1",
+        "definition": ""
+      },
+      {
+        "word": "出来",
+        "total_occurrences": 122,
+        "chapter_count": 24,
+        "difficulty": "C2",
+        "definition": ""
+      },
+      {
+        "word": "现在",
+        "total_occurrences": 96,
+        "chapter_count": 23,
+        "difficulty": "C2",
+        "definition": ""
+      },
+      {
+        "word": "仿佛",
+        "total_occurrences": 96,
+        "chapter_count": 23,
+        "difficulty": "C2",
+        "definition": ""
+      },
+      {
+        "word": "已经",
+        "total_occurrences": 88,
+        "chapter_count": 24,
+        "difficulty": "C1",
+        "definition": ""
+      },
+      {
+        "word": "四爷",
+        "total_occurrences": 81,
+        "chapter_count": 13,
+        "difficulty": "C1",
+        "definition": ""
+      },
+      {
+        "word": "的话",
+        "total_occurrences": 76,
+        "chapter_count": 21,
+        "difficulty": "C2",
+        "definition": ""
+      },
+      {
+        "word": "看见",
+        "total_occurrences": 73,
+        "chapter_count": 22,
+        "difficulty": "C1",
+        "definition": ""
+      },
+      {
+        "word": "不会",
+        "total_occurrences": 59,
+        "chapter_count": 19,
+        "difficulty": "C2",
+        "definition": ""
+      },
+      {
+        "word": "晓得",
+        "total_occurrences": 57,
+        "chapter_count": 21,
+        "difficulty": "C1",
+        "definition": ""
+      },
+      {
+        "word": "心里",
+        "total_occurrences": 45,
+        "chapter_count": 22,
+        "difficulty": "C2",
+        "definition": ""
+      },
+      {
+        "word": "买卖",
+        "total_occurrences": 44,
+        "chapter_count": 17,
+        "difficulty": "C1",
+        "definition": ""
+      }
+    ],
+    "top_idioms": []
+  },
   "xiangzi_mention": [
     {
       "chapter": 1,
