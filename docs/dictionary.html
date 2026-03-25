@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marginalia Literary Dictionary</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --card: #ffffff;
+  --text: #2c2c2c;
+  --muted: #7a7a7a;
+  --accent: #4a6741;
+  --border: #e5e1dc;
+  --highlight: #fff3cd;
+  --moon: #6b5b4f;
+  --gatsby: #2d5a3d;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  text-align: center;
+  padding: 40px 20px 20px;
+  border-bottom: 1px solid var(--border);
+  background: white;
+}
+header h1 {
+  font-size: 28px;
+  font-weight: normal;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+header p {
+  color: var(--muted);
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Stats bar */
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  padding: 12px 20px;
+  background: white;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--muted);
+}
+.stats-bar strong { color: var(--text); }
+
+/* Search */
+.search-container {
+  max-width: 640px;
+  margin: 24px auto;
+  padding: 0 20px;
+}
+#search {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 18px;
+  font-family: Georgia, serif;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  outline: none;
+  transition: border-color 0.2s;
+}
+#search:focus { border-color: var(--accent); }
+#search::placeholder { color: #bbb; }
+
+/* Filters */
+.filters {
+  max-width: 640px;
+  margin: 0 auto 16px;
+  padding: 0 20px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-btn {
+  padding: 4px 12px;
+  font-size: 12px;
+  font-family: Georgia, serif;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: white;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+.filter-label { font-size: 12px; color: var(--muted); margin-right: 4px; }
+
+/* Results */
+.results {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+.result-count {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 16px;
+  padding-left: 4px;
+}
+
+/* Word card */
+.word-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.word-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+
+.word-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.word-lemma {
+  font-size: 22px;
+  font-weight: bold;
+}
+.word-ipa {
+  font-size: 14px;
+  color: var(--muted);
+  font-style: italic;
+}
+.word-pos {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #f0ece7;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.word-difficulty {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+.diff-B1 { background: #e8f5e9; color: #2e7d32; }
+.diff-B2 { background: #fff3e0; color: #e65100; }
+.diff-C1 { background: #fce4ec; color: #c62828; }
+.diff-C2 { background: #f3e5f5; color: #6a1b9a; }
+
+.word-def {
+  margin-top: 8px;
+  font-size: 15px;
+  color: var(--text);
+}
+.word-def-ko {
+  margin-top: 2px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.book-badges {
+  margin-top: 10px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.book-badge {
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 10px;
+  border: 1px solid;
+}
+.badge-moon { border-color: var(--moon); color: var(--moon); background: #f5f0ec; }
+.badge-gatsby { border-color: var(--gatsby); color: var(--gatsby); background: #eef5f0; }
+
+/* Expanded details */
+.word-details { margin-top: 20px; display: none; }
+.word-card.expanded .word-details { display: block; }
+
+.detail-section {
+  margin-bottom: 16px;
+}
+.detail-section h4 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+/* Example sentences */
+.example {
+  margin-bottom: 14px;
+  padding-left: 16px;
+  border-left: 3px solid var(--border);
+}
+.example.book-moon { border-left-color: var(--moon); }
+.example.book-gatsby { border-left-color: var(--gatsby); }
+
+.example-text {
+  font-size: 15px;
+  line-height: 1.7;
+}
+.example-text mark {
+  background: var(--highlight);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+.example-ko {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.example-source {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+  font-style: italic;
+}
+
+/* Senses */
+.sense {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+.sense-num {
+  display: inline-block;
+  width: 20px;
+  color: var(--muted);
+  font-weight: bold;
+}
+.sense-example {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  margin-left: 20px;
+}
+
+/* Etymology */
+.etymology {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Featured section */
+.featured {
+  max-width: 720px;
+  margin: 0 auto 24px;
+  padding: 0 20px;
+}
+.featured h3 {
+  font-size: 14px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+.featured-words {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.featured-word {
+  padding: 6px 14px;
+  font-size: 14px;
+  font-family: Georgia, serif;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.featured-word:hover { border-color: var(--accent); color: var(--accent); }
+
+@media (max-width: 600px) {
+  header h1 { font-size: 22px; }
+  .stats-bar { gap: 16px; flex-wrap: wrap; }
+  .word-card { padding: 16px; }
+  .word-lemma { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MARGINALIA LITERARY DICTIONARY</h1>
+  <p>Words as they live in literature</p>
+</header>
+
+<div class="stats-bar" id="statsBar">
+  <span>Loading...</span>
+</div>
+
+<div class="search-container">
+  <input type="text" id="search" placeholder="Search a word..." autofocus>
+</div>
+
+<div class="filters">
+  <span class="filter-label">Difficulty:</span>
+  <button class="filter-btn" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="B1">B1</button>
+  <button class="filter-btn" data-filter="B2">B2</button>
+  <button class="filter-btn" data-filter="C1">C1</button>
+  <button class="filter-btn" data-filter="C2">C2</button>
+  <span class="filter-label" style="margin-left:12px">Scope:</span>
+  <button class="filter-btn" data-scope="all">All books</button>
+  <button class="filter-btn" data-scope="multi">Multi-book only</button>
+  <span class="filter-label" style="margin-left:12px">Book:</span>
+  <button class="filter-btn" data-book="all">All</button>
+  <button class="filter-btn badge-moon" data-book="moon_and_sixpence">Moon & Sixpence</button>
+  <button class="filter-btn badge-gatsby" data-book="great_gatsby">Great Gatsby</button>
+</div>
+
+<div class="featured" id="featured">
+  <h3>Words that live in both books</h3>
+  <div class="featured-words" id="featuredWords"></div>
+</div>
+
+<div class="results" id="results">
+  <div class="result-count" id="resultCount"></div>
+  <div id="wordList"></div>
+</div>
+
+<script>
+let WORDS = [];
+let BOOKS = [];
+let SEARCH_INDEX = {};
+let currentFilter = 'all';
+let currentScope = 'all';
+let currentBook = 'all';
+let debounceTimer = null;
+
+const BOOK_COLORS = {
+  moon_and_sixpence: { class: 'badge-moon', label: 'Moon & Sixpence' },
+  great_gatsby: { class: 'badge-gatsby', label: 'Great Gatsby' },
+};
+
+// Curated featured words — interesting multi-book words
+const FEATURED = [
+  'saunter', 'disconcert', 'contempt', 'restless', 'gorgeous',
+  'careless', 'passion', 'extraordinary', 'absurd', 'twilight',
+  'melancholy', 'vulgar', 'portrait', 'wretched', 'grotesque',
+  'cynical', 'exquisite', 'obscure', 'indifferent', 'stammer',
+];
+
+async function init() {
+  const loadingEl = document.getElementById('results');
+  try {
+    document.getElementById('wordList').innerHTML = '<div class="loading">Loading dictionary... (11 MB)</div>';
+
+    const [wordsResp, booksResp] = await Promise.all([
+      fetch('words.json'),
+      fetch('books.json'),
+    ]);
+
+    if (!wordsResp.ok) throw new Error('Failed to load words.json: ' + wordsResp.status);
+    if (!booksResp.ok) throw new Error('Failed to load books.json: ' + booksResp.status);
+
+    document.getElementById('wordList').innerHTML = '<div class="loading">Parsing data...</div>';
+
+    WORDS = await wordsResp.json();
+    BOOKS = await booksResp.json();
+
+    // Build search index in memory
+    WORDS.forEach((w, i) => { SEARCH_INDEX[w.lemma] = i; });
+
+    renderStats();
+    renderFeatured();
+    renderResults(getTopWords());
+  } catch(e) {
+    document.getElementById('wordList').innerHTML = '<div class="loading">Error: ' + e.message + '</div>';
+    console.error('Init failed:', e);
+    return;
+  }
+
+  // Events
+  document.getElementById('search').addEventListener('input', (e) => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => search(e.target.value.trim()), 150);
+  });
+
+  document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      search(document.getElementById('search').value.trim());
+    });
+  });
+
+  document.querySelectorAll('.filter-btn[data-scope]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn[data-scope]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentScope = btn.dataset.scope;
+      search(document.getElementById('search').value.trim());
+    });
+  });
+
+  document.querySelectorAll('.filter-btn[data-book]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn[data-book]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentBook = btn.dataset.book;
+      search(document.getElementById('search').value.trim());
+    });
+  });
+}
+
+function renderStats() {
+  const multiBook = WORDS.filter(w => w.book_count >= 2).length;
+  const bar = document.getElementById('statsBar');
+  bar.innerHTML = `
+    <span><strong>${WORDS.length.toLocaleString()}</strong> words</span>
+    <span><strong>${multiBook.toLocaleString()}</strong> shared across books</span>
+    <span><strong>${BOOKS.length}</strong> books</span>
+    <span><strong>${BOOKS.reduce((s, b) => s + b.sentence_count, 0).toLocaleString()}</strong> sentences</span>
+  `;
+}
+
+function renderFeatured() {
+  const container = document.getElementById('featuredWords');
+  const available = FEATURED.filter(w => w in SEARCH_INDEX);
+  container.innerHTML = available.map(w =>
+    `<button class="featured-word" onclick="searchWord('${w}')">${w}</button>`
+  ).join('');
+}
+
+function searchWord(word) {
+  document.getElementById('search').value = word;
+  search(word);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function getTopWords() {
+  // Show interesting multi-book words by default
+  return WORDS
+    .filter(w => w.book_count >= 2)
+    .sort((a, b) => b.total_frequency - a.total_frequency)
+    .slice(0, 30);
+}
+
+function search(query) {
+  let results;
+
+  if (!query) {
+    results = getTopWords();
+  } else {
+    const q = query.toLowerCase();
+    // Exact match first, then prefix, then contains
+    results = WORDS.filter(w => {
+      const lemma = w.lemma.toLowerCase();
+      return lemma === q || lemma.startsWith(q) || lemma.includes(q);
+    }).sort((a, b) => {
+      const aLemma = a.lemma.toLowerCase();
+      const bLemma = b.lemma.toLowerCase();
+      // Exact match first
+      if (aLemma === q && bLemma !== q) return -1;
+      if (bLemma === q && aLemma !== q) return 1;
+      // Then prefix
+      if (aLemma.startsWith(q) && !bLemma.startsWith(q)) return -1;
+      if (bLemma.startsWith(q) && !aLemma.startsWith(q)) return 1;
+      // Then by frequency
+      return b.total_frequency - a.total_frequency;
+    });
+  }
+
+  // Apply filters
+  if (currentFilter !== 'all') {
+    results = results.filter(w => w.difficulty === currentFilter);
+  }
+  if (currentScope === 'multi') {
+    results = results.filter(w => w.book_count >= 2);
+  }
+  if (currentBook !== 'all') {
+    results = results.filter(w => w.per_book && w.per_book[currentBook]);
+  }
+
+  renderResults(results.slice(0, 50), query, currentBook);
+}
+
+function highlightWord(text, wordForm) {
+  if (!wordForm) return escapeHtml(text);
+  const escaped = escapeHtml(text);
+  const regex = new RegExp(`\\b(${escapeRegex(wordForm)})\\b`, 'gi');
+  return escaped.replace(regex, '<mark>$1</mark>');
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function renderResults(words, query, bookFilter) {
+  const count = document.getElementById('resultCount');
+  const list = document.getElementById('wordList');
+
+  if (query) {
+    count.textContent = `${words.length} result${words.length !== 1 ? 's' : ''} for "${query}"`;
+  } else {
+    count.textContent = words.length > 0 ? `Top shared words` : '';
+  }
+
+  list.innerHTML = words.map((w, i) => {
+    const defKo = w.definition_ko || (w.translations_ko && w.translations_ko.length > 0 ? w.translations_ko.slice(0, 3).join(', ') : '');
+
+    const badges = '';
+
+    const filteredExamples = bookFilter && bookFilter !== 'all'
+      ? (w.examples || []).filter(ex => {
+          const bid = ex.book_title.includes('Moon') ? 'moon_and_sixpence' : 'great_gatsby';
+          return bid === bookFilter;
+        })
+      : (w.examples || []);
+    const examples = filteredExamples.map(ex => {
+      const bookClass = ex.book_title.includes('Moon') ? 'book-moon' : 'book-gatsby';
+      return `
+        <div class="example ${bookClass}">
+          <div class="example-text">${highlightWord(ex.text, ex.word_form)}</div>
+          ${ex.translation_ko ? `<div class="example-ko">${escapeHtml(ex.translation_ko)}</div>` : ''}
+          <div class="example-source">${escapeHtml(ex.author)}, Ch.${ex.chapter}</div>
+        </div>
+      `;
+    }).join('');
+
+    const senses = (w.senses || []).slice(0, 3).map((s, j) => `
+      <div class="sense">
+        <span class="sense-num">${j + 1}.</span> ${escapeHtml(s.gloss || '')}
+        ${s.example ? `<div class="sense-example">"${escapeHtml(s.example)}"</div>` : ''}
+      </div>
+    `).join('');
+
+    return `
+      <div class="word-card ${words.length <= 5 ? 'expanded' : ''}" id="card-${i}" onclick="this.classList.toggle('expanded')">
+        <div class="word-header">
+          <span class="word-lemma">${escapeHtml(w.lemma)}</span>
+          ${w.pronunciation ? `<span class="word-ipa">${escapeHtml(w.pronunciation)}</span>` : ''}
+          <span class="word-pos">${escapeHtml(w.pos)}</span>
+          <span class="word-difficulty diff-${w.difficulty}">${escapeHtml(w.difficulty)}</span>
+        </div>
+        ${w.definition_en ? `<div class="word-def">${escapeHtml(w.definition_en)}</div>` : ''}
+        ${defKo ? `<div class="word-def-ko">${escapeHtml(defKo)}</div>` : ''}
+
+        <div class="word-details">
+          ${examples ? `
+            <div class="detail-section">
+              <h4>In Literature</h4>
+              ${examples}
+            </div>
+          ` : ''}
+          ${senses ? `
+            <div class="detail-section">
+              <h4>Senses</h4>
+              ${senses}
+            </div>
+          ` : ''}
+          ${w.etymology ? `
+            <div class="detail-section">
+              <h4>Etymology</h4>
+              <div class="etymology">${escapeHtml(w.etymology)}</div>
+            </div>
+          ` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+}
+
+function filterByBook(bookId) {
+  currentBook = bookId;
+  document.querySelectorAll('.filter-btn[data-book]').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.filter-btn[data-book="${bookId}"]`);
+  if (btn) btn.classList.add('active');
+  search(document.getElementById('search').value.trim());
+}
+
+init();
+</script>
+</body>
+</html>
