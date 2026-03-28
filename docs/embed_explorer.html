@@ -47,10 +47,10 @@ header p { color: var(--muted); margin-top: 6px; font-size: 0.9rem; }
 .dot.moon { background: var(--moon); }
 .dot.gatsby { background: var(--gatsby); }
 
-nav { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 20px 0 30px; }
-nav button { padding: 8px 16px; border: 1px solid var(--border); border-radius: 20px; background: var(--card); cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
-nav button:hover { border-color: var(--moon); }
-nav button.active { background: var(--moon); color: white; border-color: var(--moon); }
+#tab-nav { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 20px 0 30px; }
+#tab-nav button { padding: 8px 16px; border: 1px solid var(--border); border-radius: 20px; background: var(--card); cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+#tab-nav button:hover { border-color: var(--moon); }
+#tab-nav button.active { background: var(--moon); color: white; border-color: var(--moon); }
 
 section { display: none; margin-bottom: 40px; }
 section.active { display: block; }
@@ -133,7 +133,7 @@ h3 { font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; }
 </header>
 
 <div class="container">
-<nav id="nav"></nav>
+<div id="tab-nav"></div>
 
 <!-- A: Scatter -->
 <section id="sec-scatter">
@@ -224,7 +224,7 @@ const tabs = [
 ];
 
 function initNav() {
-  const nav = $('#nav');
+  const nav = $('#tab-nav');
   tabs.forEach(t => {
     const btn = document.createElement('button');
     btn.textContent = t.label;
@@ -236,9 +236,9 @@ function initNav() {
 
 function showSection(id) {
   $$('section').forEach(s => s.classList.remove('active'));
-  $$('nav button').forEach(b => b.classList.remove('active'));
+  $$('#tab-nav button').forEach(b => b.classList.remove('active'));
   $(`#sec-${id}`).classList.add('active');
-  $(`nav button[data-id="${id}"]`).classList.add('active');
+  $(`#tab-nav button[data-id="${id}"]`).classList.add('active');
 
   if (id === 'scatter') renderScatter();
   else if (id === 'pairs') renderPairs();
