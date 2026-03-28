@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sentence Embedding Explorer — Marginalia</title>
+<style>
+:root {
+  --moon: #2563eb;
+  --gatsby: #dc2626;
+  --moon-bg: #dbeafe;
+  --gatsby-bg: #fee2e2;
+  --bg: #fafaf9;
+  --card: #ffffff;
+  --border: #e7e5e4;
+  --text: #1c1917;
+  --muted: #78716c;
+  --accent: #f59e0b;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Pretendard', -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+header { text-align: center; padding: 40px 20px 30px; }
+header h1 { font-size: 1.8rem; font-weight: 300; letter-spacing: -0.02em; }
+header p { color: var(--muted); margin-top: 6px; font-size: 0.9rem; }
+.legend { display: flex; gap: 20px; justify-content: center; margin-top: 12px; font-size: 0.85rem; }
+.legend span { display: flex; align-items: center; gap: 5px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.dot.moon { background: var(--moon); }
+.dot.gatsby { background: var(--gatsby); }
+
+nav { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 20px 0 30px; }
+nav button { padding: 8px 16px; border: 1px solid var(--border); border-radius: 20px; background: var(--card); cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+nav button:hover { border-color: var(--moon); }
+nav button.active { background: var(--moon); color: white; border-color: var(--moon); }
+
+section { display: none; margin-bottom: 40px; }
+section.active { display: block; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.card h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
+.card .desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 16px; }
+h3 { font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; }
+
+/* Scatter */
+#scatter-svg { width: 100%; }
+#scatter-svg circle { cursor: pointer; transition: r 0.2s; }
+#scatter-svg circle:hover { r: 6; }
+
+/* Sentence display */
+.sent { padding: 10px 14px; border-radius: 8px; margin: 6px 0; font-size: 0.88rem; line-height: 1.5; position: relative; }
+.sent.moon { background: var(--moon-bg); border-left: 3px solid var(--moon); }
+.sent.gatsby { background: var(--gatsby-bg); border-left: 3px solid var(--gatsby); }
+.sent .meta { font-size: 0.75rem; color: var(--muted); margin-bottom: 2px; }
+.sent .score { position: absolute; right: 10px; top: 10px; font-size: 0.75rem; color: var(--muted); font-weight: 600; }
+.sent .ko { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+
+/* Concept pills */
+.pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.pill { padding: 6px 14px; border-radius: 16px; border: 1px solid var(--border); background: var(--card); cursor: pointer; font-size: 0.82rem; transition: all 0.2s; }
+.pill:hover { border-color: var(--accent); }
+.pill.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+/* Timeline */
+.timeline-wrap { overflow-x: auto; }
+#timeline-svg { min-width: 800px; }
+.timeline-bar { cursor: pointer; }
+.timeline-bar:hover { opacity: 1 !important; }
+
+/* Distant pairs */
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.pair .vs { text-align: center; font-size: 0.8rem; color: var(--muted); grid-column: 1/-1; }
+
+/* Heatmap */
+.hm-table { border-collapse: collapse; }
+.hm-table td { width: 14px; height: 14px; border: 0.5px solid rgba(255,255,255,0.3); cursor: pointer; transition: outline 0.1s; }
+.hm-table td:hover { outline: 2px solid var(--text); outline-offset: -1px; z-index: 1; position: relative; }
+.hm-table th { font-size: 10px; font-weight: 400; color: var(--muted); padding: 2px 4px; white-space: nowrap; }
+.hm-table .corner { background: transparent; }
+
+/* Tooltip */
+#tooltip { position: fixed; background: rgba(0,0,0,0.85); color: white; padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; max-width: 400px; pointer-events: none; z-index: 100; display: none; line-height: 1.4; }
+
+@media (max-width: 700px) {
+  .pair { grid-template-columns: 1fr; }
+  header h1 { font-size: 1.4rem; }
+}
+</style>
+</head>
+<body>
+<div id="tooltip"></div>
+
+<header>
+  <h1>Sentence Embedding Explorer</h1>
+  <p>400 sentences &times; 768 dimensions — what can vectors see?</p>
+  <div class="legend">
+    <span><span class="dot moon"></span> The Moon and Sixpence</span>
+    <span><span class="dot gatsby"></span> The Great Gatsby</span>
+  </div>
+</header>
+
+<div class="container">
+<nav id="nav"></nav>
+
+<!-- A: Scatter -->
+<section id="sec-scatter">
+  <div class="card">
+    <h2>A. Sentence Map</h2>
+    <div class="desc">768차원 임베딩을 PCA 2D로 투영. 점을 클릭하면 다른 책에서 가장 비슷한 문장 3개를 보여줍니다.</div>
+    <svg id="scatter-svg" viewBox="0 0 800 500"></svg>
+    <div id="scatter-detail"></div>
+  </div>
+</section>
+
+<!-- B: Top Pairs -->
+<section id="sec-pairs">
+  <div class="card">
+    <h2>B. Most Similar Pairs</h2>
+    <div class="desc">두 소설 사이에서 임베딩 유사도가 가장 높은 문장 쌍. 단어가 달라도 서사 기능이 같으면 가깝다.</div>
+    <div id="pairs-list"></div>
+  </div>
+</section>
+
+<!-- C: Concept Search -->
+<section id="sec-concept">
+  <div class="card">
+    <h2>C. Concept Search</h2>
+    <div class="desc">키워드가 포함된 문장들의 평균 벡터 = "개념 벡터". 키워드 없이도 그 분위기를 가진 문장을 찾습니다.</div>
+    <div class="pills" id="concept-pills"></div>
+    <div id="concept-results"></div>
+  </div>
+</section>
+
+<!-- D: Mood Timeline -->
+<section id="sec-timeline">
+  <div class="card">
+    <h2>D. Mood Shift</h2>
+    <div class="desc">인접 문장 간 유사도 변화. 급격히 떨어지는 지점 = 분위기 전환. 막대를 클릭하면 해당 문장을 봅니다.</div>
+    <div class="pills" id="timeline-pills"></div>
+    <div class="timeline-wrap"><svg id="timeline-svg" viewBox="0 0 1000 280"></svg></div>
+    <div id="timeline-detail"></div>
+  </div>
+</section>
+
+<!-- F: Chapter Fingerprint -->
+<section id="sec-heatmap">
+  <div class="card">
+    <h2>F. Chapter Fingerprint</h2>
+    <div class="desc">챕터별 평균 임베딩(centroid)의 유사도 히트맵. 밝을수록 비슷한 분위기의 챕터 쌍입니다.</div>
+    <ul style="font-size:0.84rem;color:var(--muted);margin:0 0 14px 18px;line-height:1.8">
+      <li><b>Moon (58×58)</b> — 58챕터 간 유사도. 대각선에서 먼 밝은 셀 = 멀리 떨어진 챕터인데 분위기가 닮음</li>
+      <li><b>Gatsby (9×9)</b> — 9챕터 간 유사도</li>
+      <li><b>Moon × Gatsby</b> — 교차 소설 히트맵. Moon의 어떤 챕터가 Gatsby의 어떤 챕터와 닮았는가</li>
+    </ul>
+    <div class="pills" id="heatmap-pills"></div>
+    <div id="heatmap-wrap" style="overflow-x:auto"></div>
+    <div id="heatmap-detail"></div>
+  </div>
+</section>
+
+<!-- E: Most Distant -->
+<section id="sec-distant">
+  <div class="card">
+    <h2>E. Most Distant Pairs</h2>
+    <div class="desc">같은 책 안에서 유사도가 가장 낮은 문장 쌍. 한 소설 안에서 가장 다른 두 순간.</div>
+    <div id="distant-list"></div>
+  </div>
+</section>
+</div>
+
+<script>
+let D = null;
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+// ── Load data ──
+fetch('embed_dashboard_data.json').then(r => r.json()).then(data => {
+  D = data;
+  initNav();
+  showSection('scatter');
+});
+
+// ── Navigation ──
+const tabs = [
+  { id: 'scatter', label: 'A. Sentence Map' },
+  { id: 'pairs', label: 'B. Similar Pairs' },
+  { id: 'concept', label: 'C. Concept Search' },
+  { id: 'timeline', label: 'D. Mood Shift' },
+  { id: 'distant', label: 'E. Distant Pairs' },
+  { id: 'heatmap', label: 'F. Chapter Fingerprint' },
+];
+
+function initNav() {
+  const nav = $('#nav');
+  tabs.forEach(t => {
+    const btn = document.createElement('button');
+    btn.textContent = t.label;
+    btn.onclick = () => showSection(t.id);
+    btn.dataset.id = t.id;
+    nav.appendChild(btn);
+  });
+}
+
+function showSection(id) {
+  $$('section').forEach(s => s.classList.remove('active'));
+  $$('nav button').forEach(b => b.classList.remove('active'));
+  $(`#sec-${id}`).classList.add('active');
+  $(`nav button[data-id="${id}"]`).classList.add('active');
+
+  if (id === 'scatter') renderScatter();
+  else if (id === 'pairs') renderPairs();
+  else if (id === 'concept') renderConcepts();
+  else if (id === 'timeline') renderTimeline();
+  else if (id === 'heatmap') renderHeatmap();
+  else if (id === 'distant') renderDistant();
+}
+
+// ── Helpers ──
+function sentHTML(idx, score) {
+  const s = D.sentences[idx];
+  const cls = s.book === 'moon' ? 'moon' : 'gatsby';
+  const label = s.book === 'moon' ? 'Moon' : 'Gatsby';
+  const scoreHTML = score != null ? `<span class="score">${score.toFixed(3)}</span>` : '';
+  const koHTML = s.ko ? `<div class="ko">${s.ko}</div>` : '';
+  return `<div class="sent ${cls}">
+    ${scoreHTML}
+    <div class="meta">${label} Ch.${s.ch}</div>
+    ${s.text}
+    ${koHTML}
+  </div>`;
+}
+
+function tooltip(e, html) {
+  const tip = $('#tooltip');
+  if (!html) { tip.style.display = 'none'; return; }
+  tip.innerHTML = html;
+  tip.style.display = 'block';
+  const x = Math.min(e.clientX + 12, window.innerWidth - 420);
+  const y = Math.min(e.clientY + 12, window.innerHeight - 200);
+  tip.style.left = x + 'px';
+  tip.style.top = y + 'px';
+}
+
+// ── A: Scatter ──
+function renderScatter() {
+  const svg = $('#scatter-svg');
+  if (svg.children.length > 2) return; // already rendered
+
+  const sents = D.sentences;
+  const xs = sents.map(s => s.x), ys = sents.map(s => s.y);
+  const xMin = Math.min(...xs), xMax = Math.max(...xs);
+  const yMin = Math.min(...ys), yMax = Math.max(...ys);
+  const pad = 40;
+  const w = 800, h = 500;
+  const sx = v => pad + (v - xMin) / (xMax - xMin) * (w - 2*pad);
+  const sy = v => pad + (v - yMin) / (yMax - yMin) * (h - 2*pad);
+
+  let html = '';
+  sents.forEach((s, i) => {
+    const color = s.book === 'moon' ? '#2563eb' : '#dc2626';
+    const opacity = 0.5;
+    html += `<circle cx="${sx(s.x)}" cy="${sy(s.y)}" r="3.5" fill="${color}" opacity="${opacity}" data-idx="${i}"/>`;
+  });
+  svg.innerHTML = html;
+
+  svg.addEventListener('click', e => {
+    const circle = e.target.closest('circle');
+    if (!circle) return;
+    const idx = +circle.dataset.idx;
+    const s = sents[idx];
+
+    // Reset all
+    svg.querySelectorAll('circle').forEach(c => {
+      c.setAttribute('r', '3.5');
+      c.setAttribute('opacity', '0.5');
+    });
+
+    // Highlight clicked
+    circle.setAttribute('r', '7');
+    circle.setAttribute('opacity', '1');
+
+    // Find top 3 from other book
+    let matches;
+    if (s.book === 'moon') {
+      matches = D.moon_top3[idx].map(m => ({ idx: m.j + D.moon_count, score: m.s }));
+    } else {
+      const gi = idx - D.moon_count;
+      matches = D.gatsby_top3[gi].map(m => ({ idx: m.i, score: m.s }));
+    }
+
+    // Highlight matches
+    matches.forEach(m => {
+      const mc = svg.querySelector(`circle[data-idx="${m.idx}"]`);
+      if (mc) {
+        mc.setAttribute('r', '6');
+        mc.setAttribute('opacity', '1');
+        mc.setAttribute('stroke', '#f59e0b');
+        mc.setAttribute('stroke-width', '2');
+      }
+    });
+
+    // Draw lines
+    svg.querySelectorAll('line.match-line').forEach(l => l.remove());
+    matches.forEach(m => {
+      const ms = sents[m.idx];
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('class', 'match-line');
+      line.setAttribute('x1', sx(s.x)); line.setAttribute('y1', sy(s.y));
+      line.setAttribute('x2', sx(ms.x)); line.setAttribute('y2', sy(ms.y));
+      line.setAttribute('stroke', '#f59e0b');
+      line.setAttribute('stroke-width', '1.5');
+      line.setAttribute('stroke-dasharray', '4,3');
+      line.setAttribute('opacity', '0.6');
+      svg.insertBefore(line, svg.firstChild);
+    });
+
+    let detail = `<h3>Selected</h3>${sentHTML(idx)}`;
+    detail += `<h3>Most Similar in ${s.book === 'moon' ? 'Gatsby' : 'Moon'}</h3>`;
+    matches.forEach(m => { detail += sentHTML(m.idx, m.score); });
+    $('#scatter-detail').innerHTML = detail;
+  });
+
+  svg.addEventListener('mousemove', e => {
+    const circle = e.target.closest('circle');
+    if (!circle) { tooltip(e, null); return; }
+    const idx = +circle.dataset.idx;
+    const s = sents[idx];
+    const label = s.book === 'moon' ? 'Moon' : 'Gatsby';
+    tooltip(e, `<b>${label} Ch.${s.ch}</b><br>${s.text.slice(0, 150)}...`);
+  });
+  svg.addEventListener('mouseleave', e => tooltip(e, null));
+}
+
+// ── B: Top Pairs ──
+function renderPairs() {
+  const el = $('#pairs-list');
+  if (el.children.length > 0) return;
+
+  let html = '';
+  D.top_cross_pairs.slice(0, 15).forEach((p, rank) => {
+    const mi = p.mi;
+    const gi = p.gi + D.moon_count;
+    html += `<div class="pair">
+      <div class="vs">#${rank+1} — similarity ${p.sim.toFixed(3)}</div>
+      ${sentHTML(mi)}
+      ${sentHTML(gi)}
+    </div>`;
+  });
+  el.innerHTML = html;
+}
+
+// ── C: Concept Search ──
+function renderConcepts() {
+  const pills = $('#concept-pills');
+  if (pills.children.length > 0) return;
+
+  const conceptNames = Object.keys(D.concepts);
+  conceptNames.forEach(name => {
+    const pill = document.createElement('button');
+    pill.className = 'pill';
+    pill.textContent = name + ` (${D.concepts[name].seed_count})`;
+    pill.onclick = () => {
+      $$('#concept-pills .pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      showConceptResults(name);
+    };
+    pills.appendChild(pill);
+  });
+
+  // Auto-select first
+  if (conceptNames.length > 0) {
+    pills.children[0].click();
+  }
+}
+
+function showConceptResults(name) {
+  const c = D.concepts[name];
+  let html = `<p style="font-size:0.85rem;color:var(--muted);margin-bottom:12px">
+    Seed keywords: <b>${c.keywords.join(', ')}</b> (${c.seed_count} sentences)
+    → averaged into a "concept vector" → searching all 400 sentences
+  </p>`;
+  c.top.forEach(item => {
+    const s = D.sentences[item.idx];
+    const hasKeyword = c.keywords.some(kw => s.text.toLowerCase().includes(kw));
+    const tag = hasKeyword ? ' <span style="color:var(--accent);font-size:0.75rem">[has keyword]</span>' : '';
+    html += sentHTML(item.idx, item.score).replace('</div>\n', tag + '</div>\n');
+  });
+  $('#concept-results').innerHTML = html;
+}
+
+// ── D: Mood Timeline ──
+let currentTimelineBook = 'moon';
+
+function renderTimeline() {
+  const pills = $('#timeline-pills');
+  if (pills.children.length > 0) return;
+
+  ['moon', 'gatsby'].forEach(book => {
+    const pill = document.createElement('button');
+    pill.className = 'pill' + (book === 'moon' ? ' active' : '');
+    pill.textContent = book === 'moon' ? 'Moon and Sixpence' : 'Great Gatsby';
+    pill.onclick = () => {
+      $$('#timeline-pills .pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      currentTimelineBook = book;
+      drawTimeline(book);
+    };
+    pills.appendChild(pill);
+  });
+
+  drawTimeline('moon');
+}
+
+function drawTimeline(book) {
+  const sims = book === 'moon' ? D.moon_neighbor_sims : D.gatsby_neighbor_sims;
+  const offset = book === 'moon' ? 0 : D.moon_count;
+  const svg = $('#timeline-svg');
+  const w = 1000, h = 280, pad = 50, padR = 20, padTop = 20;
+  const barW = Math.max(2, (w - pad - padR) / sims.length - 1);
+
+  const yMin = Math.min(...sims) - 0.02;
+  const yMax = Math.max(...sims) + 0.02;
+  const sx = i => pad + i * (w - pad - padR) / sims.length;
+  const sy = v => padTop + (1 - (v - yMin) / (yMax - yMin)) * (h - padTop - 40);
+
+  // Mean
+  const mean = sims.reduce((a,b) => a+b, 0) / sims.length;
+  // Threshold for "shift"
+  const threshold = mean - 1.5 * Math.sqrt(sims.map(s => (s-mean)**2).reduce((a,b) => a+b) / sims.length);
+
+  let html = '';
+
+  // Y axis
+  for (let v = Math.ceil(yMin*10)/10; v <= yMax; v += 0.1) {
+    const y = sy(v);
+    html += `<line x1="${pad}" y1="${y}" x2="${w-padR}" y2="${y}" stroke="#e7e5e4" stroke-width="0.5"/>`;
+    html += `<text x="${pad-6}" y="${y+4}" text-anchor="end" font-size="10" fill="#78716c">${v.toFixed(1)}</text>`;
+  }
+
+  // Mean line
+  html += `<line x1="${pad}" y1="${sy(mean)}" x2="${w-padR}" y2="${sy(mean)}" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,3"/>`;
+  html += `<text x="${w-padR+4}" y="${sy(mean)+4}" font-size="10" fill="#f59e0b">avg</text>`;
+
+  // Bars
+  const color = book === 'moon' ? '#2563eb' : '#dc2626';
+  sims.forEach((sim, i) => {
+    const x = sx(i);
+    const y = sy(sim);
+    const barH = sy(yMin) - y;
+    const isShift = sim < threshold;
+    const fill = isShift ? '#f59e0b' : color;
+    const opacity = isShift ? 0.9 : 0.4;
+    html += `<rect class="timeline-bar" x="${x}" y="${y}" width="${barW}" height="${barH}" fill="${fill}" opacity="${opacity}" rx="1" data-idx="${i}" data-book="${book}"/>`;
+  });
+
+  // X label
+  html += `<text x="${w/2}" y="${h-4}" text-anchor="middle" font-size="11" fill="#78716c">Sentence index →</text>`;
+  html += `<text x="12" y="${h/2}" text-anchor="middle" font-size="11" fill="#78716c" transform="rotate(-90,12,${h/2})">Similarity</text>`;
+
+  // Shift count
+  const shiftCount = sims.filter(s => s < threshold).length;
+  html += `<text x="${pad}" y="${h-4}" font-size="11" fill="#f59e0b">■ ${shiftCount} mood shifts detected</text>`;
+
+  svg.innerHTML = html;
+
+  svg.addEventListener('click', e => {
+    const bar = e.target.closest('.timeline-bar');
+    if (!bar) return;
+    const i = +bar.dataset.idx;
+    const bk = bar.dataset.book;
+    const off = bk === 'moon' ? 0 : D.moon_count;
+    const sim = bk === 'moon' ? D.moon_neighbor_sims[i] : D.gatsby_neighbor_sims[i];
+
+    let detail = `<h3>Transition at index ${i} → ${i+1} (similarity ${sim.toFixed(3)})</h3>`;
+    detail += sentHTML(off + i);
+    detail += `<div style="text-align:center;color:var(--muted);font-size:0.85rem;margin:4px 0">↓ similarity ${sim.toFixed(3)} ↓</div>`;
+    detail += sentHTML(off + i + 1);
+    $('#timeline-detail').innerHTML = detail;
+  });
+
+  svg.addEventListener('mousemove', e => {
+    const bar = e.target.closest('.timeline-bar');
+    if (!bar) { tooltip(e, null); return; }
+    const i = +bar.dataset.idx;
+    const bk = bar.dataset.book;
+    const off = bk === 'moon' ? 0 : D.moon_count;
+    const sim = bk === 'moon' ? D.moon_neighbor_sims[i] : D.gatsby_neighbor_sims[i];
+    const s = D.sentences[off + i];
+    tooltip(e, `<b>idx ${i} → ${i+1}</b> sim=${sim.toFixed(3)}<br>"${s.text.slice(0,120)}..."`);
+  });
+  svg.addEventListener('mouseleave', e => tooltip(e, null));
+}
+
+// ── F: Heatmap ──
+function renderHeatmap() {
+  const pills = $('#heatmap-pills');
+  if (pills.children.length > 0) return;
+
+  const modes = [
+    { id: 'moon', label: 'Moon (58 ch × 58 ch)' },
+    { id: 'gatsby', label: 'Gatsby (9 ch × 9 ch)' },
+    { id: 'cross', label: 'Moon × Gatsby' },
+  ];
+  modes.forEach((m, idx) => {
+    const pill = document.createElement('button');
+    pill.className = 'pill' + (idx === 0 ? ' active' : '');
+    pill.textContent = m.label;
+    pill.onclick = () => {
+      $$('#heatmap-pills .pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      drawHeatmap(m.id);
+    };
+    pills.appendChild(pill);
+  });
+  drawHeatmap('moon');
+}
+
+function simToColor(sim, minV, maxV) {
+  const t = Math.max(0, Math.min(1, (sim - minV) / (maxV - minV)));
+  // cool (blue-purple) → warm (orange-red)
+  const r = Math.round(40 + t * 200);
+  const g = Math.round(40 + (1 - Math.abs(t - 0.5) * 2) * 80);
+  const b = Math.round(200 - t * 180);
+  return `rgb(${r},${g},${b})`;
+}
+
+function drawHeatmap(mode) {
+  const hm = D.heatmap;
+  let rowLabels, colLabels, matrix;
+  if (mode === 'moon') {
+    rowLabels = hm.moon.chs; colLabels = hm.moon.chs; matrix = hm.moon.matrix;
+  } else if (mode === 'gatsby') {
+    rowLabels = hm.gatsby.chs; colLabels = hm.gatsby.chs; matrix = hm.gatsby.matrix;
+  } else {
+    rowLabels = hm.cross.moon_chs; colLabels = hm.cross.gatsby_chs; matrix = hm.cross.matrix;
+  }
+
+  // Find min/max (excluding diagonal for within-book)
+  let allVals = [];
+  matrix.forEach((row, i) => row.forEach((v, j) => {
+    if (mode === 'cross' || i !== j) allVals.push(v);
+  }));
+  const minV = Math.min(...allVals);
+  const maxV = Math.max(...allVals);
+
+  const cellSize = mode === 'moon' ? 11 : mode === 'gatsby' ? 40 : 14;
+
+  let html = `<table class="hm-table"><tr><th class="corner"></th>`;
+  // Column headers
+  colLabels.forEach(c => {
+    const label = mode === 'cross' ? `G${c}` : c;
+    html += `<th style="font-size:${cellSize < 15 ? 8 : 10}px">${label}</th>`;
+  });
+  html += `</tr>`;
+
+  matrix.forEach((row, i) => {
+    const rLabel = mode === 'cross' ? `M${rowLabels[i]}` : rowLabels[i];
+    html += `<tr><th style="text-align:right;font-size:${cellSize < 15 ? 8 : 10}px">${rLabel}</th>`;
+    row.forEach((v, j) => {
+      const isDiag = (mode !== 'cross' && i === j);
+      const bg = isDiag ? '#333' : simToColor(v, minV, maxV);
+      const size = `width:${cellSize}px;height:${cellSize}px`;
+      html += `<td style="background:${bg};${size}" data-r="${i}" data-c="${j}" data-v="${v}"></td>`;
+    });
+    html += `</tr>`;
+  });
+  html += `</table>`;
+
+  // Legend
+  html += `<div style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:0.78rem;color:var(--muted)">`;
+  html += `<span>${minV.toFixed(3)}</span>`;
+  html += `<div style="width:120px;height:12px;border-radius:4px;background:linear-gradient(to right,${simToColor(minV,minV,maxV)},${simToColor((minV+maxV)/2,minV,maxV)},${simToColor(maxV,minV,maxV)})"></div>`;
+  html += `<span>${maxV.toFixed(3)}</span>`;
+  html += `<span style="margin-left:8px">■ diagonal</span></div>`;
+
+  $('#heatmap-wrap').innerHTML = html;
+  $('#heatmap-detail').innerHTML = '';
+
+  // Click
+  $('#heatmap-wrap').addEventListener('click', e => {
+    const td = e.target.closest('td');
+    if (!td) return;
+    const ri = +td.dataset.r, ci = +td.dataset.c, v = +td.dataset.v;
+    const rLabel = mode === 'cross' ? `Moon Ch.${rowLabels[ri]}` : `Ch.${rowLabels[ri]}`;
+    const cLabel = mode === 'cross' ? `Gatsby Ch.${colLabels[ci]}` : `Ch.${colLabels[ci]}`;
+    const pct = ((v - minV) / (maxV - minV) * 100).toFixed(0);
+    $('#heatmap-detail').innerHTML = `
+      <div style="margin-top:12px;padding:12px;background:var(--bg);border-radius:8px;font-size:0.88rem">
+        <b>${rLabel}</b> ↔ <b>${cLabel}</b>: similarity <b>${v.toFixed(4)}</b>
+        <span style="color:var(--muted)">(${pct}th percentile in this heatmap)</span>
+      </div>`;
+  });
+
+  // Hover
+  $('#heatmap-wrap').addEventListener('mousemove', e => {
+    const td = e.target.closest('td');
+    if (!td) { tooltip(e, null); return; }
+    const ri = +td.dataset.r, ci = +td.dataset.c, v = +td.dataset.v;
+    const rLabel = mode === 'cross' ? `Moon Ch.${rowLabels[ri]}` : `Ch.${rowLabels[ri]}`;
+    const cLabel = mode === 'cross' ? `Gatsby Ch.${colLabels[ci]}` : `Ch.${colLabels[ci]}`;
+    tooltip(e, `${rLabel} ↔ ${cLabel}<br>similarity: <b>${v.toFixed(4)}</b>`);
+  });
+  $('#heatmap-wrap').addEventListener('mouseleave', e => tooltip(e, null));
+}
+
+// ── E: Distant ──
+function renderDistant() {
+  const el = $('#distant-list');
+  if (el.children.length > 0) return;
+
+  let html = '<h3>The Moon and Sixpence — 가장 다른 분위기의 문장 쌍</h3>';
+  D.moon_distant.slice(0, 5).forEach((p, rank) => {
+    html += `<div class="pair">
+      <div class="vs">#${rank+1} — similarity ${p.sim.toFixed(3)}</div>
+      ${sentHTML(p.a)}
+      ${sentHTML(p.b)}
+    </div>`;
+  });
+
+  html += '<h3 style="margin-top:28px">The Great Gatsby — 가장 다른 분위기의 문장 쌍</h3>';
+  D.gatsby_distant.slice(0, 5).forEach((p, rank) => {
+    const off = D.moon_count;
+    html += `<div class="pair">
+      <div class="vs">#${rank+1} — similarity ${p.sim.toFixed(3)}</div>
+      ${sentHTML(p.a + off)}
+      ${sentHTML(p.b + off)}
+    </div>`;
+  });
+  el.innerHTML = html;
+}
+</script>
+</body>
+</html>
