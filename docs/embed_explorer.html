@@ -95,6 +95,10 @@ h3 { font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; }
 .hm-table th { font-size: 10px; font-weight: 400; color: var(--muted); padding: 2px 4px; white-space: nowrap; }
 .hm-table .corner { background: transparent; }
 
+/* Experimental badge */
+.exp-badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #f59e0b; border: 1px solid #f59e0b; border-radius: 4px; padding: 2px 8px; margin-left: 10px; vertical-align: middle; }
+.exp-note { font-size: 0.8rem; color: #78716c; background: #fefce8; border: 1px solid #fef08a; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; line-height: 1.5; }
+
 /* Tooltip */
 #tooltip { position: fixed; background: rgba(0,0,0,0.85); color: white; padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; max-width: 400px; pointer-events: none; z-index: 100; display: none; line-height: 1.4; }
 
@@ -125,7 +129,7 @@ h3 { font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; }
 
 <header>
   <h1>Sentence Embedding Explorer</h1>
-  <p>400 sentences &times; 768 dimensions — what can vectors see?</p>
+  <p>7,664 sentences &times; 768 dimensions — what can vectors see?</p>
   <div class="legend">
     <span><span class="dot moon"></span> The Moon and Sixpence</span>
     <span><span class="dot gatsby"></span> The Great Gatsby</span>
@@ -140,7 +144,7 @@ h3 { font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; }
   <div class="card">
     <h2>A. Sentence Map</h2>
     <div class="desc">768차원 임베딩을 PCA 2D로 투영. 점을 클릭하면 다른 책에서 가장 비슷한 문장 3개를 보여줍니다.</div>
-    <svg id="scatter-svg" viewBox="0 0 800 500"></svg>
+    <svg id="scatter-svg" viewBox="0 0 900 560"></svg>
     <div id="scatter-detail"></div>
   </div>
 </section>
@@ -157,7 +161,8 @@ h3 { font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; }
 <!-- C: Concept Search -->
 <section id="sec-concept">
   <div class="card">
-    <h2>C. Concept Search</h2>
+    <h2>C. Concept Search <span class="exp-badge">Experimental</span></h2>
+    <div class="exp-note">이 기능은 실험 단계입니다. 키워드 평균 벡터로 "분위기"를 추정하지만, "외로움"과 "1인칭 독백"을 구분하지 못할 수 있습니다. 결과를 읽으면서 직접 판단해 주세요.</div>
     <div class="desc">키워드가 포함된 문장들의 평균 벡터 = "개념 벡터". 키워드 없이도 그 분위기를 가진 문장을 찾습니다.</div>
     <div class="pills" id="concept-pills"></div>
     <div id="concept-results"></div>
@@ -167,8 +172,10 @@ h3 { font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; }
 <!-- D: Mood Timeline -->
 <section id="sec-timeline">
   <div class="card">
-    <h2>D. Mood Shift</h2>
-    <div class="desc">인접 문장 간 유사도 변화. 급격히 떨어지는 지점 = 분위기 전환. 막대를 클릭하면 해당 문장을 봅니다.</div>
+    <h2>D. Mood Shift <span class="exp-badge">Experimental</span></h2>
+    <div class="exp-note">문장 간 유사도 변화를 "분위기 전환"으로 해석하는 실험입니다. 유사도가 낮다는 것은 두 문장의 임베딩 방향이 다르다는 뜻이지, 반드시 감정이 바뀌었다는 뜻은 아닙니다. 화자 교체나 서술 방식 변화일 수도 있습니다.</div>
+    <div class="desc">인접 문장 간 유사도 변화. 노란 막대 = 챕터 <b>안에서</b> 분위기가 급변하는 지점 (챕터 경계는 당연하므로 제외). 막대를 클릭하면 전환 전후 문장을 봅니다.</div>
+    <div id="mood-insights" style="font-size:0.84rem;color:var(--muted);margin-bottom:10px"></div>
     <div class="pills" id="timeline-pills"></div>
     <div class="timeline-wrap"><svg id="timeline-svg" viewBox="0 0 1000 280"></svg></div>
     <div id="timeline-detail"></div>
@@ -178,7 +185,8 @@ h3 { font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; }
 <!-- F: Chapter Fingerprint -->
 <section id="sec-heatmap">
   <div class="card">
-    <h2>F. Chapter Fingerprint</h2>
+    <h2>F. Chapter Fingerprint <span class="exp-badge">Experimental</span></h2>
+    <div class="exp-note">챕터당 10문장 샘플의 평균 벡터로 비교합니다. 색이 보여주는 것은 "비슷함"이지 "왜 비슷한지"가 아닙니다. 같은 장소, 같은 화자의 목소리, 또는 같은 서사 구조일 수 있습니다. 해석은 책을 읽은 사람의 몫입니다.</div>
     <div class="desc">챕터별 평균 임베딩(centroid)의 유사도 히트맵. 밝을수록 비슷한 분위기의 챕터 쌍입니다.</div>
     <ul style="font-size:0.84rem;color:var(--muted);margin:0 0 14px 18px;line-height:1.8">
       <li><b>Moon (58×58)</b> — 58챕터 간 유사도. 대각선에서 먼 밝은 셀 = 멀리 떨어진 챕터인데 분위기가 닮음</li>
@@ -188,27 +196,45 @@ h3 { font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; }
     <div class="pills" id="heatmap-pills"></div>
     <div id="heatmap-wrap" style="overflow-x:auto"></div>
     <div id="heatmap-detail"></div>
+    <div id="heatmap-insights" style="margin-top:16px"></div>
   </div>
 </section>
 
 <!-- E: Most Distant -->
 <section id="sec-distant">
   <div class="card">
-    <h2>E. Most Distant Pairs</h2>
+    <h2>E. Distant Pairs <span class="exp-badge">Experimental</span></h2>
+    <div class="exp-note">유사도가 낮은 쌍이 "가장 다른 분위기"인지, 단순히 문장 길이/형태가 다른 것인지 구분하기 어렵습니다. 짧은 대사와 긴 서술이 쌍으로 올라올 수 있습니다.</div>
     <div class="desc">같은 책 안에서 유사도가 가장 낮은 문장 쌍. 한 소설 안에서 가장 다른 두 순간.</div>
     <div id="distant-list"></div>
+  </div>
+</section>
+<!-- G: Emotion Arc -->
+<section id="sec-emotion">
+  <div class="card">
+    <h2>G. Emotion Arc <span class="exp-badge">Experimental</span></h2>
+    <div class="exp-note">감정 점수는 해당 감정 키워드가 포함된 문장들의 평균 임베딩과의 유사도입니다. 작가의 의도나 독자의 실제 감정을 측정한 것이 아닙니다. "death"가 포함된 문장이 반드시 슬픈 문장은 아니듯, 점수가 높다고 그 감정이 강하다는 뜻은 아닐 수 있습니다. 피크 지점의 원문을 직접 읽어보시길 권합니다.</div>
+    <div class="desc">6가지 감정의 강도를 문장 순서대로 시각화. 감정을 하나 선택하면 나머지는 배경으로 표시됩니다. 차트의 아무 지점을 클릭하면 해당 위치의 문장을 볼 수 있습니다.</div>
+    <div class="pills" id="emotion-pills"></div>
+    <div style="overflow-x:auto"><svg id="emotion-svg" viewBox="0 0 1100 400"></svg></div>
+    <div id="emotion-detail"></div>
   </div>
 </section>
 </div>
 
 <script>
 let D = null;
+let EMO = null; // emotion arc data
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 
 // ── Load data ──
-fetch('embed_dashboard_data.json').then(r => r.json()).then(data => {
+Promise.all([
+  fetch('embed_dashboard_data.json').then(r => r.json()),
+  fetch('emotion_arc_data.json').then(r => r.json()).catch(() => null),
+]).then(([data, emo]) => {
   D = data;
+  EMO = emo;
   initNav();
   showSection('scatter');
 });
@@ -221,6 +247,7 @@ const tabs = [
   { id: 'timeline', label: 'D. Mood Shift' },
   { id: 'distant', label: 'E. Distant Pairs' },
   { id: 'heatmap', label: 'F. Chapter Fingerprint' },
+  { id: 'emotion', label: 'G. Emotion Arc' },
 ];
 
 function initNav() {
@@ -245,6 +272,7 @@ function showSection(id) {
   else if (id === 'concept') renderConcepts();
   else if (id === 'timeline') renderTimeline();
   else if (id === 'heatmap') renderHeatmap();
+  else if (id === 'emotion') renderEmotion();
   else if (id === 'distant') renderDistant();
 }
 
@@ -284,15 +312,15 @@ function renderScatter() {
   const xMin = Math.min(...xs), xMax = Math.max(...xs);
   const yMin = Math.min(...ys), yMax = Math.max(...ys);
   const pad = 40;
-  const w = 800, h = 500;
+  const w = 900, h = 560;
   const sx = v => pad + (v - xMin) / (xMax - xMin) * (w - 2*pad);
   const sy = v => pad + (v - yMin) / (yMax - yMin) * (h - 2*pad);
 
   let html = '';
   sents.forEach((s, i) => {
     const color = s.book === 'moon' ? '#2563eb' : '#dc2626';
-    const opacity = 0.5;
-    html += `<circle cx="${sx(s.x)}" cy="${sy(s.y)}" r="3.5" fill="${color}" opacity="${opacity}" data-idx="${i}"/>`;
+    const opacity = 0.4;
+    html += `<circle cx="${sx(s.x)}" cy="${sy(s.y)}" r="2" fill="${color}" opacity="${opacity}" data-idx="${i}"/>`;
   });
   svg.innerHTML = html;
 
@@ -304,8 +332,10 @@ function renderScatter() {
 
     // Reset all
     svg.querySelectorAll('circle').forEach(c => {
-      c.setAttribute('r', '3.5');
-      c.setAttribute('opacity', '0.5');
+      c.setAttribute('r', '2');
+      c.setAttribute('opacity', '0.4');
+      c.removeAttribute('stroke');
+      c.removeAttribute('stroke-width');
     });
 
     // Highlight clicked
@@ -410,7 +440,7 @@ function showConceptResults(name) {
   const c = D.concepts[name];
   let html = `<p style="font-size:0.85rem;color:var(--muted);margin-bottom:12px">
     Seed keywords: <b>${c.keywords.join(', ')}</b> (${c.seed_count} sentences)
-    → averaged into a "concept vector" → searching all 400 sentences
+    → averaged into a "concept vector" → searching all ${D.sentences.length} sentences
   </p>`;
   c.top.forEach(item => {
     const s = D.sentences[item.idx];
@@ -428,7 +458,7 @@ function renderTimeline() {
   const pills = $('#timeline-pills');
   if (pills.children.length > 0) return;
 
-  ['moon', 'gatsby'].forEach(book => {
+  ['moon', 'gatsby'].forEach((book, idx) => {
     const pill = document.createElement('button');
     pill.className = 'pill' + (book === 'moon' ? ' active' : '');
     pill.textContent = book === 'moon' ? 'Moon and Sixpence' : 'Great Gatsby';
@@ -522,6 +552,19 @@ function drawTimeline(book) {
     tooltip(e, `<b>idx ${i} → ${i+1}</b> sim=${sim.toFixed(3)}<br>"${s.text.slice(0,120)}..."`);
   });
   svg.addEventListener('mouseleave', e => tooltip(e, null));
+
+  // Insights: mid-chapter shifts from EMO data
+  const insightEl = $('#mood-insights');
+  if (EMO && EMO[book] && EMO[book].mid_chapter_shifts) {
+    const shifts = EMO[book].mid_chapter_shifts.slice(0, 5);
+    let html = `<b>Top ${shifts.length} mid-chapter mood shifts</b> (챕터 경계 제외, 진짜 전환점):<br>`;
+    for (const s of shifts) {
+      const evtTag = s.event ? ` — <i>${s.event}</i>` : '';
+      html += `<span style="color:#f59e0b">Ch.${s.ch}</span> (sim=${s.sim})${evtTag}<br>`;
+    }
+    html += `<span style="font-size:0.78rem">이 수치가 보여주는 것: 같은 챕터 안에서 문장의 임베딩 방향이 급변한 지점. 장면 전환, 화자 교체, 감정 폭발일 수 있습니다.</span>`;
+    insightEl.innerHTML = html;
+  }
 }
 
 // ── F: Heatmap ──
@@ -634,6 +677,271 @@ function drawHeatmap(mode) {
     tooltip(e, `${rLabel} ↔ ${cLabel}<br>similarity: <b>${v.toFixed(4)}</b>`);
   });
   $('#heatmap-wrap').addEventListener('mouseleave', e => tooltip(e, null));
+
+  // Surprising pairs insight
+  const insightEl = $('#heatmap-insights');
+  if (EMO && EMO.surprising_pairs) {
+    const pairs = mode === 'cross' ? EMO.surprising_pairs.cross : EMO.surprising_pairs[mode];
+    if (pairs && pairs.length > 0) {
+      let html = `<div class="card" style="background:#fffbeb;border:1px solid #fde68a;color:#1c1917;padding:16px 20px">`;
+      html += `<h3 style="color:#92400e;font-size:0.95rem;margin-bottom:8px">Surprising Discoveries</h3>`;
+      html += `<p style="font-size:0.82rem;color:#78716c;margin-bottom:12px">멀리 떨어진 챕터인데 유사도가 높은 쌍 — 히트맵에서 대각선에서 먼 밝은 점. 이것이 진짜 발견입니다.</p>`;
+      for (const p of pairs.slice(0, 4)) {
+        if (mode === 'cross') {
+          html += `<div style="margin:8px 0;padding:8px 12px;border-left:3px solid #d97706;background:#fef3c7;border-radius:0 6px 6px 0;font-size:0.85rem">`;
+          html += `<b>Moon Ch.${p.moon_ch}</b> ↔ <b>Gatsby Ch.${p.gatsby_ch}</b> — sim ${p.sim.toFixed(3)}<br>`;
+          if (p.mev) html += `<span style="color:#57534e">Moon: ${p.mev}</span><br>`;
+          if (p.gev) html += `<span style="color:#57534e">Gatsby: ${p.gev}</span>`;
+          html += `</div>`;
+        } else {
+          html += `<div style="margin:8px 0;padding:8px 12px;border-left:3px solid #d97706;background:#fef3c7;border-radius:0 6px 6px 0;font-size:0.85rem">`;
+          html += `<b>Ch.${p.ch1}</b> ↔ <b>Ch.${p.ch2}</b> — sim ${p.sim.toFixed(3)} (${p.dist} chapters apart)<br>`;
+          if (p.ev1) html += `<span style="color:#57534e">${p.ev1}</span><br>`;
+          if (p.ev2) html += `<span style="color:#57534e">${p.ev2}</span>`;
+          html += `</div>`;
+        }
+      }
+      html += `<p style="font-size:0.78rem;color:#78716c;margin-top:10px">왜 닮았을까? 같은 장소에서 벌어진 사건, 같은 화자의 목소리, 또는 같은 서사 패턴(만남/이별/관찰)이 임베딩을 가깝게 만듭니다. 색이 보여주는 것은 "비슷함"이지, "왜"가 아닙니다 — 해석은 읽은 사람의 몫입니다.</p>`;
+      html += `</div>`;
+      insightEl.innerHTML = html;
+    }
+  }
+}
+
+// ── G: Emotion Arc ──
+const EMO_COLORS = {
+  joy: '#22c55e', sadness: '#3b82f6', anger: '#ef4444',
+  fear: '#a855f7', love: '#ec4899', tension: '#f59e0b',
+};
+let emoActiveEmotion = 'tension';
+let emoActiveBook = 'moon';
+
+function renderEmotion() {
+  const pills = $('#emotion-pills');
+  if (pills.children.length > 0) return;
+  if (!EMO) { $('#emotion-detail').innerHTML = '<p style="color:#888">emotion_arc_data.json not loaded</p>'; return; }
+
+  // Row 1: Book toggle
+  const row1 = document.createElement('div');
+  row1.style.cssText = 'display:flex;gap:6px;margin-bottom:8px';
+  ['moon', 'gatsby'].forEach((book, idx) => {
+    const pill = document.createElement('button');
+    pill.className = 'pill' + (idx === 0 ? ' active' : '');
+    pill.textContent = book === 'moon' ? 'Moon and Sixpence' : 'Great Gatsby';
+    pill.dataset.book = book;
+    pill.onclick = () => {
+      row1.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      emoActiveBook = book;
+      drawEmotionArc();
+    };
+    row1.appendChild(pill);
+  });
+  pills.appendChild(row1);
+
+  // Row 2: Emotion toggles (1개씩 선택)
+  const row2 = document.createElement('div');
+  row2.id = 'emotion-toggles';
+  row2.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap';
+  EMO.emotions.forEach((emo, idx) => {
+    const pill = document.createElement('button');
+    pill.className = 'pill' + (emo === emoActiveEmotion ? ' active' : '');
+    pill.style.cssText = `border-color:${EMO_COLORS[emo]};${emo === emoActiveEmotion ? `background:${EMO_COLORS[emo]};color:white` : `color:${EMO_COLORS[emo]}`}`;
+    pill.textContent = emo;
+    pill.dataset.emo = emo;
+    pill.onclick = () => {
+      row2.querySelectorAll('.pill').forEach(p => {
+        const e = p.dataset.emo;
+        p.classList.remove('active');
+        p.style.background = 'var(--card)';
+        p.style.color = EMO_COLORS[e];
+      });
+      pill.classList.add('active');
+      pill.style.background = EMO_COLORS[emo];
+      pill.style.color = 'white';
+      emoActiveEmotion = emo;
+      drawEmotionArc();
+    };
+    row2.appendChild(pill);
+  });
+  pills.appendChild(row2);
+
+  drawEmotionArc();
+}
+
+function drawEmotionArc() {
+  const svg = $('#emotion-svg');
+  const W = 1100, H = 400, pad = 50, padR = 30, padTop = 30, padBot = 50;
+  const bookData = emoActiveBook === 'moon' ? EMO.moon : EMO.gatsby;
+  const bookKey = emoActiveBook;
+  const activeEmo = emoActiveEmotion;
+  const n = bookData.sentence_count;
+  const boundaries = bookData.chapter_boundaries;
+
+  // 현재 감정의 moving_avg
+  const activeMa = bookData.moving_avg.find(m => m.emotion === activeEmo);
+  if (!activeMa) return;
+  const vals = activeMa.values;
+
+  // 다른 감정들 (배경)
+  const otherMas = bookData.moving_avg.filter(m => m.emotion !== activeEmo);
+
+  // Y range (현재 감정 기준)
+  const yMin = Math.min(...vals) - 0.005;
+  const yMax = Math.max(...vals) + 0.005;
+  const sx = i => pad + (i / n) * (W - pad - padR);
+  const sy = v => padTop + (1 - (v - yMin) / (yMax - yMin)) * (H - padTop - padBot);
+
+  let html = '';
+
+  // Y axis
+  for (let i = 0; i <= 4; i++) {
+    const v = yMin + (yMax - yMin) * i / 4;
+    const y = sy(v);
+    html += `<line x1="${pad}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="#2a2a3e" stroke-width="0.5"/>`;
+    html += `<text x="${pad-6}" y="${y+3}" text-anchor="end" font-size="9" fill="#555">${v.toFixed(3)}</text>`;
+  }
+
+  // Chapter boundaries
+  for (const b of boundaries) {
+    if (b.idx > 0) {
+      const x = sx(b.idx);
+      html += `<line x1="${x}" y1="${padTop}" x2="${x}" y2="${H-padBot}" stroke="#333" stroke-width="0.5" stroke-dasharray="2,4"/>`;
+      if (b.ch % 5 === 1 || bookKey === 'gatsby') {
+        html += `<text x="${x}" y="${H-padBot+14}" font-size="9" fill="#555" text-anchor="middle">Ch.${b.ch}</text>`;
+      }
+    }
+  }
+
+  // 배경 감정선 (회색, 얇게)
+  for (const ma of otherMas) {
+    let path = '';
+    for (let i = 0; i < ma.values.length; i++) {
+      const x = sx(i);
+      const y = sy(Math.max(yMin, Math.min(yMax, ma.values[i])));
+      path += (i === 0 ? 'M' : 'L') + `${x.toFixed(1)},${y.toFixed(1)}`;
+    }
+    html += `<path d="${path}" fill="none" stroke="#444" stroke-width="0.7" opacity="0.3"/>`;
+  }
+
+  // 현재 감정선 (두껍게, 색상)
+  const color = EMO_COLORS[activeEmo];
+  // 영역 채우기 (아래쪽)
+  let areaPath = `M${sx(0).toFixed(1)},${sy(yMin).toFixed(1)}`;
+  for (let i = 0; i < vals.length; i++) {
+    areaPath += `L${sx(i).toFixed(1)},${sy(vals[i]).toFixed(1)}`;
+  }
+  areaPath += `L${sx(vals.length-1).toFixed(1)},${sy(yMin).toFixed(1)}Z`;
+  html += `<path d="${areaPath}" fill="${color}" opacity="0.08"/>`;
+
+  let linePath = '';
+  for (let i = 0; i < vals.length; i++) {
+    linePath += (i === 0 ? 'M' : 'L') + `${sx(i).toFixed(1)},${sy(vals[i]).toFixed(1)}`;
+  }
+  html += `<path d="${linePath}" fill="none" stroke="${color}" stroke-width="2.5" opacity="0.9"/>`;
+
+  // 피크 어노테이션 (#2)
+  const annots = (EMO.annotations && EMO.annotations[bookKey] && EMO.annotations[bookKey][activeEmo]) || [];
+  for (const a of annots) {
+    const x = sx(a.idx);
+    const y = sy(a.val);
+    // 점
+    html += `<circle cx="${x}" cy="${y}" r="5" fill="${color}" stroke="white" stroke-width="1.5"/>`;
+    // 라벨
+    const labelY = y - 14;
+    html += `<text x="${x}" y="${labelY}" text-anchor="middle" font-size="10" fill="${color}" font-weight="bold">Ch.${a.ch}</text>`;
+  }
+
+  // 클릭 가능한 투명 영역 (#4)
+  html += `<rect x="${pad}" y="${padTop}" width="${W-pad-padR}" height="${H-padTop-padBot}" fill="transparent" class="emo-click-area" style="cursor:crosshair"/>`;
+
+  // 제목
+  const bookLabel = bookKey === 'moon' ? 'The Moon and Sixpence' : 'The Great Gatsby';
+  html += `<text x="${pad}" y="16" font-size="13" fill="${color}" font-weight="bold">${activeEmo.toUpperCase()}</text>`;
+  html += `<text x="${pad + activeEmo.length * 9 + 8}" y="16" font-size="12" fill="#666">${bookLabel} — ${n} sentences</text>`;
+
+  svg.innerHTML = html;
+
+  // 클릭 이벤트 (#4): 클릭한 X좌표 → 가장 가까운 문장의 감정 점수 + 원문 표시
+  svg.querySelector('.emo-click-area').addEventListener('click', e => {
+    const rect = svg.getBoundingClientRect();
+    const svgW = rect.width;
+    const clickX = (e.clientX - rect.left) / svgW * W;
+    const idx = Math.round((clickX - pad) / (W - pad - padR) * n);
+    if (idx < 0 || idx >= n) return;
+
+    // 가장 가까운 샘플 문장 찾기
+    const samples = bookData.sample_sents || [];
+    let nearest = samples[0];
+    let minDist = Infinity;
+    for (const s of samples) {
+      const d = Math.abs(s.idx - idx);
+      if (d < minDist) { minDist = d; nearest = s; }
+    }
+
+    const val = vals[idx] || 0;
+    let detail = `<div style="margin-top:12px;padding:14px;background:var(--bg);border-radius:8px">`;
+    detail += `<div style="font-size:0.8rem;color:var(--muted)">Sentence #${idx} (Ch.${nearest ? nearest.ch : '?'}) — <span style="color:${color};font-weight:bold">${activeEmo} = ${val.toFixed(4)}</span></div>`;
+    if (nearest) {
+      detail += `<div class="sent moon" style="margin-top:8px">${nearest.text}</div>`;
+      if (nearest.ko) detail += `<div style="font-size:0.82rem;color:var(--muted);margin-top:4px">${nearest.ko}</div>`;
+    }
+    // 피크 정보
+    const peakHere = annots.find(a => Math.abs(a.idx - idx) < 30);
+    if (peakHere) {
+      detail += `<div style="margin-top:10px;padding:8px 12px;border-left:3px solid ${color};font-size:0.85rem">`;
+      detail += `<b>Peak</b> — ${peakHere.text}`;
+      if (peakHere.ko) detail += `<br><span style="color:var(--muted)">${peakHere.ko}</span>`;
+      detail += `</div>`;
+    }
+    detail += `</div>`;
+    $('#emotion-detail').innerHTML = detail;
+
+    // 클릭 위치에 세로선 표시
+    const indicator = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    svg.querySelectorAll('.click-indicator').forEach(el => el.remove());
+    indicator.setAttribute('class', 'click-indicator');
+    indicator.setAttribute('x1', sx(idx)); indicator.setAttribute('y1', padTop);
+    indicator.setAttribute('x2', sx(idx)); indicator.setAttribute('y2', H - padBot);
+    indicator.setAttribute('stroke', color); indicator.setAttribute('stroke-width', '1');
+    indicator.setAttribute('opacity', '0.6');
+    svg.appendChild(indicator);
+  });
+
+  // 피크 어노테이션 디테일 (기본)
+  if (annots.length > 0 && !$('#emotion-detail').innerHTML) {
+    let detail = '<div style="margin-top:12px;font-size:0.85rem">';
+    detail += `<b style="color:${color}">${activeEmo}</b> peaks:<br>`;
+    for (const a of annots) {
+      detail += `<div style="margin:6px 0;padding:6px 10px;border-left:3px solid ${color}">`;
+      detail += `<b>Ch.${a.ch}</b> (${a.val.toFixed(3)}) — ${a.text}`;
+      if (a.ko) detail += `<br><span style="color:var(--muted);font-size:0.82rem">${a.ko}</span>`;
+      detail += `</div>`;
+    }
+    detail += '</div>';
+    $('#emotion-detail').innerHTML = detail;
+  }
+
+  // 기본: 피크 해설 + 클릭 안내
+  if (!$('#emotion-detail').innerHTML.trim() || !$('#emotion-detail').querySelector('.peak-list')) {
+    const annots = (EMO.annotations && EMO.annotations[bookKey] && EMO.annotations[bookKey][activeEmo]) || [];
+    let detail = `<div class="peak-list" style="margin-top:14px">`;
+    if (annots.length > 0) {
+      detail += `<div style="font-size:0.9rem;font-weight:600;color:${color};margin-bottom:8px">${activeEmo.toUpperCase()} peaks in ${bookKey === 'moon' ? 'Moon and Sixpence' : 'Great Gatsby'}</div>`;
+      for (const a of annots) {
+        const evt = (EMO.story_events && EMO.story_events[bookKey] && EMO.story_events[bookKey][a.ch]) || '';
+        detail += `<div style="margin:8px 0;padding:10px 14px;border-left:3px solid ${color};background:rgba(255,255,255,0.03);border-radius:0 6px 6px 0">`;
+        detail += `<div><b style="color:${color}">Ch.${a.ch}</b> <span style="color:#666">(intensity ${a.val.toFixed(3)})</span></div>`;
+        if (evt) detail += `<div style="font-size:0.85rem;color:#e2e8f0;margin:4px 0">${evt}</div>`;
+        detail += `<div style="font-size:0.82rem;color:#888;font-style:italic">"${a.text}"</div>`;
+        if (a.ko) detail += `<div style="font-size:0.8rem;color:#666;margin-top:2px">${a.ko}</div>`;
+        detail += `</div>`;
+      }
+    }
+    detail += `<p style="font-size:0.78rem;color:#555;margin-top:14px;line-height:1.5">차트의 아무 지점을 클릭하면 해당 위치의 문장을 볼 수 있습니다.<br>이 곡선이 보여주는 것: "${activeEmo}" 관련 단어가 많이 쓰인 구간. 보여주지 않는 것: 작가의 의도나 독자의 실제 감정.</p>`;
+    detail += `</div>`;
+    $('#emotion-detail').innerHTML = detail;
+  }
 }
 
 // ── E: Distant ──
