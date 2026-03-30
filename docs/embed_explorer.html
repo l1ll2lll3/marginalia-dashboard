@@ -123,7 +123,10 @@ h3 { font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; }
 <a href="dictionary.html" data-page="dictionary">Literary Dictionary</a>
 <a href="embed_explorer.html" data-page="embed_explorer">Embedding Explorer</a>
 </nav>
-<script>document.querySelectorAll('.mnav a').forEach(a=>{if(location.pathname.includes(a.dataset.page)||((a.dataset.page==='index')&&(location.pathname.endsWith('/')||location.pathname.endsWith('/index.html'))))a.classList.add('active')})</script>
+<script>
+if(location.hostname==='localhost'||location.hostname==='127.0.0.1'){document.querySelector('.mnav').style.display='none'}
+else{document.querySelectorAll('.mnav a').forEach(a=>{if(location.pathname.includes(a.dataset.page)||((a.dataset.page==='index')&&(location.pathname.endsWith('/')||location.pathname.endsWith('/index.html'))))a.classList.add('active')})}
+</script>
 
 <div id="tooltip"></div>
 
@@ -177,6 +180,14 @@ h3 { font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; }
     <div class="desc">인접 문장 간 유사도 변화. 노란 막대 = 챕터 <b>안에서</b> 분위기가 급변하는 지점 (챕터 경계는 당연하므로 제외). 막대를 클릭하면 전환 전후 문장을 봅니다.</div>
     <div id="mood-insights" style="font-size:0.84rem;color:var(--muted);margin-bottom:10px"></div>
     <div class="pills" id="timeline-pills"></div>
+    <div class="range-ctrl" id="timeline-range" style="display:flex;align-items:center;gap:10px;margin:10px 0;font-size:0.82rem;color:var(--muted)">
+      <span>Ch.</span>
+      <input type="number" id="tl-start" min="1" value="1" style="width:50px;padding:3px 6px;border:1px solid var(--border);border-radius:4px">
+      <span>~</span>
+      <input type="number" id="tl-end" min="1" value="58" style="width:50px;padding:3px 6px;border:1px solid var(--border);border-radius:4px">
+      <button onclick="drawTimeline(currentTimelineBook)" style="padding:4px 12px;border:1px solid var(--border);border-radius:4px;background:var(--card);cursor:pointer;font-size:0.8rem">Apply</button>
+      <button onclick="document.getElementById('tl-start').value=1;document.getElementById('tl-end').value=currentTimelineBook==='moon'?58:9;drawTimeline(currentTimelineBook)" style="padding:4px 12px;border:1px solid var(--border);border-radius:4px;background:var(--card);cursor:pointer;font-size:0.8rem">Reset</button>
+    </div>
     <div class="timeline-wrap"><svg id="timeline-svg" viewBox="0 0 1000 280"></svg></div>
     <div id="timeline-detail"></div>
   </div>
@@ -216,6 +227,14 @@ h3 { font-size: 0.95rem; font-weight: 600; margin: 16px 0 8px; }
     <div class="exp-note">감정 점수는 해당 감정 키워드가 포함된 문장들의 평균 임베딩과의 유사도입니다. 작가의 의도나 독자의 실제 감정을 측정한 것이 아닙니다. "death"가 포함된 문장이 반드시 슬픈 문장은 아니듯, 점수가 높다고 그 감정이 강하다는 뜻은 아닐 수 있습니다. 피크 지점의 원문을 직접 읽어보시길 권합니다.</div>
     <div class="desc">6가지 감정의 강도를 문장 순서대로 시각화. 감정을 하나 선택하면 나머지는 배경으로 표시됩니다. 차트의 아무 지점을 클릭하면 해당 위치의 문장을 볼 수 있습니다.</div>
     <div class="pills" id="emotion-pills"></div>
+    <div class="range-ctrl" id="emotion-range" style="display:flex;align-items:center;gap:10px;margin:10px 0;font-size:0.82rem;color:var(--muted)">
+      <span>Ch.</span>
+      <input type="number" id="emo-start" min="1" value="1" style="width:50px;padding:3px 6px;border:1px solid var(--border);border-radius:4px">
+      <span>~</span>
+      <input type="number" id="emo-end" min="1" value="58" style="width:50px;padding:3px 6px;border:1px solid var(--border);border-radius:4px">
+      <button onclick="drawEmotionArc()" style="padding:4px 12px;border:1px solid var(--border);border-radius:4px;background:var(--card);cursor:pointer;font-size:0.8rem">Apply</button>
+      <button onclick="document.getElementById('emo-start').value=1;document.getElementById('emo-end').value=emoActiveBook==='moon'?58:9;drawEmotionArc()" style="padding:4px 12px;border:1px solid var(--border);border-radius:4px;background:var(--card);cursor:pointer;font-size:0.8rem">Reset</button>
+    </div>
     <div style="overflow-x:auto"><svg id="emotion-svg" viewBox="0 0 1100 400"></svg></div>
     <div id="emotion-detail"></div>
   </div>
@@ -466,6 +485,8 @@ function renderTimeline() {
       $$('#timeline-pills .pill').forEach(p => p.classList.remove('active'));
       pill.classList.add('active');
       currentTimelineBook = book;
+      $('#tl-start').value = 1;
+      $('#tl-end').value = book === 'moon' ? 58 : 9;
       drawTimeline(book);
     };
     pills.appendChild(pill);
@@ -475,11 +496,27 @@ function renderTimeline() {
 }
 
 function drawTimeline(book) {
-  const sims = book === 'moon' ? D.moon_neighbor_sims : D.gatsby_neighbor_sims;
+  const allSims = book === 'moon' ? D.moon_neighbor_sims : D.gatsby_neighbor_sims;
   const offset = book === 'moon' ? 0 : D.moon_count;
   const svg = $('#timeline-svg');
   const w = 1000, h = 280, pad = 50, padR = 20, padTop = 20;
-  const barW = Math.max(2, (w - pad - padR) / sims.length - 1);
+
+  // 챕터 범위 필터
+  const chStart = parseInt($('#tl-start').value) || 1;
+  const chEnd = parseInt($('#tl-end').value) || 999;
+  const allSents = D.sentences;
+
+  // 범위에 해당하는 인덱스 찾기
+  let idxStart = 0, idxEnd = allSims.length;
+  for (let i = offset; i < offset + allSims.length + 1; i++) {
+    if (allSents[i] && allSents[i].ch >= chStart && idxStart === 0) idxStart = i - offset;
+    if (allSents[i] && allSents[i].ch > chEnd) { idxEnd = i - offset; break; }
+  }
+
+  const sims = allSims.slice(idxStart, idxEnd);
+  const viewOffset = idxStart;  // 실제 데이터 내 시작점
+
+  const barW = Math.max(1, (w - pad - padR) / sims.length - 0.5);
 
   const yMin = Math.min(...sims) - 0.02;
   const yMax = Math.max(...sims) + 0.02;
@@ -513,7 +550,7 @@ function drawTimeline(book) {
     const isShift = sim < threshold;
     const fill = isShift ? '#f59e0b' : color;
     const opacity = isShift ? 0.9 : 0.4;
-    html += `<rect class="timeline-bar" x="${x}" y="${y}" width="${barW}" height="${barH}" fill="${fill}" opacity="${opacity}" rx="1" data-idx="${i}" data-book="${book}"/>`;
+    html += `<rect class="timeline-bar" x="${x}" y="${y}" width="${barW}" height="${barH}" fill="${fill}" opacity="${opacity}" rx="1" data-idx="${i + viewOffset}" data-book="${book}"/>`;
   });
 
   // X label
@@ -733,6 +770,8 @@ function renderEmotion() {
       row1.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
       pill.classList.add('active');
       emoActiveBook = book;
+      $('#emo-start').value = 1;
+      $('#emo-end').value = book === 'moon' ? 58 : 9;
       drawEmotionArc();
     };
     row1.appendChild(pill);
@@ -775,16 +814,31 @@ function drawEmotionArc() {
   const bookData = emoActiveBook === 'moon' ? EMO.moon : EMO.gatsby;
   const bookKey = emoActiveBook;
   const activeEmo = emoActiveEmotion;
-  const n = bookData.sentence_count;
   const boundaries = bookData.chapter_boundaries;
 
-  // 현재 감정의 moving_avg
+  // 챕터 범위 필터
+  const chStart = parseInt($('#emo-start').value) || 1;
+  const chEnd = parseInt($('#emo-end').value) || 999;
+
+  // 범위에 해당하는 인덱스
+  let idxStart = 0, idxEnd = bookData.sentence_count;
+  for (const b of boundaries) {
+    if (b.ch >= chStart && idxStart === 0) idxStart = b.idx;
+    if (b.ch > chEnd) { idxEnd = b.idx; break; }
+  }
+
+  // 현재 감정의 moving_avg (범위 슬라이스)
   const activeMa = bookData.moving_avg.find(m => m.emotion === activeEmo);
   if (!activeMa) return;
-  const vals = activeMa.values;
+  const vals = activeMa.values.slice(idxStart, idxEnd);
+  const n = vals.length;
+  const viewOffset = idxStart;
 
   // 다른 감정들 (배경)
   const otherMas = bookData.moving_avg.filter(m => m.emotion !== activeEmo);
+
+  // 범위 내 boundaries
+  const visibleBounds = boundaries.filter(b => b.idx >= idxStart && b.idx < idxEnd);
 
   // Y range (현재 감정 기준)
   const yMin = Math.min(...vals) - 0.005;
@@ -802,23 +856,23 @@ function drawEmotionArc() {
     html += `<text x="${pad-6}" y="${y+3}" text-anchor="end" font-size="9" fill="#555">${v.toFixed(3)}</text>`;
   }
 
-  // Chapter boundaries
-  for (const b of boundaries) {
-    if (b.idx > 0) {
-      const x = sx(b.idx);
+  // Chapter boundaries (범위 내만)
+  for (const b of visibleBounds) {
+    const localIdx = b.idx - viewOffset;
+    if (localIdx > 0) {
+      const x = sx(localIdx);
       html += `<line x1="${x}" y1="${padTop}" x2="${x}" y2="${H-padBot}" stroke="#333" stroke-width="0.5" stroke-dasharray="2,4"/>`;
-      if (b.ch % 5 === 1 || bookKey === 'gatsby') {
-        html += `<text x="${x}" y="${H-padBot+14}" font-size="9" fill="#555" text-anchor="middle">Ch.${b.ch}</text>`;
-      }
+      html += `<text x="${x}" y="${H-padBot+14}" font-size="9" fill="#555" text-anchor="middle">Ch.${b.ch}</text>`;
     }
   }
 
-  // 배경 감정선 (회색, 얇게)
+  // 배경 감정선 (회색, 얇게, 범위 슬라이스)
   for (const ma of otherMas) {
+    const sliced = ma.values.slice(idxStart, idxEnd);
     let path = '';
-    for (let i = 0; i < ma.values.length; i++) {
+    for (let i = 0; i < sliced.length; i++) {
       const x = sx(i);
-      const y = sy(Math.max(yMin, Math.min(yMax, ma.values[i])));
+      const y = sy(Math.max(yMin, Math.min(yMax, sliced[i])));
       path += (i === 0 ? 'M' : 'L') + `${x.toFixed(1)},${y.toFixed(1)}`;
     }
     html += `<path d="${path}" fill="none" stroke="#444" stroke-width="0.7" opacity="0.3"/>`;
@@ -841,9 +895,10 @@ function drawEmotionArc() {
   html += `<path d="${linePath}" fill="none" stroke="${color}" stroke-width="2.5" opacity="0.9"/>`;
 
   // 피크 어노테이션 (#2)
-  const annots = (EMO.annotations && EMO.annotations[bookKey] && EMO.annotations[bookKey][activeEmo]) || [];
+  const annots = ((EMO.annotations && EMO.annotations[bookKey] && EMO.annotations[bookKey][activeEmo]) || [])
+    .filter(a => a.idx >= idxStart && a.idx < idxEnd);
   for (const a of annots) {
-    const x = sx(a.idx);
+    const x = sx(a.idx - viewOffset);
     const y = sy(a.val);
     // 점
     html += `<circle cx="${x}" cy="${y}" r="5" fill="${color}" stroke="white" stroke-width="1.5"/>`;
@@ -867,8 +922,9 @@ function drawEmotionArc() {
     const rect = svg.getBoundingClientRect();
     const svgW = rect.width;
     const clickX = (e.clientX - rect.left) / svgW * W;
-    const idx = Math.round((clickX - pad) / (W - pad - padR) * n);
-    if (idx < 0 || idx >= n) return;
+    const localIdx = Math.round((clickX - pad) / (W - pad - padR) * n);
+    if (localIdx < 0 || localIdx >= n) return;
+    const idx = localIdx + viewOffset;
 
     // 가장 가까운 샘플 문장 찾기
     const samples = bookData.sample_sents || [];
@@ -901,8 +957,8 @@ function drawEmotionArc() {
     const indicator = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     svg.querySelectorAll('.click-indicator').forEach(el => el.remove());
     indicator.setAttribute('class', 'click-indicator');
-    indicator.setAttribute('x1', sx(idx)); indicator.setAttribute('y1', padTop);
-    indicator.setAttribute('x2', sx(idx)); indicator.setAttribute('y2', H - padBot);
+    indicator.setAttribute('x1', sx(localIdx)); indicator.setAttribute('y1', padTop);
+    indicator.setAttribute('x2', sx(localIdx)); indicator.setAttribute('y2', H - padBot);
     indicator.setAttribute('stroke', color); indicator.setAttribute('stroke-width', '1');
     indicator.setAttribute('opacity', '0.6');
     svg.appendChild(indicator);
