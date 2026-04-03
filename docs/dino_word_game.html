@@ -57,10 +57,10 @@ canvas { border: 1px solid #333; border-radius: 4px; cursor: pointer; display: b
   .word-entry:first-child { margin-top: 8px; }
 }
 #print-header { display: none; }
-.mnav { display: flex; gap: 0; background: #1a1a2e; border-bottom: 1px solid #333; font-family: 'Courier New', monospace; font-size: 12px; }
-.mnav a { color: #888; text-decoration: none; padding: 8px 14px; }
-.mnav a:hover { color: #fbbf24; }
-.mnav a.active { color: #fbbf24; border-bottom: 2px solid #fbbf24; }
+.mnav { display:flex; gap:5px; justify-content:center; flex-wrap:wrap; padding:8px 16px; background:#faf8f5; border-bottom:1px solid #e0dcd4; font-family:'Georgia',serif; font-size:12px; line-height:1; }
+.mnav a { padding:5px 11px; border-radius:14px; font-size:12px; line-height:1; text-decoration:none; color:#78716c; border:1px solid transparent; transition:all 0.15s; white-space:nowrap; }
+.mnav a:hover { border-color:#d6d3d1; color:#1c1917; }
+.mnav a.active { background:#1c1917; color:white; border-color:#1c1917; }
 .word-entry {
   border-left: 3px solid #333; margin: 0; padding: 10px 16px;
   background: #13131f; animation: fadeIn 0.3s ease;
@@ -87,14 +87,15 @@ canvas { border: 1px solid #333; border-radius: 4px; cursor: pointer; display: b
 </head>
 <body>
 <nav class="mnav">
-<a href="index.html">Moon & Sixpence</a>
-<a href="gatsby.html">Great Gatsby</a>
-<a href="camel_xiangzi.html">骆驼祥子</a>
-<a href="three_kingdoms.html">三國演義</a>
-<a href="dictionary.html">Literary Dictionary</a>
-<a href="embed_explorer.html">Embedding Explorer</a>
-<a href="dino_word_game.html" class="active">Word Game</a>
+<a href="index.html" data-page="index">Moon & Sixpence</a>
+<a href="gatsby.html" data-page="gatsby">Great Gatsby</a>
+<a href="camel_xiangzi.html" data-page="camel_xiangzi">骆驼祥子</a>
+<a href="three_kingdoms.html" data-page="three_kingdoms">三國演義</a>
+<a href="dictionary.html" data-page="dictionary">Literary Dictionary</a>
+<a href="embed_explorer.html" data-page="embed_explorer">Embedding Explorer</a>
+<a href="dino_word_game.html" data-page="dino_word_game">Word Game</a>
 </nav>
+<script>document.querySelectorAll('.mnav a').forEach(a=>{if(location.pathname.includes(a.dataset.page))a.classList.add('active')})</script>
 <div id="game-wrap">
   <canvas id="game" width="900" height="280"></canvas>
 </div>
