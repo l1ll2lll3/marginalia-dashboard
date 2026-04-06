@@ -3780,9 +3780,9 @@
   "total": 3702,
   "by_cefr": {
    "B1": 618,
-   "B2": 372,
+   "B2": 1039,
    "C1": 778,
-   "C2": 1934
+   "C2": 1267
   },
   "by_jlpt": {
    "N1": 585,
@@ -3797,7 +3797,8 @@
     "jlpt": "N1",
     "difficulty": "C1",
     "count": 160,
-    "pos": "動詞"
+    "pos": "動詞",
+    "definition_en": "to return; to come back"
    },
    {
     "lemma": "未だ",
@@ -3805,7 +3806,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 113,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "still; as yet"
    },
    {
     "lemma": "直ぐ",
@@ -3813,7 +3815,8 @@
     "jlpt": "N1",
     "difficulty": "C1",
     "count": 109,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "immediately; at once"
    },
    {
     "lemma": "通り",
@@ -3821,7 +3824,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 106,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "street; road"
    },
    {
     "lemma": "対する",
@@ -3829,7 +3833,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 89,
-    "pos": "動詞"
+    "pos": "動詞",
+    "definition_en": "to face (each other); to be facing"
    },
    {
     "lemma": "良く",
@@ -3837,7 +3842,8 @@
     "jlpt": "—",
     "difficulty": "C1",
     "count": 86,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "nicely; properly"
    },
    {
     "lemma": "人間",
@@ -3845,7 +3851,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 85,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "human being; human"
    },
    {
     "lemma": "知れる",
@@ -3853,7 +3860,8 @@
     "jlpt": "—",
     "difficulty": "C1",
     "count": 84,
-    "pos": "動詞"
+    "pos": "動詞",
+    "definition_en": "to become known; to come to light"
    },
    {
     "lemma": "トウキョウ",
@@ -3861,7 +3869,8 @@
     "jlpt": "—",
     "difficulty": "C1",
     "count": 74,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "Tokyo"
    },
    {
     "lemma": "つく",
@@ -3869,7 +3878,8 @@
     "jlpt": "—",
     "difficulty": "C1",
     "count": 66,
-    "pos": "動詞"
+    "pos": "動詞",
+    "definition_en": "to take (seat, position, course, office, etc.); to assume"
    },
    {
     "lemma": "そう-様態",
@@ -3877,7 +3887,8 @@
     "jlpt": "—",
     "difficulty": "C1",
     "count": 63,
-    "pos": "形状詞"
+    "pos": "形状詞",
+    "definition_en": "to run along; to run beside"
    },
    {
     "lemma": "様子",
@@ -3885,7 +3896,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 61,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "state (of affairs); situation"
    },
    {
     "lemma": "心持ち",
@@ -3893,7 +3905,8 @@
     "jlpt": "—",
     "difficulty": "C1",
     "count": 57,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "feeling; mood"
    },
    {
     "lemma": "態度",
@@ -3901,7 +3914,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 54,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "attitude; manner"
    },
    {
     "lemma": "丸で",
@@ -3909,7 +3923,8 @@
     "jlpt": "N1",
     "difficulty": "C1",
     "count": 50,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "as if; as though"
    },
    {
     "lemma": "起こる",
@@ -3917,7 +3932,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 49,
-    "pos": "動詞"
+    "pos": "動詞",
+    "definition_en": "to occur; to happen"
    },
    {
     "lemma": "突然",
@@ -3925,7 +3941,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 47,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "abrupt; sudden"
    },
    {
     "lemma": "何故",
@@ -3933,7 +3950,8 @@
     "jlpt": "N1",
     "difficulty": "C1",
     "count": 47,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "why; how"
    },
    {
     "lemma": "積り",
@@ -3941,7 +3959,8 @@
     "jlpt": "—",
     "difficulty": "C1",
     "count": 45,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "intention; plan"
    },
    {
     "lemma": "感ずる",
@@ -3949,7 +3968,8 @@
     "jlpt": "N2",
     "difficulty": "B2",
     "count": 45,
-    "pos": "動詞"
+    "pos": "動詞",
+    "definition_en": "to feel; to sense"
    },
    {
     "lemma": "寧ろ",
@@ -3957,7 +3977,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 43,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "rather; better"
    },
    {
     "lemma": "一寸",
@@ -3965,7 +3986,8 @@
     "jlpt": "N1",
     "difficulty": "C1",
     "count": 43,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "a little; a bit"
    },
    {
     "lemma": "実際",
@@ -3973,7 +3995,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 42,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "reality; actuality"
    },
    {
     "lemma": "殆ど",
@@ -3981,7 +4004,8 @@
     "jlpt": "N1",
     "difficulty": "C1",
     "count": 42,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "almost; nearly"
    },
    {
     "lemma": "全く",
@@ -3989,7 +4013,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 42,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "really; truly"
    },
    {
     "lemma": "眺める",
@@ -3997,7 +4022,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 41,
-    "pos": "動詞"
+    "pos": "動詞",
+    "definition_en": "to look at; to gaze at"
    },
    {
     "lemma": "余り",
@@ -4005,7 +4031,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 40,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "remainder; remnant"
    },
    {
     "lemma": "黙る",
@@ -4013,7 +4040,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 40,
-    "pos": "動詞"
+    "pos": "動詞",
+    "definition_en": "to be silent; to say nothing"
    },
    {
     "lemma": "調子",
@@ -4021,7 +4049,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 39,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "tune; tone"
    },
    {
     "lemma": "自然",
@@ -4029,7 +4058,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 38,
-    "pos": "形状詞"
+    "pos": "形状詞",
+    "definition_en": "nature"
    },
    {
     "lemma": "若し",
@@ -4037,7 +4067,8 @@
     "jlpt": "N1",
     "difficulty": "C1",
     "count": 38,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "if; in case"
    },
    {
     "lemma": "信ずる",
@@ -4045,7 +4076,8 @@
     "jlpt": "N2",
     "difficulty": "B2",
     "count": 36,
-    "pos": "動詞"
+    "pos": "動詞",
+    "definition_en": "to believe; to believe in"
    },
    {
     "lemma": "段々",
@@ -4053,7 +4085,8 @@
     "jlpt": "N1",
     "difficulty": "C1",
     "count": 36,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "notches; serration"
    },
    {
     "lemma": "与える",
@@ -4061,7 +4094,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 35,
-    "pos": "動詞"
+    "pos": "動詞",
+    "definition_en": "to give (esp. to someone of lower status); to bestow"
    },
    {
     "lemma": "却って",
@@ -4069,7 +4103,8 @@
     "jlpt": "N2",
     "difficulty": "B2",
     "count": 35,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "on the contrary; rather"
    },
    {
     "lemma": "書物",
@@ -4077,7 +4112,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 34,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "book; volume"
    },
    {
     "lemma": "世の中",
@@ -4085,7 +4121,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 34,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "society; the world"
    },
    {
     "lemma": "過去",
@@ -4093,7 +4130,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 34,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "the past; bygone days"
    },
    {
     "lemma": "記憶",
@@ -4101,7 +4139,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 33,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "memory; recollection"
    },
    {
     "lemma": "打ち明ける",
@@ -4109,7 +4148,8 @@
     "jlpt": "—",
     "difficulty": "C1",
     "count": 32,
-    "pos": "動詞"
+    "pos": "動詞",
+    "definition_en": "to confide; to reveal"
    },
    {
     "lemma": "無論",
@@ -4117,7 +4157,8 @@
     "jlpt": "N1",
     "difficulty": "C1",
     "count": 32,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "of course; certainly"
    },
    {
     "lemma": "想像",
@@ -4125,7 +4166,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 32,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "imagination; supposition"
    },
    {
     "lemma": "経つ",
@@ -4133,7 +4175,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 31,
-    "pos": "動詞"
+    "pos": "動詞",
+    "definition_en": "to pass (of time); to elapse"
    },
    {
     "lemma": "到頭",
@@ -4141,7 +4184,8 @@
     "jlpt": "—",
     "difficulty": "C1",
     "count": 31,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "finally; at last"
    },
    {
     "lemma": "繰り返す",
@@ -4149,7 +4193,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 31,
-    "pos": "動詞"
+    "pos": "動詞",
+    "definition_en": "to repeat; to do over again"
    },
    {
     "lemma": "世間",
@@ -4157,7 +4202,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 30,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "world; society"
    },
    {
     "lemma": "結果",
@@ -4165,7 +4211,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 30,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "result; consequence"
    },
    {
     "lemma": "幾ら",
@@ -4173,7 +4220,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 29,
-    "pos": "副詞"
+    "pos": "副詞",
+    "definition_en": "how much"
    },
    {
     "lemma": "全て",
@@ -4181,7 +4229,8 @@
     "jlpt": "N3",
     "difficulty": "B1",
     "count": 29,
-    "pos": "名詞"
+    "pos": "名詞",
+    "definition_en": "everything; all"
    },
    {
     "lemma": "落ち着く",
@@ -4189,7 +4238,8 @@
     "jlpt": "—",
     "difficulty": "C1",
     "count": 29,
-    "pos": "動詞"
+    "pos": "動詞",
+    "definition_en": "to calm down; to compose oneself"
    }
   ]
  }
