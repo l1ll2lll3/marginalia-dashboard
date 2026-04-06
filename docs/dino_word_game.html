@@ -28,10 +28,10 @@ body { background: #faf8f5; font-family: 'Georgia', serif; color: #2c2c2c; overf
 canvas { border: 1px solid #d6d3d1; border-radius: 4px; cursor: pointer; display: block; background: #f5f0eb; }
 #controls { width: 900px; margin: 8px auto 0; display: flex; justify-content: flex-end; }
 #btn-print {
-  background: none; border: 1px solid #bbb; color: #666; font: 12px 'Courier New';
-  padding: 4px 14px; border-radius: 4px; cursor: pointer;
+  background: #1c1917; border: 1px solid #1c1917; color: #fff; font: bold 14px 'Courier New';
+  padding: 8px 20px; border-radius: 6px; cursor: pointer;
 }
-#btn-print:hover { border-color: #1c1917; color: #1c1917; }
+#btn-print:hover { background: #3d3530; border-color: #3d3530; }
 #btn-print:disabled { opacity: 0.3; cursor: default; }
 #word-list { width: 900px; margin: 0 auto; padding: 0 0 40px 0; }
 @media print {
@@ -396,8 +396,8 @@ function drawCoin(c) {
   }
   // Small label
   const label = c.isIdiom ? c.data.phrase : c.data.lemma;
-  ctx.font = '9px Courier New';
-  ctx.fillStyle = 'rgba(0,0,0,0.3)';
+  ctx.font = 'bold 13px Courier New';
+  ctx.fillStyle = '#1c1917';
   ctx.textAlign = 'center';
   ctx.fillText(label, cx, bobY - 18);
   ctx.textAlign = 'left';
@@ -423,10 +423,10 @@ function drawSparkles() {
 }
 
 function drawHUD() {
-  ctx.font = '12px Courier New'; ctx.fillStyle = '#999';
+  ctx.font = 'bold 14px Courier New'; ctx.fillStyle = '#555';
   ctx.fillText('Ch.' + CHAPTER + '  ' + BOOK_TITLE, 12, 16);
 
-  ctx.fillStyle = '#1c1917'; ctx.font = 'bold 13px Courier New';
+  ctx.fillStyle = '#1c1917'; ctx.font = 'bold 16px Courier New';
   ctx.textAlign = 'right'; ctx.fillText('Score: ' + score, W-12, 16); ctx.textAlign = 'left';
 
   // Progress
@@ -437,7 +437,7 @@ function drawHUD() {
     ctx.fillStyle = '#22c55e'; ctx.fillRect(barX, barY, barW*(collected/total), barH);
     ctx.fillStyle = '#ef4444'; ctx.fillRect(barX+barW*(collected/total), barY, barW*(missed/total), barH);
   }
-  ctx.font = '9px Courier New'; ctx.fillStyle = '#999'; ctx.textAlign = 'center';
+  ctx.font = 'bold 11px Courier New'; ctx.fillStyle = '#555'; ctx.textAlign = 'center';
   ctx.fillText((collected+missed)+'/'+total, W/2, barY+14); ctx.textAlign = 'left';
 
   // Collected flash (center of game area, brief)
@@ -445,7 +445,7 @@ function drawHUD() {
     const alpha = Math.min(1, collectedFlash.timer / 20);
     const yOff = (50 - collectedFlash.timer) * 0.5;
     ctx.globalAlpha = alpha;
-    ctx.font = 'bold 20px Georgia'; ctx.fillStyle = collectedFlash.color;
+    ctx.font = 'bold 24px Georgia'; ctx.fillStyle = collectedFlash.color;
     ctx.textAlign = 'center';
     ctx.fillText(collectedFlash.text, W/2, GROUND_Y - 120 - yOff);
     ctx.textAlign = 'left';
@@ -455,7 +455,7 @@ function drawHUD() {
   // Missed flash
   if (missedFlash) {
     ctx.globalAlpha = missedFlash.timer / 45;
-    ctx.font = '11px Courier New'; ctx.fillStyle = '#ef4444';
+    ctx.font = 'bold 14px Courier New'; ctx.fillStyle = '#ef4444';
     ctx.textAlign = 'center';
     ctx.fillText('Missed: ' + missedFlash.text, W/2, GROUND_Y + 20);
     ctx.textAlign = 'left'; ctx.globalAlpha = 1;
@@ -476,19 +476,19 @@ function drawStartScreen() {
   ctx.fillStyle = '#8b5cf6'; ctx.fill();
 
   ctx.textAlign = 'center';
-  ctx.font = 'bold 26px Georgia'; ctx.fillStyle = '#1c1917';
+  ctx.font = 'bold 30px Georgia'; ctx.fillStyle = '#1c1917';
   ctx.fillText('DINO WORD JUMP', W/2, H/2-60);
-  ctx.font = '13px Georgia'; ctx.fillStyle = '#78716c';
+  ctx.font = '15px Georgia'; ctx.fillStyle = '#555';
   ctx.fillText(BOOK_TITLE + ' — Chapter ' + CHAPTER, W/2, H/2-36);
 
   const labels = ['B2+','C1+','C2'];
   const counts = labels.map((_,i) => filterObstacles(DIFF_ORDER[i]).length);
   const colors = ['#22c55e','#f59e0b','#ef4444'];
-  const btnW = 80, btnH = 28, gap = 16;
+  const btnW = 96, btnH = 36, gap = 16;
   const startX = (W - 3*btnW - 2*gap)/2;
   const btnY = H/2 + 10;
-  ctx.font = '10px Courier New'; ctx.fillStyle = '#999';
-  ctx.fillText('Difficulty', W/2, btnY-16);
+  ctx.font = '12px Courier New'; ctx.fillStyle = '#666';
+  ctx.fillText('Difficulty', W/2, btnY-18);
 
   for (let i = 0; i < 3; i++) {
     const bx = startX + i*(btnW+gap), sel = i === selectedDiffIdx;
@@ -496,13 +496,13 @@ function drawStartScreen() {
     ctx.strokeStyle = sel ? colors[i] : '#ccc'; ctx.lineWidth = sel ? 2 : 1;
     ctx.beginPath(); ctx.roundRect(bx, btnY-btnH/2, btnW, btnH, 6); ctx.fill(); ctx.stroke();
     ctx.fillStyle = sel ? colors[i] : '#999';
-    ctx.font = sel ? 'bold 12px Courier New' : '12px Courier New';
-    ctx.fillText(labels[i]+' ('+counts[i]+')', bx+btnW/2, btnY+4);
+    ctx.font = sel ? 'bold 15px Courier New' : '14px Courier New';
+    ctx.fillText(labels[i]+' ('+counts[i]+')', bx+btnW/2, btnY+5);
   }
 
-  ctx.font = '12px Courier New'; ctx.fillStyle = '#1c1917';
+  ctx.font = 'bold 15px Courier New'; ctx.fillStyle = '#1c1917';
   if (Math.floor(frameCount/30)%2===0) ctx.fillText('[ SPACE or TAP to start ]', W/2, H/2+48);
-  ctx.font = '10px Georgia'; ctx.fillStyle = '#78716c';
+  ctx.font = '13px Georgia'; ctx.fillStyle = '#555';
   ctx.fillText('Jump to collect coins. Collected words appear below.', W/2, H/2+70);
   ctx.textAlign = 'left';
 }
@@ -510,16 +510,16 @@ function drawStartScreen() {
 function drawCompleteScreen() {
   ctx.fillStyle = 'rgba(245,240,235,0.95)'; ctx.fillRect(0, 0, W, H);
   ctx.textAlign = 'center';
-  ctx.font = 'bold 24px Georgia'; ctx.fillStyle = '#1c1917';
+  ctx.font = 'bold 28px Georgia'; ctx.fillStyle = '#1c1917';
   ctx.fillText('Chapter ' + CHAPTER + ' Complete!', W/2, 40);
 
   const total = coinQueue.length;
   const pct = total > 0 ? Math.round(collected / total * 100) : 0;
 
-  ctx.font = '14px Georgia'; ctx.fillStyle = '#333';
+  ctx.font = '17px Georgia'; ctx.fillStyle = '#333';
   ctx.fillText('Collected: ' + collected + ' / ' + total, W/2, 80);
-  ctx.fillText('Missed: ' + missed, W/2, 102);
-  if (totalIdioms > 0) ctx.fillText('Idioms: ' + idiomsCaught + ' / ' + totalIdioms, W/2, 124);
+  ctx.fillText('Missed: ' + missed, W/2, 104);
+  if (totalIdioms > 0) ctx.fillText('Idioms: ' + idiomsCaught + ' / ' + totalIdioms, W/2, 128);
 
   ctx.font = 'bold 18px Georgia'; ctx.fillStyle = '#1c1917';
   ctx.fillText('Score: ' + score, W/2, 154);
@@ -535,13 +535,13 @@ function drawCompleteScreen() {
   ctx.fillText(rating, W/2, barY+barH+38);
 
   if (missedWords.length > 0) {
-    ctx.font = '10px Courier New'; ctx.fillStyle = '#ef4444'; ctx.fillText('Missed:', W/2, 230);
-    ctx.font = '10px Courier New'; ctx.fillStyle = '#888';
+    ctx.font = '12px Courier New'; ctx.fillStyle = '#ef4444'; ctx.fillText('Missed:', W/2, 230);
+    ctx.font = '12px Courier New'; ctx.fillStyle = '#666';
     const shown = missedWords.slice(0, 15).join(', ') + (missedWords.length > 15 ? ' ...' : '');
     ctx.fillText(shown, W/2, 246);
   }
 
-  ctx.font = '12px Courier New'; ctx.fillStyle = '#1c1917';
+  ctx.font = 'bold 15px Courier New'; ctx.fillStyle = '#1c1917';
   if (Math.floor(frameCount/30)%2===0) ctx.fillText('[ SPACE to play again ]', W/2, H-16);
   ctx.textAlign = 'left';
 }
