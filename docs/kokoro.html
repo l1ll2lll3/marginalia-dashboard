@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>こころ — Marginalia</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", "Georgia", serif;
+  background: #f5f0eb;
+  color: #2c2c2c;
+  line-height: 1.7;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+header { text-align: center; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid #d6d3d1; }
+header h1 {
+  font-size: 3em;
+  font-weight: normal;
+  color: #1c1917;
+  margin-bottom: 8px;
+  letter-spacing: 0.1em;
+}
+header .subtitle { font-size: 1.1em; color: #78716c; font-style: italic; }
+header .author { font-size: 1.2em; color: #555; margin-top: 12px; }
+header .era { font-size: 0.95em; color: #888; margin-top: 4px; }
+
+h2 { font-size: 1.5em; color: #1c1917; margin: 48px 0 16px 0; padding-bottom: 8px; border-bottom: 1px solid #e0dcd4; font-weight: normal; }
+h3 { font-size: 1.15em; color: #3d3530; margin: 24px 0 12px; font-weight: normal; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 24px 0; }
+.stat-card { background: #fff; padding: 24px; border-radius: 8px; border: 1px solid #e0dcd4; text-align: center; }
+.stat-card .number { font-size: 2.4em; color: #1c1917; font-weight: bold; }
+.stat-card .label { font-size: 0.9em; color: #78716c; margin-top: 4px; }
+
+.parts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
+.part-card { background: #fff; padding: 24px; border-radius: 8px; border-left: 4px solid #8b5a3c; }
+.part-card .part-name { font-size: 1.5em; color: #1c1917; margin-bottom: 4px; }
+.part-card .part-title { color: #555; font-style: italic; margin-bottom: 8px; }
+.part-card .part-en { color: #888; font-size: 0.9em; }
+.part-card .part-meta { margin-top: 12px; font-size: 0.85em; color: #78716c; }
+
+.chart-box { background: #fff; padding: 24px; border-radius: 8px; border: 1px solid #e0dcd4; margin: 16px 0; }
+.chart-box svg { display: block; margin: 0 auto; }
+
+table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; border: 1px solid #e0dcd4; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #f0ede8; }
+th { background: #faf8f5; color: #555; font-weight: normal; font-size: 0.88em; text-transform: uppercase; letter-spacing: 0.05em; }
+td.num { text-align: right; font-family: 'Courier New', monospace; }
+td.jlpt { text-align: center; font-family: 'Courier New', monospace; font-size: 0.9em; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; }
+.badge-N5 { background: #d1fae5; color: #065f46; }
+.badge-N4 { background: #dbeafe; color: #1e40af; }
+.badge-N3 { background: #e0e7ff; color: #3730a3; }
+.badge-N2 { background: #fef3c7; color: #92400e; }
+.badge-N1 { background: #fed7aa; color: #9a3412; }
+.badge-C2 { background: #fecaca; color: #991b1b; }
+
+.char-bars { margin: 16px 0; }
+.char-row { display: flex; align-items: center; margin-bottom: 6px; }
+.char-name { width: 150px; font-size: 0.95em; color: #1c1917; }
+.char-bar-bg { flex: 1; height: 24px; background: #f0ede8; border-radius: 4px; overflow: hidden; position: relative; }
+.char-bar-fill { height: 100%; background: linear-gradient(90deg, #8b5a3c, #a0765a); }
+.char-count { margin-left: 12px; font-family: 'Courier New', monospace; font-size: 0.9em; color: #555; width: 60px; text-align: right; }
+
+.downloads { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 16px; }
+.download-card { display: block; background: #fff; padding: 16px; border-radius: 6px; border: 1px solid #e0dcd4; text-decoration: none; color: #1c1917; transition: all 0.15s; }
+.download-card:hover { border-color: #8b5a3c; background: #faf8f5; }
+.download-card .dl-title { font-weight: bold; margin-bottom: 4px; }
+.download-card .dl-meta { color: #888; font-size: 0.85em; }
+
+footer { text-align: center; margin-top: 64px; padding-top: 24px; border-top: 1px solid #e0dcd4; color: #888; font-size: 0.85em; }
+footer a { color: #8b5a3c; text-decoration: none; }
+
+.blockquote { background: #fff; border-left: 3px solid #8b5a3c; padding: 16px 24px; margin: 16px 0; font-style: italic; color: #555; }
+.blockquote cite { display: block; margin-top: 8px; font-style: normal; font-size: 0.9em; color: #888; }
+
+.philosophy { background: #faf8f5; padding: 24px; border-radius: 8px; margin: 32px 0; }
+.philosophy h3 { color: #8b5a3c; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>こゝろ</h1>
+  <div class="subtitle">Kokoro · 마음</div>
+  <div class="author">夏目漱石 · Natsume Sōseki</div>
+  <div class="era">1914 · 明治末期</div>
+</header>
+
+<div class="philosophy">
+  <h3>왜 이 책인가</h3>
+  <p>Marginalia의 창작자는 일본어를 모릅니다. 그래서 이 책을 골랐습니다.</p>
+  <p>이미 아는 언어로 Marginalia를 검증하는 것은 편향입니다. 진짜 테스트는 <strong>제로에서 시작해서, 앱으로 한 권을 읽을 수 있는가</strong>입니다. こころ는 그 증명입니다.</p>
+</div>
+
+<h2>작품 정보</h2>
+<div class="stats-grid">
+  <div class="stat-card"><div class="number" id="stat-sentences">—</div><div class="label">Sentences</div></div>
+  <div class="stat-card"><div class="number" id="stat-chapters">—</div><div class="label">Chapters</div></div>
+  <div class="stat-card"><div class="number" id="stat-vocab">—</div><div class="label">Vocabulary (B1+)</div></div>
+  <div class="stat-card"><div class="number" id="stat-chars">—</div><div class="label">Characters</div></div>
+</div>
+
+<h2>Three Parts</h2>
+<div class="parts-grid" id="parts-grid"></div>
+
+<h2>Character Mentions</h2>
+<p style="color:#666; margin-bottom:16px;">화자 「私」의 관점에서 본 인물들의 등장 빈도. 先生은 상권(上) 중심, 父는 중권(中) 중심, K는 하권(下) 중심.</p>
+<div class="chart-box">
+  <div class="char-bars" id="char-bars"></div>
+</div>
+
+<h2>Vocabulary by JLPT Level</h2>
+<p style="color:#666; margin-bottom:16px;">JLPT 공식 리스트(Bluskyo/JLPT_Vocabulary, MIT)로 분류. 「—」는 JLPT 미등재 어휘 (주로 문학적/복합어).</p>
+<div class="chart-box">
+  <svg id="vocab-chart" width="800" height="280"></svg>
+</div>
+
+<h2>Top 30 Most Frequent Words</h2>
+<p style="color:#666; margin-bottom:16px;">B1 이상 단어 중 본문에서 가장 많이 쓰인 것. 기본 조사(は, を, が)와 지시어(これ, それ)는 제외됨.</p>
+<table>
+  <thead>
+    <tr><th>#</th><th>漢字</th><th>Reading</th><th>JLPT</th><th>POS</th><th class="num">Count</th></tr>
+  </thead>
+  <tbody id="vocab-table"></tbody>
+</table>
+
+<h2>Downloads</h2>
+<div class="downloads">
+  <a class="download-card" href="kokoro_ja.epub">
+    <div class="dl-title">📖 こころ (原文)</div>
+    <div class="dl-meta">Japanese · 261 KB</div>
+  </a>
+  <a class="download-card" href="kokoro_ko.epub">
+    <div class="dl-title">📖 마음 (한국어)</div>
+    <div class="dl-meta">Korean · 256 KB</div>
+  </a>
+  <a class="download-card" href="kokoro_en.epub">
+    <div class="dl-title">📖 Kokoro (English)</div>
+    <div class="dl-meta">English · 234 KB</div>
+  </a>
+  <a class="download-card" href="kokoro_ko_bilingual.epub">
+    <div class="dl-title">📖 JA ↔ KO 대역</div>
+    <div class="dl-meta">Bilingual · 465 KB</div>
+  </a>
+  <a class="download-card" href="kokoro_en_bilingual.epub">
+    <div class="dl-title">📖 JA ↔ EN bilingual</div>
+    <div class="dl-meta">Bilingual · 459 KB</div>
+  </a>
+  <a class="download-card" href="kokoro_ko_interleaved.epub">
+    <div class="dl-title">📖 JA ⇄ KO 교차</div>
+    <div class="dl-meta">Interleaved · 490 KB</div>
+  </a>
+  <a class="download-card" href="kokoro_en_interleaved.epub">
+    <div class="dl-title">📖 JA ⇄ EN interleaved</div>
+    <div class="dl-meta">Interleaved · 486 KB</div>
+  </a>
+</div>
+
+<footer>
+  Marginalia × こころ · Text: <a href="https://www.aozora.gr.jp/cards/000148/card773.html">青空文庫</a> (Public Domain)<br>
+  Translation: Claude Sonnet · JLPT data: <a href="https://github.com/Bluskyo/JLPT_Vocabulary">Bluskyo/JLPT_Vocabulary</a> (MIT)
+</footer>
+
+</div>
+
+<script>
+d3.json('dashboard_data_kokoro.json').then(data => {
+  // Stats
+  d3.select('#stat-sentences').text(data.metadata.total_sentences.toLocaleString());
+  d3.select('#stat-chapters').text(data.metadata.total_chapters);
+  d3.select('#stat-vocab').text(data.vocabulary.total.toLocaleString());
+  d3.select('#stat-chars').text(Object.keys(data.characters).length);
+
+  // Parts
+  const partsDiv = d3.select('#parts-grid');
+  data.metadata.parts.forEach(p => {
+    const card = partsDiv.append('div').attr('class', 'part-card');
+    card.append('div').attr('class', 'part-name').text(p.name);
+    card.append('div').attr('class', 'part-title').text(p.title);
+    card.append('div').attr('class', 'part-en').text(p.title_en);
+    card.append('div').attr('class', 'part-meta').text(`${p.chapters} chapters`);
+  });
+
+  // Character bars
+  const chars = Object.values(data.characters)
+    .filter(c => c.mentions > 0)
+    .sort((a, b) => b.mentions - a.mentions);
+  const maxMentions = chars[0] ? chars[0].mentions : 1;
+
+  const barsDiv = d3.select('#char-bars');
+  chars.forEach(c => {
+    const row = barsDiv.append('div').attr('class', 'char-row');
+    row.append('div').attr('class', 'char-name').html(`${c.name} <span style="color:#888;font-size:0.85em">${c.name_en}</span>`);
+    const bar = row.append('div').attr('class', 'char-bar-bg');
+    bar.append('div').attr('class', 'char-bar-fill')
+      .style('width', (c.mentions / maxMentions * 100) + '%');
+    row.append('div').attr('class', 'char-count').text(c.mentions.toLocaleString());
+  });
+
+  // Vocab JLPT chart
+  const jlptOrder = ['N5', 'N4', 'N3', 'N2', 'N1', '—'];
+  const jlptData = jlptOrder.map(k => ({
+    level: k === '—' ? 'Unlisted' : k,
+    count: data.vocabulary.by_jlpt[k] || 0,
+  }));
+  const jlptColors = { 'N5': '#10b981', 'N4': '#3b82f6', 'N3': '#6366f1', 'N2': '#f59e0b', 'N1': '#ea580c', 'Unlisted': '#dc2626' };
+
+  const svg = d3.select('#vocab-chart');
+  const w = 800, h = 280;
+  const margin = { top: 20, right: 20, bottom: 40, left: 50 };
+  const innerW = w - margin.left - margin.right;
+  const innerH = h - margin.top - margin.bottom;
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleBand().domain(jlptData.map(d => d.level)).range([0, innerW]).padding(0.2);
+  const y = d3.scaleLinear().domain([0, d3.max(jlptData, d => d.count)]).nice().range([innerH, 0]);
+
+  g.append('g').attr('transform', `translate(0,${innerH})`).call(d3.axisBottom(x));
+  g.append('g').call(d3.axisLeft(y).ticks(6));
+
+  g.selectAll('.bar').data(jlptData).enter().append('rect')
+    .attr('x', d => x(d.level))
+    .attr('y', d => y(d.count))
+    .attr('width', x.bandwidth())
+    .attr('height', d => innerH - y(d.count))
+    .attr('fill', d => jlptColors[d.level] || '#888')
+    .attr('rx', 4);
+
+  g.selectAll('.label').data(jlptData).enter().append('text')
+    .attr('x', d => x(d.level) + x.bandwidth() / 2)
+    .attr('y', d => y(d.count) - 6)
+    .attr('text-anchor', 'middle')
+    .style('font-size', '12px')
+    .style('font-family', 'Courier New')
+    .style('fill', '#555')
+    .text(d => d.count);
+
+  // Top vocab table
+  const tbody = d3.select('#vocab-table');
+  data.vocabulary.top_50.slice(0, 30).forEach((v, i) => {
+    const row = tbody.append('tr');
+    row.append('td').style('color', '#888').text(i + 1);
+    row.append('td').style('font-size', '1.1em').text(v.lemma);
+    row.append('td').style('color', '#666').text(v.reading);
+    row.append('td').attr('class', 'jlpt').html(
+      `<span class="badge badge-${v.jlpt === '—' ? 'C2' : v.jlpt}">${v.jlpt === '—' ? 'C2' : v.jlpt}</span>`
+    );
+    row.append('td').style('color', '#888').style('font-size', '0.85em').text(v.pos);
+    row.append('td').attr('class', 'num').text(v.count);
+  });
+});
+</script>
+</body>
+</html>
